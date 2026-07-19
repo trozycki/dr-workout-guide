@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DR Plan">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22DR%2077-Day%20Plan%22%2C%22short_name%22%3A%22DR%20Plan%22%2C%22start_url%22%3A%22.%2Fdr-workout-guide.html%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230a0a0a%22%2C%22theme_color%22%3A%22%230a0a0a%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%2520viewBox%3D'0%200%20512%20512'%253E%253Crect%2520width%3D'512'%2520height%3D'512'%2520fill%3D'%230a0a0a'%2F%253E%253Ctext%2520x%3D'256'%2520y%3D'340'%2520font-size%3D'280'%2520text-anchor%3D'middle'%2520fill%3D'%23f97316'%253E%25F0%259F%258F%258B%253C%2Ftext%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+<title>DR 77-Day Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { height: 100%; }
+  body { height: 100%; background: #0a0a0a; color: #fff; font-family: 'Barlow', sans-serif; font-size: 16px; line-height: 1.5; overflow-x: hidden;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  #app { min-height: 100vh; display: flex; flex-direction: column; }
+
+  .h { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; }
+  .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+
+  .progress-bar { height: 3px; background: #1a1a1a; flex-shrink: 0; }
+  .progress-fill { height: 3px; background: #f97316; transition: width 0.3s ease; }
+
+  .screen { min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* Phase screen */
+  .phase-header { padding: 44px 24px 24px; }
+  .phase-header-row { display: flex; justify-content: space-between; align-items: flex-start; }
+  .phase-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 42px; line-height: 1; color: #fff; }
+  .phase-grid { padding: 0 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex: 1; }
+  .phase-card { background: #141414; border-radius: 20px; padding: 22px 18px; display: flex; flex-direction: column; justify-content: space-between; min-height: 150px; position: relative; overflow: hidden; cursor: pointer; border: 1px solid transparent; transition: border-color 0.2s; }
+  .phase-card:active { transform: scale(0.98); }
+  .phase-card-bar { position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
+  .phase-card-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+  .phase-card-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 26px; color: #fff; line-height: 1.1; }
+  .phase-card-weeks { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+  .phase-footer { text-align: center; font-size: 11px; color: rgba(255,255,255,0.3); padding: 24px; }
+
+  .log-btn { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.55); border-radius: 12px; padding: 10px 14px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'Barlow', sans-serif; }
+  .log-btn:active { transform: scale(0.97); }
+
+  /* Day screen */
+  .day-header { padding: 40px 24px 18px; }
+  .back-btn { background: none; border: none; font-size: 14px; font-weight: 600; cursor: pointer; padding: 0; margin-bottom: 20px; display: block; font-family: 'Barlow', sans-serif; }
+  .phase-note { background: #141414; border-left: 3px solid; border-radius: 0 12px 12px 0; padding: 12px 14px; margin: 0 24px 18px; font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.45; }
+  .phase-note-strong { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px; }
+  .day-list { padding: 0 24px 40px; display: flex; flex-direction: column; gap: 8px; }
+  .day-card { background: #141414; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; cursor: pointer; text-align: left; }
+  .day-card:active { transform: scale(0.98); }
+  .day-dow { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.3); width: 32px; }
+  .day-icon { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 24px; width: 30px; text-align: center; }
+  .day-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 19px; color: #fff; }
+  .day-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 1px; }
+  .day-arrow { color: rgba(255,255,255,0.2); font-size: 18px; margin-left: auto; }
+
+  /* Metabolic picker */
+  .met-header { padding: 40px 24px 24px; }
+  .met-list { padding: 0 24px 40px; display: flex; flex-direction: column; gap: 12px; }
+  .met-card { background: #141414; border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 20px; cursor: pointer; }
+  .met-card:active { transform: scale(0.98); }
+  .met-card-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .met-card-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 22px; color: #fff; }
+  .met-card-time { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .met-card-desc { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.5; }
+
+  /* Warmup screen */
+  .warmup-header { padding: 40px 24px 16px; }
+  .warmup-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 38px; line-height: 1; color: #fff; }
+  .warmup-sub { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 6px; }
+  .warmup-note { font-size: 12px; font-style: italic; color: rgba(255,255,255,0.4); margin: 0 24px 18px; }
+  .warmup-list { padding: 0 24px 24px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .warmup-item { background: #141414; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; text-align: left; }
+  .warmup-item:active { transform: scale(0.99); }
+  .warmup-check { width: 24px; height: 24px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 12px; color: transparent; transition: all 0.15s; }
+  .warmup-check.done { background: var(--accent, #f97316); border-color: var(--accent, #f97316); color: #000; }
+  .warmup-text { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.4; }
+  .warmup-item.done .warmup-text { color: rgba(255,255,255,0.45); text-decoration: line-through; }
+
+  /* Info screen (yoga / recovery) */
+  .info-header { padding: 40px 24px 24px; }
+  .info-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 38px; line-height: 1; color: #fff; margin-bottom: 6px; }
+  .info-sub { font-size: 13px; color: rgba(255,255,255,0.5); }
+  .info-body { padding: 0 24px 32px; flex: 1; }
+  .info-card { background: #141414; border-radius: 18px; padding: 22px; font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.85); }
+
+  /* Workout screen */
+  .workout-header { padding: 14px 24px 10px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+  .workout-counter { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.4); }
+  .workout-counter span { color: #fff; }
+  .card-wrap { flex: 1; padding: 0 16px 12px; display: flex; flex-direction: column; overflow-y: auto; }
+  .ex-card { background: #141414; border-radius: 20px; padding: 20px; flex: 1; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: border-color 0.3s; }
+  .badge-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .badge { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .badge-neutral { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4); }
+  .ex-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 28px; line-height: 1.05; margin-bottom: 8px; color: #fff; }
+  .ex-tip { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.55; margin-bottom: 16px; font-style: italic; }
+  .stats-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .stat-box { background: #1e1e1e; border-radius: 14px; padding: 12px 8px; text-align: center; flex: 1; }
+  .stat-val { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 22px; }
+  .stat-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 3px; }
+
+  /* Movement list (metabolic) */
+  .movement-list { background: #1e1e1e; border-radius: 14px; padding: 14px 16px; margin-bottom: 16px; }
+  .movement-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+  .movement-item { font-size: 14px; color: rgba(255,255,255,0.78); padding: 3px 0; }
+  .movement-item:before { content: '\u00B7  '; color: rgba(255,255,255,0.35); }
+
+  .weight-section { margin-bottom: 16px; }
+  .weight-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .weight-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+  .last-weight { font-size: 11px; color: rgba(255,255,255,0.28); }
+  .weight-input-row { display: flex; align-items: center; gap: 10px; }
+  .weight-input { flex: 1; background: #1e1e1e; border-radius: 14px; padding: 14px 16px; color: #fff; font-size: 22px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; outline: none; width: 100%; border: 1.5px solid rgba(255,255,255,0.1); transition: border-color 0.2s; }
+  .weight-input:focus { border-color: rgba(249,115,22,0.5); }
+  .weight-unit { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 15px; color: rgba(255,255,255,0.28); white-space: nowrap; }
+
+  .sets-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
+  .sets-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .set-circle { width: 50px; height: 50px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.14); background: transparent; color: rgba(255,255,255,0.28); font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; }
+  .set-circle.done { transform: scale(1.1); }
+  .all-done-msg { font-size: 13px; font-weight: 600; margin-top: 14px; display: none; }
+
+  /* Timer overlay */
+  .timer-overlay { position: absolute; inset: 0; background: rgba(10,10,10,0.97); border-radius: 20px; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 10; }
+  .timer-overlay.visible { display: flex; }
+  .timer-label { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+  .timer-ring { position: relative; width: 140px; height: 140px; margin-bottom: 14px; }
+  .timer-ring svg { position: absolute; top: 0; left: 0; transform: rotate(-90deg); }
+  .timer-number { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 52px; }
+  .timer-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 28px; }
+  .skip-btn { background: #1e1e1e; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.55); border-radius: 40px; padding: 12px 28px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Barlow', sans-serif; }
+  .skip-btn:active { transform: scale(0.97); }
+
+  /* Nav buttons */
+  .nav-row { padding: 0 16px calc(32px + env(safe-area-inset-bottom)); display: flex; gap: 10px; flex-shrink: 0; }
+  .nav-btn { flex: 1; padding: 18px; border: none; border-radius: 16px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.05em; cursor: pointer; transition: all 0.15s; }
+  .nav-btn:active { transform: scale(0.97); }
+  .nav-btn-prev { background: #1a1a1a; color: #fff; }
+  .nav-btn-prev:disabled { color: rgba(255,255,255,0.18); cursor: default; }
+  .nav-btn-prev:disabled:active { transform: none; }
+  .nav-btn-next { background: #1a1a1a; color: #fff; }
+
+  /* Single primary CTA (warmup, info screens) */
+  .primary-cta { margin: 0 16px 24px; padding: 18px; border: none; border-radius: 16px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.05em; cursor: pointer; }
+  .primary-cta:active { transform: scale(0.98); }
+  .ghost-cta { margin: 0 16px 16px; padding: 14px; background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; color: rgba(255,255,255,0.5); font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; }
+  .ghost-cta:active { transform: scale(0.98); }
+
+  /* Done screen */
+  .done-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; text-align: center; }
+  .done-check { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 72px; line-height: 1; margin-bottom: 16px; }
+  .done-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 44px; line-height: 1; margin-bottom: 8px; }
+  .done-sub { font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+  .done-date { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 28px; }
+  .session-summary { background: #141414; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 16px; width: 100%; margin-bottom: 20px; text-align: left; }
+  .summary-title { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 12px; }
+  .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-ex { font-size: 13px; color: rgba(255,255,255,0.72); flex: 1; }
+  .summary-vals { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+  .summary-weight { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 14px; }
+  .summary-reps { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .done-btn { width: 100%; padding: 18px; border: none; border-radius: 16px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.05em; cursor: pointer; margin-bottom: 10px; }
+  .done-btn:active { transform: scale(0.98); }
+  .done-btn-primary { background: #f97316; color: #000; }
+  .done-btn-secondary { background: #1a1a1a; color: rgba(255,255,255,0.7); }
+  .done-btn-ghost { background: transparent; color: rgba(255,255,255,0.35); border: 1px solid rgba(255,255,255,0.1); }
+
+  /* History screen */
+  .history-header { padding: 40px 24px 20px; display: flex; justify-content: space-between; align-items: flex-start; }
+  .history-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 38px; color: #fff; }
+  .history-count { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+  .clear-btn { background: none; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); border-radius: 8px; padding: 6px 12px; font-size: 11px; cursor: pointer; margin-top: 52px; font-family: 'Barlow', sans-serif; }
+  .history-list { flex: 1; padding: 0 24px 40px; overflow-y: auto; }
+  .history-empty { font-size: 14px; color: rgba(255,255,255,0.4); margin-top: 20px; }
+  .history-item { margin-bottom: 14px; background: #141414; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 16px; }
+  .history-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .history-item-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; color: #fff; }
+  .history-item-phase { font-size: 12px; color: rgba(255,255,255,0.4); margin-left: 8px; }
+  .history-item-date { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .history-ex-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .history-ex-row:last-child { border-bottom: none; }
+  .history-ex-name { font-size: 13px; color: rgba(255,255,255,0.7); flex: 1; }
+  .history-ex-vals { display: flex; gap: 8px; align-items: center; }
+  .history-ex-weight { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 14px; }
+  .history-ex-reps { font-size: 12px; color: rgba(255,255,255,0.4); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// --- PHASES -----------------------------------------------------------------
+
+const PHASES = [
+  { id: 1, label: 'PHASE 1', name: 'Recalibrate', weeks: 'Weeks 1-3',  accent: '#3b82f6',
+    intensity: '70-75% of max',
+    note: 'Quality of movement over load. Feel the muscle. Do not chase soreness.',
+    restMod: 1.0 },
+  { id: 2, label: 'PHASE 2', name: 'Build',       weeks: 'Weeks 4-7',  accent: '#f97316',
+    intensity: '80-85% of max',
+    note: 'Progressive overload. Add weight or reps every session.',
+    restMod: 1.0 },
+  { id: 3, label: 'PHASE 3', name: 'Define',      weeks: 'Weeks 8-10', accent: '#ef4444',
+    intensity: 'Heavy, reps creep to 10-15',
+    note: 'Shorter rest. Higher rep range. The look is built here.',
+    restMod: 0.65 },
+  { id: 4, label: 'PEAK',    name: 'Peak Week',   weeks: 'Week 11',    accent: '#a855f7',
+    intensity: 'Volume down 30%',
+    note: 'No new stressors. No testing maxes. Sleep, hydrate, look great.',
+    restMod: 0.85 },
+];
+
+// --- DAYS -------------------------------------------------------------------
+
+const TYPE_LABEL = {
+  compound_primary: 'Compound \u00B7 Primary',
+  compound_secondary: 'Compound \u00B7 Secondary',
+  compound_accessory: 'Compound \u00B7 Accessory',
+  isolation: 'Isolation',
+  core: 'Core',
+  conditioning: 'Conditioning',
+};
+
+const DAYS = [
+  {
+    id: 'push', dow: 'MON', name: 'Push', icon: '\u2191',
+    subtitle: 'Chest / Shoulders / Triceps',
+    type: 'lift',
+    warmUp: {
+      duration: '5-7 min',
+      items: [
+        '2-3 min light row or bike',
+        'Arm circles forward and back, 20 each',
+        'Cross-body shoulder swings, 20',
+        'Band pull-aparts, 15',
+        '2 warm-up sets of bench at 40-50%',
+      ],
+    },
+    exercises: [
+      { name: 'Barbell or Dumbbell Bench Press', sets: 4, reps: '8-10',  restBase: 90, type: 'compound_primary',
+        tip: 'Drive feet into floor. 3-second descent. Own the eccentric.' },
+      { name: 'Incline Dumbbell Press',          sets: 3, reps: '10-12', restBase: 75, type: 'compound_secondary',
+        tip: 'Elbows at 45 degrees. Feel the upper chest, not the front delt.' },
+      { name: 'Cable Fly or Pec Deck',           sets: 3, reps: '12-15', restBase: 60, type: 'isolation',
+        tip: 'Squeeze hard at center. 3-sec eccentric every rep. No momentum.' },
+      { name: 'Overhead Press',                  sets: 3, reps: '10',    restBase: 90, type: 'compound_primary',
+        tip: 'Brace the core. Press straight up. Do not lean back into a hyperextension.' },
+      { name: 'Lateral Raises',                  sets: 3, reps: '15',    restBase: 45, type: 'isolation',
+        tip: 'Lead with elbows. Slight forward lean. Control the return.' },
+      { name: 'Tricep Pushdowns',                sets: 3, reps: '12-15', restBase: 45, type: 'isolation',
+        tip: 'Pin elbows to sides. Squeeze fully at the bottom.' },
+      { name: 'Overhead Tricep Extension',       sets: 2, reps: '12',    restBase: 45, type: 'isolation',
+        tip: 'Elbows tight. Full stretch at the bottom. Earn it.' },
+    ],
+  },
+  {
+    id: 'pull', dow: 'TUE', name: 'Pull', icon: '\u2193',
+    subtitle: 'Back / Biceps',
+    type: 'lift',
+    warmUp: {
+      duration: '5-7 min',
+      items: [
+        '2-3 min light row',
+        'Scapular wall slides, 10',
+        'Band face pulls or rear delt fly, 15',
+        'Dead hangs from pull-up bar, 20-30s',
+        '2 warm-up sets of pulldown at 40-50%',
+      ],
+    },
+    exercises: [
+      { name: 'Deadlift or Trap Bar Deadlift', sets: 3, reps: '5-6',  restBase: 180, type: 'compound_primary',
+        tip: 'Hips, then bar. Tight back, full extension. Quality over volume.' },
+      { name: 'Bent-Over Barbell Row',         sets: 4, reps: '8-10', restBase: 90,  type: 'compound_primary',
+        tip: 'Hinge at the hips. Pull to lower chest. Squeeze the back hard.' },
+      { name: 'Lat Pulldown or Weighted Pull-Up', sets: 3, reps: '10-12', restBase: 75, type: 'compound_secondary',
+        tip: 'Pull to upper chest. Shoulder blades down and back.' },
+      { name: 'Seated Cable Row',              sets: 3, reps: '12',   restBase: 60, type: 'compound_accessory',
+        tip: 'Chest tall. Drive elbows back, not the weight. Hold the squeeze.' },
+      { name: 'Single-Arm Dumbbell Row',       sets: 3, reps: '12/side', restBase: 60, type: 'compound_accessory',
+        tip: 'Full extension at bottom. Drive elbow to hip, not the ceiling.' },
+      { name: 'Face Pulls',                    sets: 3, reps: '15',   restBase: 45, type: 'isolation',
+        tip: 'Rope to forehead. External rotation at the top. Non-negotiable.' },
+      { name: 'Barbell or Dumbbell Curl',      sets: 3, reps: '12',   restBase: 45, type: 'isolation',
+        tip: 'No swinging. Slow on the way down. Thats where it grows.' },
+      { name: 'Hammer Curl',                   sets: 2, reps: '12',   restBase: 45, type: 'isolation',
+        tip: 'Neutral grip. Builds brachialis thickness that pops the arm.' },
+    ],
+  },
+  {
+    id: 'legs', dow: 'WED', name: 'Legs + Core', icon: '\u25C7',
+    subtitle: 'Quads / Hamstrings / Calves / Core',
+    type: 'lift',
+    warmUp: {
+      duration: '7-8 min',
+      items: [
+        '3 min bike or incline walk',
+        'Bodyweight squats, 15 controlled',
+        'Hip circles, 10 each direction',
+        'Leg swings front to back, 15 each leg',
+        'Glute bridges, 15',
+        '2 warm-up sets of squat at 40-50%',
+      ],
+    },
+    exercises: [
+      { name: 'Barbell Squat or Leg Press', sets: 4, reps: '8-10',  restBase: 120, type: 'compound_primary',
+        tip: 'Break parallel if mobility allows. Depth makes the difference.' },
+      { name: 'Romanian Deadlift',          sets: 3, reps: '10-12', restBase: 90,  type: 'compound_secondary',
+        tip: 'Hip hinge, not a squat. Feel the hamstring load at the bottom.' },
+      { name: 'Walking Lunges',             sets: 3, reps: '12/leg', restBase: 75, type: 'compound_accessory',
+        tip: 'Upright torso. Full step length. Feel the glute on each rep.' },
+      { name: 'Leg Curl',                   sets: 3, reps: '12-15', restBase: 60, type: 'isolation',
+        tip: 'Hips pressed into pad. Full contraction at the top.' },
+      { name: 'Leg Extension',              sets: 3, reps: '12-15', restBase: 60, type: 'isolation',
+        tip: 'Pause at top. 2-second hold. Slow descent. Do not slam.' },
+      { name: 'Standing Calf Raise',        sets: 4, reps: '20',    restBase: 30, type: 'isolation',
+        tip: 'Full range. Pause at top AND bottom. Do not bounce.' },
+      { name: 'Plank',                      sets: 3, reps: '45-60s', restBase: 30, type: 'core',
+        tip: 'Rib cage tucked. Glutes squeezed. Quality time, not just time.' },
+      { name: 'Cable or Hanging Leg Raise', sets: 3, reps: '15',    restBase: 30, type: 'core',
+        tip: 'Control the swing. Posterior pelvic tilt at the top.' },
+      { name: 'Ab Wheel or Decline Crunch', sets: 3, reps: '15',    restBase: 30, type: 'core',
+        tip: 'Brace the core through the whole roll. Do not sag.' },
+    ],
+  },
+  {
+    id: 'arms', dow: 'THU', name: 'Shoulders + Arms', icon: '\u00D7',
+    subtitle: 'Isolation Focus',
+    type: 'lift',
+    warmUp: {
+      duration: '5 min',
+      items: [
+        '1-2 min light bike or jumping jacks',
+        'Shoulder rotations with band or empty bar, 20',
+        'Wrist circles and flexor stretch',
+        '2 warm-up sets of lateral raise or curl at 40-50%',
+      ],
+    },
+    exercises: [
+      { name: 'Seated Dumbbell Shoulder Press', sets: 3, reps: '10-12', restBase: 75, type: 'compound_primary',
+        tip: 'Do not lock out at top. Keep tension on the delt throughout.' },
+      { name: 'Lateral Raises',           sets: 4, reps: '15',   restBase: 45, type: 'isolation',
+        tip: 'Lead with elbows. Slight forward lean. Control the return.' },
+      { name: 'Front Raise',              sets: 2, reps: '12',   restBase: 45, type: 'isolation',
+        tip: 'Thumbs up. Slight bend in the elbow. Stop at eye level.' },
+      { name: 'Rear Delt Fly',            sets: 3, reps: '15',   restBase: 45, type: 'isolation',
+        tip: 'Pin the shoulder blades, do not shrug. Lead with the pinkies.' },
+      { name: 'Barbell Curl',             sets: 3, reps: '10-12', restBase: 60, type: 'compound_primary',
+        tip: 'Strict form. Your bicep mass builder. Earn every rep.' },
+      { name: 'Incline Dumbbell Curl',    sets: 2, reps: '12',   restBase: 45, type: 'isolation',
+        tip: 'Full stretch at the bottom. Do not rush the eccentric.' },
+      { name: 'Concentration Curl',       sets: 2, reps: '12/arm', restBase: 45, type: 'isolation',
+        tip: 'Peak contraction. Squeeze absolutely hard at the top.' },
+      { name: 'Skull Crushers',           sets: 3, reps: '12',   restBase: 60, type: 'isolation',
+        tip: 'Bar to forehead. Upper arms stay vertical throughout.' },
+      { name: 'Tricep Pushdown (rope)',   sets: 3, reps: '15',   restBase: 45, type: 'isolation',
+        tip: 'Pin elbows to sides. Squeeze fully at the bottom.' },
+      { name: 'Dips or Bench Dips',       sets: 2, reps: 'near failure', restBase: 60, type: 'compound_primary',
+        tip: 'Lean forward for chest, upright for triceps. Full depth, full lockout.' },
+    ],
+  },
+  {
+    id: 'metabolic', dow: 'FRI', name: 'Metabolic', icon: '\u221E',
+    subtitle: 'Conditioning Day',
+    type: 'metabolic',
+  },
+  {
+    id: 'yoga', dow: 'SAT', name: 'Hot Yoga', icon: '\u25EF',
+    subtitle: 'Studio',
+    type: 'info',
+    info: 'No warm-up needed. The studio handles it.\n\nShow up hydrated: 16-20 oz of water in the 30 minutes before class. Electrolytes after.\n\nFocus for class: full breath, full range. Let the heat do the work.',
+  },
+  {
+    id: 'recovery', dow: 'SUN', name: 'Active Recovery', icon: '\u223F',
+    subtitle: 'Walk / stretch / breathe',
+    type: 'info',
+    info: 'Movement, not exercise. This is not optional.\n\n20-45 min walk. Light stretching or mobility work on whatever is sore: hip flexors, chest, lats. Foam roll if available.\n\nNo structure. Just move.',
+  },
+];
+
+// --- METABOLIC OPTIONS ------------------------------------------------------
+
+const METABOLIC = {
+  circuit: {
+    name: 'Circuit',
+    duration: '40 min',
+    description: '5 rounds. 60s rest between rounds.',
+    warmUp: {
+      duration: '5 min',
+      items: ['5 min easy cardio of your choice', 'Ramp from 60-65% effort'],
+    },
+    exercises: [
+      { name: 'Circuit Round', sets: 5, reps: '5 movements', restBase: 60, type: 'conditioning',
+        tip: 'Quality reps under fatigue. Move with intention.',
+        movements: [
+          '10 push-ups',
+          '15 goblet squats',
+          '10 dumbbell rows',
+          '15 jumping jacks',
+          '10 dumbbell thrusters',
+        ] },
+    ],
+  },
+  intervals: {
+    name: 'Intervals',
+    duration: '35 min',
+    description: '15 rounds. 1 min hard / 1 min easy. 5 min cooldown.',
+    warmUp: {
+      duration: '5 min',
+      items: ['5 min easy cardio of your choice', 'Ramp from 60-65% effort'],
+    },
+    exercises: [
+      { name: 'Interval Round', sets: 15, reps: '1 min hard / 1 min easy', restBase: 0, type: 'conditioning',
+        tip: 'Hard means hard. Easy means really easy. The contrast does the work.' },
+      { name: 'Cooldown', sets: 1, reps: '5 min moderate', restBase: 0, type: 'conditioning',
+        tip: 'Easy pace. Let the heart rate come down.' },
+    ],
+  },
+  complex: {
+    name: 'Dumbbell Complex',
+    duration: '45 min',
+    description: '5-6 rounds. Same dumbbells, no setting them down. 90s rest.',
+    warmUp: {
+      duration: '5 min',
+      items: ['5 min easy cardio of your choice', 'Ramp from 60-65% effort'],
+    },
+    exercises: [
+      { name: 'Dumbbell Complex', sets: 6, reps: '6 movements x 6 reps', restBase: 90, type: 'conditioning',
+        tip: 'Same weight, no setting them down. Grip will limit you. Push past it.',
+        movements: [
+          'Deadlift x6',
+          'Bent row x6',
+          'Hang clean x6',
+          'Push press x6',
+          'Squat x6',
+          'Reverse lunge x6',
+        ] },
+    ],
+  },
+};
+
+// --- STATE ------------------------------------------------------------------
+
+const state = {
+  screen: 'phase',
+  phase: null,
+  dayId: null,
+  metabolicOption: null,
+  exIdx: 0,
+  setsMap: {},
+  weights: {},
+  warmupChecked: [],
+  timerSec: null,
+  timerMax: null,
+  timerInterval: null,
+  history: [],
+};
+
+try {
+  const saved = localStorage.getItem('wg_history');
+  if (saved) state.history = JSON.parse(saved);
+} catch (e) {}
+
+// --- HELPERS ----------------------------------------------------------------
+
+function saveHistory() {
+  try { localStorage.setItem('wg_history', JSON.stringify(state.history)); } catch (e) {}
+}
+
+function getPhase() { return PHASES.find(p => p.id === state.phase); }
+function getDay()   { return DAYS.find(d => d.id === state.dayId); }
+
+function getActiveBlock() {
+  // Returns the active "block" providing warmUp + exercises.
+  // For metabolic, that's a METABOLIC entry. For lift, that's the DAY itself.
+  const day = getDay();
+  if (!day) return null;
+  if (day.type === 'metabolic' && state.metabolicOption) return METABOLIC[state.metabolicOption];
+  return day;
+}
+
+function getExercises() {
+  const b = getActiveBlock();
+  return (b && b.exercises) ? b.exercises : [];
+}
+
+function getExercise() { return getExercises()[state.exIdx]; }
+
+function getRestSec(exercise) {
+  if (!exercise || !exercise.restBase) return 0;
+  const ph = getPhase();
+  return Math.round(exercise.restBase * (ph ? ph.restMod : 1.0));
+}
+
+function formatRest(sec) {
+  if (sec <= 0) return '\u2014';
+  if (sec >= 120) return Math.round(sec / 60) + 'min';
+  return Math.round(sec / 5) * 5 + 's';
+}
+
+function getCurrentSets() {
+  const ex = getExercise();
+  const sets = (ex && ex.sets) || 3;
+  return state.setsMap[state.exIdx] || Array(sets).fill(false);
+}
+
+function getLastWeight(exName) {
+  for (const s of state.history) {
+    const m = (s.exercises || []).find(e => e.name === exName);
+    if (m && m.weight) return m.weight;
+  }
+  return null;
+}
+
+function todayStr() {
+  return new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function stopTimer() {
+  if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
+  state.timerSec = null;
+  state.timerMax = null;
+}
+
+const CIRC = 2 * Math.PI * 52;
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+// --- AUDIO (bell) -----------------------------------------------------------
+
+let audioCtx = null;
+function getAudioCtx() {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+  } catch (e) {}
+  return audioCtx;
+}
+
+function playBell() {
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  const o1 = ctx.createOscillator(), g1 = ctx.createGain();
+  o1.type = 'sine'; o1.frequency.value = 880;
+  g1.gain.setValueAtTime(0.35, now);
+  g1.gain.exponentialRampToValueAtTime(0.001, now + 1.6);
+  o1.connect(g1).connect(ctx.destination);
+  o1.start(now); o1.stop(now + 1.6);
+  const o2 = ctx.createOscillator(), g2 = ctx.createGain();
+  o2.type = 'sine'; o2.frequency.value = 1760;
+  g2.gain.setValueAtTime(0.18, now);
+  g2.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+  o2.connect(g2).connect(ctx.destination);
+  o2.start(now); o2.stop(now + 0.9);
+}
+
+// --- RENDER -----------------------------------------------------------------
+
+function render() {
+  const app = document.getElementById('app');
+  stopTimer();
+
+  switch (state.screen) {
+    case 'phase':      app.innerHTML = renderPhase();      break;
+    case 'day':        app.innerHTML = renderDay();        break;
+    case 'metPicker':  app.innerHTML = renderMetPicker();  break;
+    case 'warmup':     app.innerHTML = renderWarmup();     break;
+    case 'info':       app.innerHTML = renderInfo();       break;
+    case 'workout':    app.innerHTML = renderWorkout();    startWorkoutListeners(); break;
+    case 'done':       app.innerHTML = renderDone();       break;
+    case 'history':    app.innerHTML = renderHistory();    break;
+  }
+}
+
+function renderPhase() {
+  const count = state.history.length;
+  return `
+    <div class="screen">
+      <div class="phase-header">
+        <div class="eyebrow">Dominican Republic \u00B7 77 Days</div>
+        <div class="phase-header-row">
+          <div class="phase-title h">SELECT<br>PHASE</div>
+          <button class="log-btn" onclick="goHistory()">\u{1F4CB} Log${count > 0 ? ` (${count})` : ''}</button>
+        </div>
+      </div>
+      <div class="phase-grid">
+        ${PHASES.map(ph => `
+          <div class="phase-card" onclick="selectPhase(${ph.id})" style="border-color:${ph.accent}22">
+            <div class="phase-card-bar" style="background:${ph.accent}"></div>
+            <div class="phase-card-label">${ph.label}</div>
+            <div>
+              <div class="phase-card-name">${ph.name}</div>
+              <div class="phase-card-weeks">${ph.weeks}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="phase-footer">Tap a phase to begin</div>
+    </div>`;
+}
+
+function renderDay() {
+  const ph = getPhase();
+  return `
+    <div class="screen">
+      <div class="day-header">
+        <button class="back-btn" style="color:${ph.accent}" onclick="goPhase()">\u2190 Back</button>
+        <div class="eyebrow" style="color:${ph.accent}">${ph.name} \u00B7 ${ph.weeks}</div>
+        <div class="phase-title h">TODAY'S<br>SESSION</div>
+      </div>
+      <div class="phase-note" style="border-left-color:${ph.accent}">
+        <div class="phase-note-strong" style="color:${ph.accent}">${esc(ph.intensity)}</div>
+        ${esc(ph.note)}
+      </div>
+      <div class="day-list">
+        ${DAYS.map(d => `
+          <div class="day-card" onclick="selectDay('${d.id}')">
+            <div class="day-dow">${d.dow}</div>
+            <div class="day-icon" style="color:${ph.accent}">${d.icon}</div>
+            <div style="flex:1;min-width:0">
+              <div class="day-name">${esc(d.name)}</div>
+              <div class="day-sub">${esc(d.subtitle)}</div>
+            </div>
+            <div class="day-arrow">\u203A</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+}
+
+function renderMetPicker() {
+  const ph = getPhase();
+  return `
+    <div class="screen">
+      <div class="met-header">
+        <button class="back-btn" style="color:${ph.accent}" onclick="goDay()">\u2190 Back</button>
+        <div class="eyebrow" style="color:${ph.accent}">Metabolic \u00B7 Pick One</div>
+        <div class="phase-title h">CHOOSE<br>FORMAT</div>
+      </div>
+      <div class="met-list">
+        ${Object.entries(METABOLIC).map(([id, m]) => `
+          <div class="met-card" onclick="selectMetabolic('${id}')" style="border-color:${ph.accent}33">
+            <div class="met-card-header">
+              <div class="met-card-name">${esc(m.name)}</div>
+              <div class="met-card-time" style="color:${ph.accent}">${esc(m.duration)}</div>
+            </div>
+            <div class="met-card-desc">${esc(m.description)}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+}
+
+function renderWarmup() {
+  const ph = getPhase();
+  const block = getActiveBlock();
+  const day = getDay();
+  if (!block || !block.warmUp) { startWorkout(); return ''; }
+  const items = block.warmUp.items;
+  const dayName = (day && day.type === 'metabolic') ? `${day.name} \u00B7 ${block.name}` : (day ? day.name : '');
+  const allChecked = state.warmupChecked.length === items.length && state.warmupChecked.every(Boolean);
+
+  return `
+    <div class="screen">
+      <div class="warmup-header">
+        <button class="back-btn" style="color:${ph.accent}" onclick="backFromWarmup()">\u2190 Back</button>
+        <div class="eyebrow" style="color:${ph.accent}">${esc(dayName)} \u00B7 ${esc(block.warmUp.duration)}</div>
+        <div class="warmup-title h">WARM-UP</div>
+        <div class="warmup-sub">First working set of your nervous system.</div>
+      </div>
+      <div class="warmup-note">Non-negotiable. Tap each as you go.</div>
+      <div class="warmup-list">
+        ${items.map((item, i) => {
+          const done = !!state.warmupChecked[i];
+          return `
+          <div class="warmup-item${done ? ' done' : ''}" onclick="toggleWarmup(${i})">
+            <div class="warmup-check${done ? ' done' : ''}" style="${done ? `--accent:${ph.accent};background:${ph.accent};border-color:${ph.accent}` : ''}">${done ? '\u2713' : ''}</div>
+            <div class="warmup-text">${esc(item)}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <button class="primary-cta" onclick="startWorkout()" style="background:${allChecked ? ph.accent : '#1a1a1a'};color:${allChecked ? '#000' : '#fff'}">
+        ${allChecked ? 'Start Workout' : 'Start Workout (Skip)'}
+      </button>
+    </div>`;
+}
+
+function renderInfo() {
+  const ph = getPhase();
+  const day = getDay();
+  if (!day) return '';
+  const paragraphs = (day.info || '').split('\n\n').filter(Boolean);
+  return `
+    <div class="screen">
+      <div class="info-header">
+        <button class="back-btn" style="color:${ph.accent}" onclick="goDay()">\u2190 Back</button>
+        <div class="eyebrow" style="color:${ph.accent}">${esc(day.dow)} \u00B7 ${esc(day.subtitle)}</div>
+        <div class="info-title h">${esc(day.name).toUpperCase()}</div>
+      </div>
+      <div class="info-body">
+        <div class="info-card">${paragraphs.map(p => `<p style="margin-bottom:14px">${esc(p)}</p>`).join('').replace(/<p[^>]*>([^<]*)<\/p>$/, '<p>$1</p>')}</div>
+      </div>
+      <button class="primary-cta" onclick="logInfoSession()" style="background:${ph.accent};color:#000">Mark Complete</button>
+    </div>`;
+}
+
+function renderWorkout() {
+  const ph = getPhase();
+  const exercises = getExercises();
+  const ex = getExercise();
+  if (!ex) return '';
+  const day = getDay();
+  const block = getActiveBlock();
+  const sets = ex.sets || 3;
+  const reps = ex.reps || '\u2014';
+  const restSec = getRestSec(ex);
+  const rest = formatRest(restSec);
+  const progress = state.exIdx / exercises.length;
+  const currentSets = getCurrentSets();
+  const allDone = currentSets.every(Boolean);
+  const lastW = getLastWeight(ex.name);
+  const curW = state.weights[state.exIdx] || '';
+  const isLast = state.exIdx === exercises.length - 1;
+  const showWeight = !ex.movements && ex.type !== 'conditioning';
+  const dayLabel = (day && day.type === 'metabolic' && block) ? `${day.name} \u00B7 ${block.name}` : (day ? day.name : '');
+
+  return `
+    <div class="screen" id="workout-screen">
+      <div class="progress-bar"><div class="progress-fill" style="width:${progress * 100}%;background:${ph.accent}"></div></div>
+      <div class="workout-header">
+        <button class="back-btn" style="color:rgba(255,255,255,0.35);margin-bottom:0" onclick="goDay()">\u2190 ${esc(dayLabel)}</button>
+        <div class="workout-counter"><span>${state.exIdx + 1}</span> / ${exercises.length}</div>
+      </div>
+      <div class="card-wrap">
+        <div class="ex-card" id="ex-card" style="border:1px solid ${allDone ? ph.accent + '55' : 'rgba(255,255,255,0.08)'}">
+          <div class="badge-row">
+            <span class="badge" style="background:${ph.accent}22;color:${ph.accent}">${esc(ph.name)}</span>
+            <span class="badge badge-neutral">${esc(TYPE_LABEL[ex.type] || ex.type || '')}</span>
+          </div>
+          <div class="ex-name h">${esc(ex.name)}</div>
+          <div class="ex-tip">${esc(ex.tip)}</div>
+          ${ex.movements ? `
+            <div class="movement-list">
+              <div class="movement-label">Round Contains</div>
+              ${ex.movements.map(m => `<div class="movement-item">${esc(m)}</div>`).join('')}
+            </div>` : ''}
+          <div class="stats-row">
+            <div class="stat-box"><div class="stat-val h" style="color:${ph.accent}">${sets}</div><div class="stat-label">SETS</div></div>
+            <div class="stat-box"><div class="stat-val h" style="color:${ph.accent}">${esc(reps)}</div><div class="stat-label">REPS</div></div>
+            <div class="stat-box"><div class="stat-val h" style="color:${ph.accent}">${esc(rest)}</div><div class="stat-label">REST</div></div>
+          </div>
+          ${showWeight ? `
+            <div class="weight-section">
+              <div class="weight-header">
+                <span class="weight-label">Weight Used</span>
+                ${lastW ? `<span class="last-weight">Last: <span style="color:${ph.accent}">${esc(lastW)} lbs</span></span>` : ''}
+              </div>
+              <div class="weight-input-row">
+                <input class="weight-input" id="weight-input" type="number" inputmode="decimal"
+                  value="${esc(curW)}" placeholder="${lastW ? esc(lastW) : '0'}"
+                  style="border-color:${curW ? ph.accent + '60' : 'rgba(255,255,255,0.1)'}"
+                  oninput="onWeightInput(this.value)">
+                <span class="weight-unit">LBS</span>
+              </div>
+            </div>` : ''}
+          <div class="sets-section">
+            <div class="sets-label">${ex.movements ? 'Tap each round when complete' : 'Tap each set when complete'}</div>
+            <div class="sets-row">
+              ${currentSets.map((done, i) => `
+                <button class="set-circle${done ? ' done' : ''}" id="set-${i}"
+                  style="${done ? `background:${ph.accent};border-color:${ph.accent};color:#000` : ''}"
+                  onclick="tapSet(${i})">${done ? '\u2713' : i + 1}</button>
+              `).join('')}
+            </div>
+            <div class="all-done-msg" id="all-done-msg" style="color:${ph.accent};${allDone ? 'display:block' : ''}">
+              \u2713 Done. Swipe forward or tap Next.
+            </div>
+          </div>
+          <div class="timer-overlay" id="timer-overlay">
+            <div class="timer-label">Rest</div>
+            <div class="timer-ring">
+              <svg width="140" height="140">
+                <circle cx="70" cy="70" r="52" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="6"/>
+                <circle id="timer-arc" cx="70" cy="70" r="52" fill="none" stroke="${ph.accent}" stroke-width="6"
+                  stroke-dasharray="${CIRC}" stroke-dashoffset="${CIRC}"
+                  stroke-linecap="round" transform="rotate(-90 70 70)" style="transition:stroke-dashoffset 0.95s linear"/>
+              </svg>
+              <div class="timer-number h" id="timer-num" style="color:${ph.accent}">\u2014</div>
+            </div>
+            <div class="timer-sub">seconds remaining</div>
+            <button class="skip-btn" onclick="skipRest()">Skip Rest</button>
+          </div>
+        </div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn nav-btn-prev" id="btn-prev" onclick="goPrevEx()" ${state.exIdx === 0 ? 'disabled' : ''}>\u2039 Prev</button>
+        <button class="nav-btn nav-btn-next" id="btn-next"
+          style="${allDone ? `background:${ph.accent};color:#000` : ''}" onclick="goNextEx()">
+          ${isLast ? 'Finish' : 'Next \u203A'}
+        </button>
+      </div>
+    </div>`;
+}
+
+function renderDone() {
+  const ph = getPhase();
+  const day = getDay();
+  const block = getActiveBlock();
+  const last = state.history[0];
+  const sessionName = (day && day.type === 'metabolic' && block) ? `${day.name} \u00B7 ${block.name}` : (day ? day.name : '');
+  return `
+    <div class="done-screen">
+      <div class="done-check h" style="color:${ph.accent}">\u2713</div>
+      <div class="done-title h">SESSION<br>COMPLETE</div>
+      <div class="done-sub">${esc(sessionName)} \u00B7 ${esc(ph.name)}</div>
+      <div class="done-date">${todayStr()}</div>
+      ${last && last.exercises && last.exercises.length ? `
+      <div class="session-summary">
+        <div class="summary-title">Session Summary</div>
+        ${last.exercises.map(ex => `
+          <div class="summary-row">
+            <span class="summary-ex">${esc(ex.name)}</span>
+            <div class="summary-vals">
+              ${ex.weight ? `<span class="summary-weight h" style="color:${ph.accent}">${esc(ex.weight)} lbs</span>` : '<span class="summary-reps">\u2014</span>'}
+              <span class="summary-reps">${ex.sets}\u00D7${esc(ex.reps)}</span>
+            </div>
+          </div>`).join('')}
+      </div>` : ''}
+      <button class="done-btn done-btn-primary" onclick="anotherSession()">Another Session</button>
+      <button class="done-btn done-btn-secondary" onclick="goPhase()">Change Phase</button>
+      <button class="done-btn done-btn-ghost" onclick="goHistory()">View Full Log</button>
+    </div>`;
+}
+
+function renderHistory() {
+  return `
+    <div class="screen">
+      <div class="history-header">
+        <div>
+          <button class="back-btn" style="color:rgba(255,255,255,0.4);margin-bottom:10px" onclick="goPhase()">\u2190 Back</button>
+          <div class="history-title h">SESSION LOG</div>
+          <div class="history-count">${state.history.length} session${state.history.length !== 1 ? 's' : ''} saved</div>
+        </div>
+        ${state.history.length > 0 ? `<button class="clear-btn" onclick="clearHistory()">Clear All</button>` : ''}
+      </div>
+      <div class="history-list">
+        ${state.history.length === 0
+          ? '<div class="history-empty">No sessions yet. Complete a workout to see your log here.</div>'
+          : state.history.map(s => {
+              const phObj = PHASES.find(p => p.id === s.phase);
+              const a = phObj ? phObj.accent : '#f97316';
+              return `
+              <div class="history-item">
+                <div class="history-item-header">
+                  <div>
+                    <span class="history-item-name">${esc(s.dayName) || '\u2014'}</span>
+                    <span class="history-item-phase">${esc(s.phaseName) || ''}</span>
+                  </div>
+                  <span class="history-item-date">${esc(s.date)}</span>
+                </div>
+                ${(s.exercises || []).map(ex => `
+                  <div class="history-ex-row">
+                    <span class="history-ex-name">${esc(ex.name)}</span>
+                    <div class="history-ex-vals">
+                      ${ex.weight ? `<span class="history-ex-weight h" style="color:${a}">${esc(ex.weight)} lbs</span>` : '<span class="history-ex-reps">\u2014</span>'}
+                      <span class="history-ex-reps">${ex.sets}\u00D7${esc(ex.reps)}</span>
+                    </div>
+                  </div>`).join('')}
+              </div>`;
+            }).join('')}
+      </div>
+    </div>`;
+}
+
+// --- WORKOUT INTERACTIONS ---------------------------------------------------
+
+function startWorkoutListeners() {
+  const ws = document.getElementById('workout-screen');
+  if (!ws) return;
+  let tx = null, ty = null;
+  ws.addEventListener('touchstart', e => {
+    tx = e.touches[0].clientX;
+    ty = e.touches[0].clientY;
+  }, { passive: true });
+  ws.addEventListener('touchend', e => {
+    if (tx === null) return;
+    const dx = tx - e.changedTouches[0].clientX;
+    const dy = ty - e.changedTouches[0].clientY;
+    tx = null; ty = null;
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (dx > 0) goNextEx(); else goPrevEx();
+    }
+  }, { passive: true });
+}
+
+function onWeightInput(val) {
+  state.weights[state.exIdx] = val;
+  const input = document.getElementById('weight-input');
+  const ph = getPhase();
+  if (input) input.style.borderColor = val ? ph.accent + '60' : 'rgba(255,255,255,0.1)';
+}
+
+function tapSet(i) {
+  getAudioCtx();
+  const ex = getExercise();
+  const sets = (ex && ex.sets) || 3;
+  const cur = state.setsMap[state.exIdx] || Array(sets).fill(false);
+  const next = [...cur];
+  next[i] = !next[i];
+  state.setsMap[state.exIdx] = next;
+
+  const ph = getPhase();
+  const btn = document.getElementById('set-' + i);
+  if (btn) {
+    btn.classList.toggle('done', next[i]);
+    btn.style.background = next[i] ? ph.accent : 'transparent';
+    btn.style.borderColor = next[i] ? ph.accent : 'rgba(255,255,255,0.14)';
+    btn.style.color = next[i] ? '#000' : 'rgba(255,255,255,0.28)';
+    btn.style.transform = next[i] ? 'scale(1.1)' : 'scale(1)';
+    btn.textContent = next[i] ? '\u2713' : (i + 1);
+  }
+
+  const allDone = next.every(Boolean);
+  const msg = document.getElementById('all-done-msg');
+  if (msg) msg.style.display = allDone ? 'block' : 'none';
+
+  const card = document.getElementById('ex-card');
+  if (card) card.style.borderColor = allDone ? ph.accent + '55' : 'rgba(255,255,255,0.08)';
+
+  const nextBtn = document.getElementById('btn-next');
+  if (nextBtn) {
+    nextBtn.style.background = allDone ? ph.accent : '#1a1a1a';
+    nextBtn.style.color = allDone ? '#000' : '#fff';
+  }
+
+  const restSec = getRestSec(ex);
+  if (next[i] && restSec > 0) startTimer(restSec);
+  else stopTimerUI();
+}
+
+function startTimer(seconds) {
+  stopTimer();
+  state.timerSec = seconds;
+  state.timerMax = seconds;
+  const overlay = document.getElementById('timer-overlay');
+  if (overlay) overlay.classList.add('visible');
+  updateTimerUI();
+  state.timerInterval = setInterval(() => {
+    state.timerSec--;
+    if (state.timerSec <= 0) { playBell(); stopTimerUI(); stopTimer(); }
+    else updateTimerUI();
+  }, 1000);
+}
+
+function updateTimerUI() {
+  const num = document.getElementById('timer-num');
+  const arc = document.getElementById('timer-arc');
+  if (num) num.textContent = state.timerSec;
+  if (arc && state.timerMax) {
+    const progress = state.timerSec / state.timerMax;
+    arc.style.strokeDashoffset = CIRC - CIRC * progress;
+  }
+}
+
+function stopTimerUI() {
+  const overlay = document.getElementById('timer-overlay');
+  if (overlay) overlay.classList.remove('visible');
+  stopTimer();
+}
+
+function skipRest() { stopTimerUI(); }
+
+// --- WARMUP INTERACTIONS ----------------------------------------------------
+
+function toggleWarmup(i) {
+  getAudioCtx();
+  const arr = state.warmupChecked.slice();
+  arr[i] = !arr[i];
+  state.warmupChecked = arr;
+  render();
+}
+
+// --- NAVIGATION -------------------------------------------------------------
+
+function selectPhase(id) {
+  state.phase = id;
+  state.screen = 'day';
+  render();
+}
+
+function selectDay(id) {
+  state.dayId = id;
+  state.exIdx = 0;
+  state.setsMap = {};
+  state.weights = {};
+  state.warmupChecked = [];
+  state.metabolicOption = null;
+  const day = getDay();
+  if (!day) return;
+  if (day.type === 'metabolic') {
+    state.screen = 'metPicker';
+  } else if (day.type === 'info') {
+    state.screen = 'info';
+  } else {
+    state.screen = 'warmup';
+  }
+  render();
+}
+
+function selectMetabolic(id) {
+  state.metabolicOption = id;
+  state.exIdx = 0;
+  state.setsMap = {};
+  state.weights = {};
+  state.warmupChecked = [];
+  state.screen = 'warmup';
+  render();
+}
+
+function backFromWarmup() {
+  const day = getDay();
+  if (day && day.type === 'metabolic') state.screen = 'metPicker';
+  else state.screen = 'day';
+  render();
+}
+
+function startWorkout() {
+  state.screen = 'workout';
+  render();
+}
+
+function goPhase()   { state.screen = 'phase';   render(); }
+function goDay()     { state.screen = 'day';     state.metabolicOption = null; render(); }
+function goHistory() { state.screen = 'history'; render(); }
+
+function anotherSession() {
+  state.exIdx = 0;
+  state.setsMap = {};
+  state.weights = {};
+  state.warmupChecked = [];
+  state.metabolicOption = null;
+  state.screen = 'day';
+  render();
+}
+
+function goPrevEx() {
+  if (state.exIdx > 0) { stopTimerUI(); state.exIdx--; state.screen = 'workout'; render(); }
+}
+
+function goNextEx() {
+  stopTimerUI();
+  const exercises = getExercises();
+  if (state.exIdx < exercises.length - 1) {
+    state.exIdx++;
+    state.screen = 'workout';
+    render();
+  } else {
+    finishSession();
+  }
+}
+
+function finishSession() {
+  const ph = getPhase();
+  const day = getDay();
+  const block = getActiveBlock();
+  const exercises = getExercises();
+  const sessionName = (day && day.type === 'metabolic' && block) ? `${day.name} \u00B7 ${block.name}` : (day ? day.name : '');
+  const session = {
+    date: todayStr(),
+    phase: state.phase,
+    phaseName: ph ? ph.name : '',
+    day: state.dayId,
+    dayName: sessionName,
+    exercises: exercises.map((ex, i) => ({
+      name: ex.name,
+      weight: state.weights[i] || null,
+      sets: (state.setsMap[i] || []).filter(Boolean).length,
+      reps: ex.reps || '\u2014',
+    })),
+  };
+  state.history = [session, ...state.history].slice(0, 100);
+  saveHistory();
+  state.screen = 'done';
+  render();
+}
+
+function logInfoSession() {
+  const ph = getPhase();
+  const day = getDay();
+  if (!day) return;
+  const session = {
+    date: todayStr(),
+    phase: state.phase,
+    phaseName: ph ? ph.name : '',
+    day: state.dayId,
+    dayName: day.name,
+    exercises: [],
+  };
+  state.history = [session, ...state.history].slice(0, 100);
+  saveHistory();
+  state.screen = 'done';
+  render();
+}
+
+function clearHistory() {
+  if (confirm('Clear all session history?')) {
+    state.history = [];
+    saveHistory();
+    render();
+  }
+}
+
+// --- INIT -------------------------------------------------------------------
+
+render();
+
+// --- SERVICE WORKER (offline / installable PWA) ----------------------------
+if ('serviceWorker' in navigator) {
+  const swCode = `
+    const CACHE = 'dr-plan-v1';
+    self.addEventListener('install', () => self.skipWaiting());
+    self.addEventListener('activate', e => {
+      e.waitUntil(caches.keys().then(ks =>
+        Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))
+      ));
+      self.clients.claim();
+    });
+    self.addEventListener('fetch', e => {
+      e.respondWith(
+        caches.open(CACHE).then(cache =>
+          cache.match(e.request).then(cached => {
+            const network = fetch(e.request).then(res => { cache.put(e.request, res.clone()); return res; }).catch(() => cached);
+            return cached || network;
+          })
+        )
+      );
+    });
+  `;
+  const blob = new Blob([swCode], { type: 'application/javascript' });
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+}
+</script>
+</body>
+</html>
