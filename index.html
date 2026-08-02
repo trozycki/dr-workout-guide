@@ -367,6 +367,7 @@ function render() {
   stopTimer();
   switch (state.screen) {
     case 'home':      app.innerHTML = renderHome();      break;
+    case 'day':       app.innerHTML = renderDay();        break;
     case 'workout':   app.innerHTML = renderWorkout();    startWorkoutListeners(); break;
     case 'done':      app.innerHTML = renderDone();       break;
     case 'history':   app.innerHTML = renderHistory();    break;
@@ -413,6 +414,34 @@ function renderHome() {
       </div>
     </div>
     <div class="home-footer">Every workout ends with an ab finisher</div>
+  </div>`;
+}
+
+function renderDay() {
+  const loc = getLocation();
+  const variations = WORKOUTS[state.location];
+  const icons = { Push: '↑', Pull: '↓', Legs: '◇' };
+  return `
+  <div class="screen">
+    <div class="home-header">
+      <button class="back-btn" style="color:${loc.accent}" onclick="goHome()">← Back</button>
+      <div class="eyebrow" style="color:${loc.accent}">${loc.icon} ${loc.name}</div>
+      <div class="home-title h">WHAT ARE<br>WE HITTING?</div>
+    </div>
+    <div class="loc-grid">
+      ${variations.map(w => `
+        <div class="loc-card" onclick="selectWorkout('${w.id}')" style="border-color:${loc.accent}22">
+          <div class="loc-card-bar" style="background:${loc.accent}"></div>
+          <div class="loc-icon" style="font-size:26px;">${icons[w.name] || '●'}</div>
+          <div>
+            <div class="loc-name">${w.name}</div>
+            <div class="loc-sub">${w.subtitle}</div>
+          </div>
+          <div class="loc-arrow">›</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="home-footer">Ends with a rotating ab finisher</div>
   </div>`;
 }
 
@@ -514,7 +543,7 @@ function renderWorkout() {
   <div class="screen" id="workout-screen">
     <div class="progress-bar"><div class="progress-fill" style="width:${progress*100}%;background:${accent}"></div></div>
     <div class="workout-header">
-      <button class="back-btn" style="color:rgba(255,255,255,0.35);margin-bottom:0" onclick="goHome()">← Back</button>
+      <button class="back-btn" style="color:rgba(255,255,255,0.35);margin-bottom:0" onclick="goDay()">← Back</button>
       <div class="workout-counter"><span>${state.exIdx+1}</span> / ${exercises.length}</div>
     </div>
     <div class="card-wrap">
@@ -796,13 +825,20 @@ function skipRest() { stopTimerUI(); }
 // ─── NAVIGATION ───────────────────────────────────────────────────────────────
 
 function goHome() { state.screen = 'home'; render(); }
+function goDay() { state.screen = 'day'; render(); }
 function goHistory() { state.screen = 'history'; render(); }
 function goYoga() { state.yogaDuration = null; state.screen = 'yoga'; render(); }
 function goNutrition() { state.screen = 'nutrition'; render(); }
 
 function selectLocation(id) {
   state.location = id;
-  state.workout = pickWorkout(id);
+  state.screen = 'day';
+  render();
+}
+
+function selectWorkout(workoutId) {
+  const loc = getLocation();
+  state.workout = WORKOUTS[state.location].find(w => w.id === workoutId);
   state.abFinisher = pickAbFinisher();
   state.exIdx = 0; state.setsMap = {}; state.weights = {};
   state.screen = 'workout';
