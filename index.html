@@ -507,7 +507,8 @@ function renderWorkout() {
   const nextExr = exercises[state.exIdx + 1];
   const nextLabel = nextExr
     ? `Next: ${nextExr.isFinisher && !isFinisher ? '🔥 ' : ''}${nextExr.name}`
-    : "Last set — you're finishing strong";
+    : "Last exercise — finish strong";
+  state.nextLabel = nextLabel;
 
   return `
   <div class="screen" id="workout-screen">
@@ -568,7 +569,7 @@ function renderWorkout() {
             <div class="timer-number h" id="timer-num" style="color:${accent}">—</div>
           </div>
           <div class="timer-sub">seconds remaining</div>
-          <div class="timer-next" style="font-size:13px;color:rgba(255,255,255,0.65);margin-bottom:24px;text-align:center;padding:0 20px;font-weight:600;">${nextLabel}</div>
+          <div class="timer-next" id="timer-next-label" style="font-size:13px;color:rgba(255,255,255,0.65);margin-bottom:24px;text-align:center;padding:0 20px;font-weight:600;display:none;"></div>
           <button class="skip-btn" onclick="skipRest()">Skip Rest</button>
         </div>
       </div>
@@ -712,7 +713,8 @@ function tapSet(i) {
     nextBtn.style.color = allDone ? '#000' : '#fff';
   }
 
-  if (next[i] && exr.restSec > 0) startTimer(exr.restSec);
+  const isLastSet = i === sets - 1;
+  if (next[i] && exr.restSec > 0) startTimer(exr.restSec, next[i] && isLastSet);
   else stopTimerUI();
 }
 
@@ -751,12 +753,21 @@ function playBell() {
   try { if (navigator.vibrate) navigator.vibrate([180, 60, 180]); } catch(e) {}
 }
 
-function startTimer(seconds) {
+function startTimer(seconds, showNext) {
   stopTimer();
   unlockAudio();
   state.timerSec = seconds; state.timerMax = seconds;
   const overlay = document.getElementById('timer-overlay');
   if (overlay) overlay.classList.add('visible');
+  const nextEl = document.getElementById('timer-next-label');
+  if (nextEl) {
+    if (showNext) {
+      nextEl.textContent = state.nextLabel || '';
+      nextEl.style.display = 'block';
+    } else {
+      nextEl.style.display = 'none';
+    }
+  }
   updateTimerUI();
   state.timerInterval = setInterval(() => {
     state.timerSec--;
