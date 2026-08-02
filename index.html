@@ -700,12 +700,12 @@ function renderNutritionPrep() {
 function renderNutritionTiming() {
   const hour = new Date().getHours();
   let current;
-  if (hour >= 5 && hour < 10) current = { label: "Right Now: Morning Meal", text: "Eggs/egg whites + oats + berries. Black coffee. This is your biggest carb-friendly meal of the morning." };
-  else if (hour >= 10 && hour < 13) current = { label: "Right Now: Pre-Workout Window", text: "Chicken or turkey + rice + vegetables, ideally 60–90 min before training." };
-  else if (hour >= 13 && hour < 16) current = { label: "Right Now: Post-Workout Window", text: "Whey isolate or Cocojune + hemp seeds + protein powder, within 45 min of finishing." };
-  else if (hour >= 16 && hour < 19) current = { label: "Right Now: Afternoon Meal", text: "Salmon or tuna + salad + quinoa or sweet potato." };
-  else if (hour >= 19 && hour < 21) current = { label: "Right Now: Evening Meal", text: "Lean protein + vegetables. Keep carbs light here." };
-  else current = { label: "Right Now: Wind-Down", text: "Magnesium glycinate before bed. If still hungry: Cocojune + hemp seeds, no heavy carbs this late." };
+  if (hour >= 4 && hour < 6) current = { label: "Right Now: Pre-Training Fuel", text: "Gym day: small carb hit — half a banana or a few dates. Yoga day: fasted is fine, skip this." };
+  else if (hour >= 6 && hour < 9) current = { label: "Right Now: Biggest Meal of the Day", text: "Right after training. Eggs + oats + berries, or a shake + eggs. Don't undersize this one." };
+  else if (hour >= 9 && hour < 12) current = { label: "Right Now: Second Meal", text: "Protein + rice or quinoa + vegetables." };
+  else if (hour >= 12 && hour < 15) current = { label: "Right Now: Third Meal", text: "Lighter — salmon or tuna + salad." };
+  else if (hour >= 15 && hour < 19) current = { label: "Right Now: Fourth Meal", text: "Lean protein + vegetables. Keep it light — your day started early." };
+  else current = { label: "Right Now: Wind-Down", text: "Magnesium glycinate before bed. Done eating for the day." };
 
   return `
   <div class="screen">
@@ -719,7 +719,7 @@ function renderNutritionTiming() {
           <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#22c55e;margin-bottom:6px;">${current.label}</div>
           <div style="font-size:14px;color:#fff;line-height:1.5;">${current.text}</div>
         </div>
-        <div class="nutr-note">Real push reminders fire at the meal windows below, even with the app closed.</div>
+        <div class="nutr-note">Built around a 5–5:30am gym or yoga start. Real push reminders fire at the windows below, even with the app closed.</div>
       </div>
       <div class="nutr-section">
         <button id="push-enable-btn" onclick="enablePushReminders()" style="width:100%;padding:16px;border:none;border-radius:14px;background:#22c55e;color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;cursor:pointer;">
@@ -730,12 +730,12 @@ function renderNutritionTiming() {
       <div class="nutr-section">
         <div class="nutr-section-title">Full Day Timeline</div>
         <ul class="nutr-list">
-          <li><b>5–10am:</b> Morning meal — eggs/egg whites + oats + berries</li>
-          <li><b>10am–1pm:</b> Pre-workout meal — protein + rice + vegetables, 60–90 min before training</li>
-          <li><b>1–4pm:</b> Post-workout window — shake or Cocojune stack within 45 min of finishing</li>
-          <li><b>4–7pm:</b> Afternoon meal — fish + salad + quinoa or sweet potato</li>
-          <li><b>7–9pm:</b> Evening meal — lean protein + vegetables, light on carbs</li>
-          <li><b>9pm+:</b> Wind-down — magnesium before bed, no heavy carbs this late</li>
+          <li><b>~4:45am:</b> Pre-training fuel — gym day only (banana/dates), skip if yoga</li>
+          <li><b>~7am:</b> Biggest meal of the day — post-training refuel, eggs + oats + berries</li>
+          <li><b>~10am:</b> Second meal — protein + rice or quinoa + vegetables</li>
+          <li><b>~1pm:</b> Third meal — lighter, fish + salad</li>
+          <li><b>~5–6pm:</b> Fourth meal — lean protein + vegetables, light on carbs</li>
+          <li><b>~8pm:</b> Wind-down — magnesium before bed, done eating</li>
         </ul>
       </div>
       <div class="nutr-section">
