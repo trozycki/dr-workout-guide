@@ -394,7 +394,7 @@ function render() {
     case 'nutr-overview':  app.innerHTML = renderNutritionOverview(); break;
     case 'nutr-shopping':  app.innerHTML = renderNutritionShopping(); break;
     case 'nutr-prep':      app.innerHTML = renderNutritionPrep();     break;
-    case 'nutr-timing':    app.innerHTML = renderNutritionTiming();   break;
+    case 'nutr-timing':    app.innerHTML = renderNutritionTiming();   checkPushStatus(); break;
   }
 }
 
@@ -719,7 +719,13 @@ function renderNutritionTiming() {
           <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#22c55e;margin-bottom:6px;">${current.label}</div>
           <div style="font-size:14px;color:#fff;line-height:1.5;">${current.text}</div>
         </div>
-        <div class="nutr-note">This app can't send push alerts — check back here at each meal window as a manual reminder.</div>
+        <div class="nutr-note">Real push reminders fire at the meal windows below, even with the app closed.</div>
+      </div>
+      <div class="nutr-section">
+        <button id="push-enable-btn" onclick="enablePushReminders()" style="width:100%;padding:16px;border:none;border-radius:14px;background:#22c55e;color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;cursor:pointer;">
+          🔔 Enable Push Reminders
+        </button>
+        <div id="push-status" class="nutr-note" style="margin-top:8px;"></div>
       </div>
       <div class="nutr-section">
         <div class="nutr-section-title">Full Day Timeline</div>
@@ -1125,6 +1131,101 @@ function clearHistory() {
     saveHistory();
     render();
   }
+}
+
+// ─── PUSH NOTIFICATIONS ───────────────────────────────────────────────────────
+const VAPID_PUBLIC_KEY = 'BNQmipke_FMscTfkYZX7uurh3o4e663X21dlEC3NTEhYIOTlQGm3QccyJ_XOnTpMgxY9WaP3EN2T6bwaJOdw75k';
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) outputArray[i] = rawData.charCodeAt(i);
+  return outputArray;
+}
+
+function isStandalone() {
+  return window.navigator.standalone === true ||
+    window.matchMedia('(display-mode: standalone)').matches;
+}
+
+async function enablePushReminders() {
+  const statusEl = document.getElementById('push-status');
+  const btn = document.getElementById('push-enable-btn');
+  const setStatus = (msg) => { if (statusEl) statusEl.textContent = msg; };
+
+  if (!isStandalone()) {
+    setStatus('Open this from your home-screen icon first (not a Safari tab), then try again.');
+    return;
+  }
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    setStatus("This device/browser doesn't support push notifications.");
+    return;
+  }
+
+  try {
+    setStatus('Requesting permission…');
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      setStatus('Permission denied — reminders stay off until allowed in Settings.');
+      return;
+    }
+
+    const registration = await navigator.serviceWorker.register('/sw.js');
+    await navigator.serviceWorker.ready;
+
+    let subscription = await registration.pushManager.getSubscription();
+    if (!subscription) {
+      subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+      });
+    }
+
+    const res = await fetch('/.netlify/functions/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(subscription),
+    });
+
+    if (res.ok) {
+      setStatus('✓ Reminders enabled — you\'ll get pushes at each meal window.');
+      if (btn) { btn.textContent = '🔔 Reminders Enabled'; btn.style.background = '#1a1a1a'; btn.style.color = '#22c55e'; btn.style.border = '1px solid #22c55e'; }
+    } else {
+      setStatus('Subscribed, but saving failed — try again in a minute.');
+    }
+  } catch (e) {
+    setStatus('Something went wrong: ' + (e.message || e));
+  }
+}
+
+async function checkPushStatus() {
+  const btn = document.getElementById('push-enable-btn');
+  const statusEl = document.getElementById('push-status');
+  if (!btn) return;
+  if (!isStandalone()) {
+    if (statusEl) statusEl.textContent = 'Open from your home-screen icon to enable reminders.';
+    return;
+  }
+  if (!('serviceWorker' in navigator)) return;
+  try {
+    const registration = await navigator.serviceWorker.getRegistration();
+    if (registration) {
+      const subscription = await registration.pushManager.getSubscription();
+      if (subscription) {
+        btn.textContent = '🔔 Reminders Enabled';
+        btn.style.background = '#1a1a1a';
+        btn.style.color = '#22c55e';
+        btn.style.border = '1px solid #22c55e';
+      }
+    }
+  } catch (e) {}
+}
+
+// Register service worker on load if running as installed app
+if (isStandalone() && 'serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
