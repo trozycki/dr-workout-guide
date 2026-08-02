@@ -16,43 +16,40 @@
   html { height: 100%; }
   body { height: 100%; background: #0a0a0a; color: #fff; font-family: 'Barlow', sans-serif; font-size: 16px; line-height: 1.5; overflow-x: hidden; }
   #app { min-height: 100vh; display: flex; flex-direction: column; }
-
   .h { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; }
   .muted { color: rgba(255,255,255,0.4); }
   .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
-
   .progress-bar { height: 3px; background: #1a1a1a; flex-shrink: 0; }
-  .progress-fill { height: 3px; background: var(--accent, #f97316); transition: width 0.3s ease; }
-
+  .progress-fill { height: 3px; transition: width 0.3s ease; }
   .screen { min-height: 100vh; display: flex; flex-direction: column; }
 
-  .phase-header { padding: 44px 24px 24px; }
-  .phase-header-row { display: flex; justify-content: space-between; align-items: flex-start; }
-  .phase-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 42px; line-height: 1; color: #fff; }
-  .phase-grid { padding: 0 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .phase-card { background: #141414; border-radius: 20px; padding: 22px 18px; display: flex; flex-direction: column; justify-content: space-between; min-height: 150px; position: relative; overflow: hidden; cursor: pointer; border: 1px solid transparent; transition: border-color 0.2s; }
-  .phase-card:active { transform: scale(0.98); }
-  .phase-card.full-width { grid-column: 1 / -1; min-height: 110px; }
-  .phase-card-bar { position: absolute; top: 0; left: 0; width: 3px; height: 100%; border-radius: 20px 0 0 20px; }
-  .phase-card-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
-  .phase-card-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 26px; color: #fff; line-height: 1.1; }
-  .phase-card-weeks { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px; }
-  .phase-footer { text-align: center; font-size: 11px; color: rgba(255,255,255,0.3); padding: 24px; }
+  /* Home screen */
+  .home-header { padding: 44px 24px 20px; }
+  .home-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 40px; line-height: 1; color: #fff; }
+  .home-header-row { display: flex; justify-content: space-between; align-items: flex-start; }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); padding: 0 24px; margin: 20px 0 10px; }
+  .loc-grid { padding: 0 24px; display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .loc-card { background: #141414; border-radius: 18px; padding: 20px; display: flex; align-items: center; gap: 16px; cursor: pointer; border: 1px solid transparent; position: relative; overflow: hidden; }
+  .loc-card:active { transform: scale(0.98); }
+  .loc-card-bar { position: absolute; top: 0; left: 0; width: 4px; height: 100%; }
+  .loc-icon { font-size: 30px; width: 40px; text-align: center; flex-shrink: 0; }
+  .loc-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 22px; color: #fff; }
+  .loc-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+  .loc-arrow { margin-left: auto; color: rgba(255,255,255,0.2); font-size: 20px; }
 
-  .log-btn { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.55); border-radius: 12px; padding: 10px 14px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'Barlow', sans-serif; }
-  .log-btn:active { transform: scale(0.97); }
+  .addon-row { padding: 0 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .addon-card { background: #141414; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 16px; text-align: center; cursor: pointer; }
+  .addon-card:active { transform: scale(0.97); }
+  .addon-icon { font-size: 24px; margin-bottom: 6px; }
+  .addon-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 15px; color: #fff; }
+  .addon-sub { font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 2px; }
 
-  .day-header { padding: 40px 24px 24px; }
+  .home-footer { text-align: center; font-size: 11px; color: rgba(255,255,255,0.3); padding: 28px 24px; margin-top: auto; }
+  .log-chip { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.55); border-radius: 12px; padding: 8px 12px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'Barlow', sans-serif; }
+
   .back-btn { background: none; border: none; font-size: 14px; font-weight: 600; cursor: pointer; padding: 0; margin-bottom: 20px; display: block; font-family: 'Barlow', sans-serif; }
-  .day-list { padding: 0 24px 40px; display: flex; flex-direction: column; gap: 10px; }
-  .day-card { background: #141414; border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 20px; display: flex; align-items: center; gap: 16px; cursor: pointer; text-align: left; }
-  .day-card:active { transform: scale(0.98); }
-  .day-icon { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 26px; width: 40px; text-align: center; flex-shrink: 0; }
-  .day-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 19px; color: #fff; }
-  .day-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 2px; }
-  .day-arrow { color: rgba(255,255,255,0.2); font-size: 20px; margin-left: auto; }
-  .day-date { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-top: 3px; }
 
+  /* Workout screen (shared with before) */
   .workout-header { padding: 14px 24px 10px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
   .workout-counter { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.4); }
   .workout-counter span { color: #fff; }
@@ -60,7 +57,6 @@
   .ex-card { background: #141414; border-radius: 20px; padding: 20px; flex: 1; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: border-color 0.3s; }
   .badge-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
   .badge { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
-  .badge-accent { background: rgba(249,115,22,0.15); color: #f97316; }
   .badge-neutral { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4); }
   .ex-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 30px; line-height: 1.05; margin-bottom: 8px; color: #fff; }
   .ex-tip { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.55; margin-bottom: 16px; font-style: italic; }
@@ -74,15 +70,13 @@
   .weight-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
   .last-weight { font-size: 11px; color: rgba(255,255,255,0.28); }
   .weight-input-row { display: flex; align-items: center; gap: 10px; }
-  .weight-input { flex: 1; background: #1e1e1e; border-radius: 14px; padding: 14px 16px; color: #fff; font-size: 24px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; outline: none; width: 100%; border: 1.5px solid rgba(255,255,255,0.1); transition: border-color 0.2s; }
-  .weight-input:focus { border-color: rgba(249,115,22,0.5); }
+  .weight-input { flex: 1; background: #1e1e1e; border-radius: 14px; padding: 14px 16px; color: #fff; font-size: 24px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; outline: none; width: 100%; border: 1.5px solid rgba(255,255,255,0.1); }
   .weight-unit { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 15px; color: rgba(255,255,255,0.28); white-space: nowrap; }
 
-  .sets-section { }
   .sets-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
   .sets-row { display: flex; gap: 10px; flex-wrap: wrap; }
   .set-circle { width: 54px; height: 54px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.14); background: transparent; color: rgba(255,255,255,0.28); font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 20px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; }
-  .set-circle.done { background: #f97316; border-color: #f97316; color: #000; transform: scale(1.1); }
+  .set-circle.done { color: #000; transform: scale(1.1); }
   .all-done-msg { font-size: 13px; font-weight: 600; margin-top: 14px; display: none; }
 
   .timer-overlay { position: absolute; inset: 0; background: rgba(10,10,10,0.97); border-radius: 20px; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 10; }
@@ -93,16 +87,12 @@
   .timer-number { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 52px; }
   .timer-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 28px; }
   .skip-btn { background: #1e1e1e; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.55); border-radius: 40px; padding: 12px 28px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Barlow', sans-serif; }
-  .skip-btn:active { transform: scale(0.97); }
 
   .nav-row { padding: 0 16px 32px; display: flex; gap: 10px; flex-shrink: 0; }
-  .nav-btn { flex: 1; padding: 18px; border: none; border-radius: 16px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.05em; cursor: pointer; transition: all 0.15s; }
-  .nav-btn:active { transform: scale(0.97); }
+  .nav-btn { flex: 1; padding: 18px; border: none; border-radius: 16px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.05em; cursor: pointer; }
   .nav-btn-prev { background: #1a1a1a; color: #fff; }
-  .nav-btn-prev:disabled { color: rgba(255,255,255,0.18); cursor: default; }
-  .nav-btn-prev:disabled:active { transform: none; }
+  .nav-btn-prev:disabled { color: rgba(255,255,255,0.18); }
   .nav-btn-next { background: #1a1a1a; color: #fff; }
-  .nav-btn-next.ready { background: #f97316; color: #000; }
 
   .done-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; text-align: center; }
   .done-check { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 72px; line-height: 1; margin-bottom: 16px; }
@@ -118,7 +108,6 @@
   .summary-weight { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 14px; }
   .summary-reps { font-size: 12px; color: rgba(255,255,255,0.4); }
   .done-btn { width: 100%; padding: 18px; border: none; border-radius: 16px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.05em; cursor: pointer; margin-bottom: 10px; }
-  .done-btn:active { transform: scale(0.98); }
   .done-btn-primary { background: #f97316; color: #000; }
   .done-btn-secondary { background: #1a1a1a; color: rgba(255,255,255,0.7); }
   .done-btn-ghost { background: transparent; color: rgba(255,255,255,0.35); border: 1px solid rgba(255,255,255,0.1); }
@@ -132,7 +121,7 @@
   .history-item { margin-bottom: 14px; background: #141414; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 16px; }
   .history-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
   .history-item-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; color: #fff; }
-  .history-item-phase { font-size: 12px; color: rgba(255,255,255,0.4); margin-left: 8px; }
+  .history-item-tag { font-size: 12px; color: rgba(255,255,255,0.4); margin-left: 8px; }
   .history-item-date { font-size: 12px; color: rgba(255,255,255,0.4); }
   .history-ex-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
   .history-ex-row:last-child { border-bottom: none; }
@@ -140,191 +129,157 @@
   .history-ex-vals { display: flex; gap: 8px; align-items: center; }
   .history-ex-weight { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 14px; }
   .history-ex-reps { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .history-yoga-note { font-size: 13px; color: rgba(255,255,255,0.6); }
+
+  /* Yoga log screen */
+  .yoga-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; text-align: center; }
+  .yoga-icon { font-size: 56px; margin-bottom: 16px; }
+  .yoga-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 34px; margin-bottom: 24px; }
+  .dur-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-bottom: 24px; }
+  .dur-btn { background: #141414; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 18px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 20px; color: #fff; cursor: pointer; }
+  .dur-btn.selected { border-color: #a855f7; background: rgba(168,85,247,0.15); color: #a855f7; }
+
+  /* Nutrition screen */
+  .nutr-header { padding: 40px 24px 20px; }
+  .nutr-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 38px; }
+  .nutr-body { flex: 1; padding: 0 24px 40px; overflow-y: auto; }
+  .nutr-section { margin-bottom: 24px; }
+  .nutr-section-title { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #22c55e; margin-bottom: 10px; border-bottom: 1px solid rgba(34,197,94,0.25); padding-bottom: 6px; }
+  .nutr-table { width: 100%; border-collapse: collapse; }
+  .nutr-table td { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px; }
+  .nutr-table td:first-child { color: rgba(255,255,255,0.5); }
+  .nutr-table td:last-child { text-align: right; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; color: #22c55e; }
+  .nutr-list { list-style: none; }
+  .nutr-list li { font-size: 13px; padding: 5px 0; color: rgba(255,255,255,0.75); border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .nutr-list li b { color: #fff; }
+  .nutr-note { font-size: 12px; color: rgba(255,255,255,0.4); font-style: italic; margin-top: 8px; line-height: 1.5; }
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
-// ─── DATA: MAIN 77-DAY PLAN ───────────────────────────────────────────────────
+// ─── DATA ────────────────────────────────────────────────────────────────────
 
-const PHASES = [
-  { id: 1, label: 'PHASE 1', name: 'Recalibrate', weeks: 'Weeks 1–3', accent: '#3b82f6' },
-  { id: 2, label: 'PHASE 2', name: 'Build',        weeks: 'Weeks 4–7', accent: '#f97316' },
-  { id: 3, label: 'PHASE 3', name: 'Define',       weeks: 'Weeks 8–10', accent: '#ef4444' },
-  { id: 4, label: 'PEAK',    name: 'Peak Week',    weeks: 'Week 11',   accent: '#a855f7' },
-  { id: 5, label: 'TRIP',    name: 'DR Vacation',  weeks: 'Jul 24 – Aug 1', accent: '#22c55e' },
+const LOCATIONS = [
+  { id: 'gym',    name: 'Gym',    icon: '🏋️', sub: 'Full commercial equipment', accent: '#3b82f6' },
+  { id: 'garage', name: 'Garage', icon: '🏠', sub: 'Bench, dumbbells, kettlebells', accent: '#f97316' },
+  { id: 'hotel',  name: 'Hotel / Travel', icon: '🧳', sub: 'Minimal equipment, bodyweight-flexible', accent: '#22c55e' },
 ];
 
-const TYPE_LABEL = {
-  compound_primary: 'Compound · Primary', compound_secondary: 'Compound · Secondary',
-  compound_accessory: 'Compound · Accessory', isolation: 'Isolation',
-  core: 'Core', conditioning: 'Conditioning', pump: 'Pump / Vascularity',
-};
-
-const PARAMS = {
-  1: {
-    compound_primary:   { sets: 3, reps: '8–12',  restSec: 90,  rest: '90s' },
-    compound_secondary: { sets: 3, reps: '8–12',  restSec: 75,  rest: '75s' },
-    compound_accessory: { sets: 3, reps: '10–12', restSec: 75,  rest: '75s' },
-    isolation:          { sets: 3, reps: '12–15', restSec: 60,  rest: '60s' },
-    core:               { sets: 3, reps: '12–15', restSec: 45,  rest: '45s' },
-    conditioning:       { sets: 4, reps: '—',     restSec: 30,  rest: '30s' },
-  },
-  2: {
-    compound_primary:   { sets: 4, reps: '6–8',   restSec: 120, rest: '2min' },
-    compound_secondary: { sets: 4, reps: '8–10',  restSec: 90,  rest: '90s' },
-    compound_accessory: { sets: 4, reps: '10–12', restSec: 75,  rest: '75s' },
-    isolation:          { sets: 4, reps: '12–15', restSec: 45,  rest: '45s' },
-    core:               { sets: 4, reps: '15–20', restSec: 30,  rest: '30s' },
-    conditioning:       { sets: 4, reps: '—',     restSec: 30,  rest: '30s' },
-  },
-  3: {
-    compound_primary:   { sets: 4, reps: '8–10',  restSec: 75,  rest: '75s' },
-    compound_secondary: { sets: 4, reps: '10–12', restSec: 60,  rest: '60s' },
-    compound_accessory: { sets: 4, reps: '12–15', restSec: 60,  rest: '60s' },
-    isolation:          { sets: 4, reps: '15–20', restSec: 30,  rest: '30s' },
-    core:               { sets: 4, reps: '20+',   restSec: 20,  rest: '20s' },
-    conditioning:       { sets: 4, reps: '—',     restSec: 30,  rest: '30s' },
-  },
-  4: {
-    compound_primary:   { sets: 3, reps: '10–12', restSec: 60,  rest: '60s' },
-    compound_secondary: { sets: 3, reps: '10–12', restSec: 60,  rest: '60s' },
-    compound_accessory: { sets: 3, reps: '12–15', restSec: 45,  rest: '45s' },
-    isolation:          { sets: 3, reps: '12–15', restSec: 45,  rest: '45s' },
-    core:               { sets: 3, reps: '15–20', restSec: 30,  rest: '30s' },
-    conditioning:       { sets: 3, reps: '—',     restSec: 30,  rest: '30s' },
-  },
-};
-
-const DAYS = [
-  { id: 'push', name: 'Push', icon: '↑', subtitle: 'Chest / Shoulders / Triceps', exercises: [
-    { name: 'Barbell Bench Press',        type: 'compound_primary',   tip: 'Drive feet into floor. 3-second descent. Own the eccentric.' },
-    { name: 'Incline Dumbbell Press',     type: 'compound_secondary', tip: 'Elbows at 45°. Full range. Feel the upper chest — not the front delt.' },
-    { name: 'Cable Fly / Pec Deck',       type: 'isolation',          tip: 'Squeeze hard at center. 3-sec eccentric every rep. No momentum.' },
-    { name: 'Seated DB Shoulder Press',   type: 'compound_primary',   tip: "Don't lock out at top. Keep tension on the delt throughout." },
-    { name: 'Lateral Raises',             type: 'isolation',          tip: 'Lead with elbows. Slight forward lean. Control the return.' },
-    { name: 'Overhead Tricep Extension',  type: 'isolation',          tip: 'Elbows tight. Full stretch at the bottom — earn it.' },
-    { name: 'Tricep Pushdown (rope/bar)', type: 'isolation',          tip: 'Pin elbows to sides. Squeeze fully at the bottom.' },
-  ]},
-  { id: 'pull', name: 'Pull', icon: '↓', subtitle: 'Back / Biceps', exercises: [
-    { name: 'Lat Pulldown / Pull-Up',     type: 'compound_primary',   tip: 'Pull to upper chest. Shoulder blades down and back.' },
-    { name: 'Cable Row / Barbell Row',    type: 'compound_secondary', tip: "Don't round the back. Squeeze the rhomboids at the finish." },
-    { name: 'Single-Arm Dumbbell Row',    type: 'compound_accessory', tip: 'Full extension at bottom. Drive elbow to hip — not the ceiling.' },
-    { name: 'Face Pulls (cable)',         type: 'isolation',          tip: 'Rope to forehead. External rotation at the top. Non-negotiable.' },
-    { name: 'Straight-Arm Pulldown',      type: 'isolation',          tip: 'Slight knee bend. Feel the lat. Mind-muscle connection.' },
-    { name: 'Barbell / Dumbbell Curl',    type: 'isolation',          tip: "No swinging. Slow on the way down — that's where it grows." },
-    { name: 'Hammer Curl',                type: 'isolation',          tip: 'Neutral grip. Builds brachialis thickness that pops the arm.' },
-  ]},
-  { id: 'legs', name: 'Legs + Core', icon: '◇', subtitle: 'Quads / Hamstrings / Calves / Core', exercises: [
-    { name: 'Barbell Squat / Leg Press',  type: 'compound_primary',   tip: 'Break parallel if mobility allows. Depth makes the difference.' },
-    { name: 'Romanian Deadlift',          type: 'compound_secondary', tip: 'Hip hinge — not a squat. Feel the hamstring load at the bottom.' },
-    { name: 'Walking Lunges (dumbbell)',  type: 'compound_accessory', tip: 'Upright torso. Full step length. Feel the glute on each rep.' },
-    { name: 'Leg Extension',              type: 'isolation',          tip: "Pause at top. 2-second hold. Slow descent. Don't slam." },
-    { name: 'Leg Curl',                   type: 'isolation',          tip: 'Hips pressed into pad. Full contraction at the top.' },
-    { name: 'Standing Calf Raise',        type: 'isolation',          tip: "Full range. Pause at top AND bottom. Don't bounce." },
-    { name: 'Cable Crunch',               type: 'core',               tip: 'Round the spine — not a sit-up. Pull from the abs.' },
-    { name: 'Hanging Leg Raise',          type: 'core',               tip: 'Control the swing. Posterior pelvic tilt at the top.' },
-    { name: 'Oblique Cable Twist',        type: 'core',               tip: 'Rotate through the torso, not the arms. Obliques show.' },
-  ]},
-  { id: 'shoulders', name: 'Shoulders + Arms', icon: '×', subtitle: 'Beach Muscles Day', exercises: [
-    { name: 'Arnold Press',               type: 'compound_primary',   tip: 'Rotate on the way up. Control fully on the way down.' },
-    { name: 'Lateral Raises — 3 Angles', type: 'isolation',          tip: 'Front → side → bent-over. Full delt sweep every session.' },
-    { name: 'Cable Lateral Raise',        type: 'isolation',          tip: 'Better tension arc than dumbbells. Feel the difference at the top.' },
-    { name: 'Barbell Curl (heavy)',       type: 'compound_primary',   tip: 'Strict form. Your bicep mass builder. Earn every rep.' },
-    { name: 'Incline Dumbbell Curl',      type: 'isolation',          tip: "Full stretch at the bottom. Don't rush the eccentric." },
-    { name: 'Concentration Curl',         type: 'isolation',          tip: 'Peak contraction. Squeeze absolutely hard at the top.' },
-    { name: 'Close-Grip Bench / Dips',   type: 'compound_primary',   tip: 'Elbows in. Full depth. Your tricep mass builder.' },
-    { name: 'Skull Crushers',             type: 'isolation',          tip: 'Bar to forehead. Upper arms stay vertical throughout.' },
-    { name: 'Tricep Kickback',            type: 'isolation',          tip: 'Upper arm parallel to floor. Extend fully. Hard squeeze.' },
-  ]},
-  { id: 'metabolic', name: 'Metabolic', icon: '∞', subtitle: 'Conditioning Day', exercises: [
-    { name: 'KB Swing',         type: 'conditioning', customReps: '20 reps', tip: 'Hip hinge drive. Glutes fire at the top. Not a squat.' },
-    { name: 'Goblet Squat',     type: 'conditioning', customReps: '15 reps', tip: 'Elbows inside knees. Chest up. Upright torso.' },
-    { name: 'Push-Up',          type: 'conditioning', customReps: '15 reps', tip: "Full range. Core tight. Don't let the hips sag." },
-    { name: 'KB Clean & Press', type: 'conditioning', customReps: '10/side', tip: 'Fluid transition from clean to press. Stay fluid.' },
-    { name: 'Renegade Row',     type: 'conditioning', customReps: '10/side', tip: 'Hips square to the floor. Do not rotate.' },
-  ]},
-];
-
-// ─── DATA: DR VACATION BLOCK (8 sessions, 30–40 min pump days) ───────────────
-// Equipment-flexible: resort gym dumbbells, bands, or bodyweight. Yoga most days
-// covers mobility/recovery — these are pure pump/vascularity sessions.
-
-function pumpEx(name, reps, tip) {
-  return { name, type: 'pump', customSets: 3, customReps: reps, customRestSec: 40, tip };
+function ex(name, sets, reps, restSec, tip) {
+  return { name, sets, reps, restSec, tip };
 }
 
-const VACATION_DAYS = [
-  { id: 'vac1', name: 'Chest & Back', icon: '↑', date: 'Fri 7/24', subtitle: 'Pump · 30–35 min', exercises: [
-    pumpEx('Dumbbell / Machine Chest Press', '15', 'Light-moderate weight. Full range. Squeeze at the top — this is about blood, not load.'),
-    pumpEx('Push-Ups (feet elevated or standard)', '15–20', 'Slow and controlled. If easy, elevate the feet on a chair or step.'),
-    pumpEx('Dumbbell or Band Row', '15/side', 'Full stretch at bottom, hard squeeze at top. Feel the back light up.'),
-    pumpEx('Wide Pull-Ups or Lat Pulldown', '10–12', 'If no pulldown, use a resistance band anchored high.'),
-    pumpEx('Cable or Band Chest Fly', '15–20', 'Slow eccentric. This is your finisher for chest fullness.'),
-    pumpEx('Rear Delt Fly (light DB or band)', '15–20', 'Keeps shoulders balanced. Also helps posture after travel days.'),
+const WORKOUTS = {
+  gym: [
+    { id: 'gym-push', name: 'Push', subtitle: 'Chest / Shoulders / Triceps', exercises: [
+      ex('Barbell Bench Press', 4, '8–10', 90, 'Drive feet into floor. 3-second descent. Own the eccentric.'),
+      ex('Incline Dumbbell Press', 3, '10–12', 75, 'Elbows at 45°. Full range. Feel the upper chest.'),
+      ex('Cable Fly / Pec Deck', 3, '12–15', 60, 'Squeeze hard at center. Slow eccentric every rep.'),
+      ex('Seated DB Shoulder Press', 3, '10–12', 75, "Don't lock out at top. Keep tension on the delt."),
+      ex('Lateral Raises', 3, '12–15', 45, 'Lead with elbows. Slight forward lean.'),
+      ex('Tricep Pushdown', 3, '12–15', 45, 'Pin elbows to sides. Squeeze fully at the bottom.'),
+    ]},
+    { id: 'gym-pull', name: 'Pull', subtitle: 'Back / Biceps', exercises: [
+      ex('Lat Pulldown / Pull-Up', 4, '8–10', 90, 'Pull to upper chest. Shoulder blades down and back.'),
+      ex('Cable Row / Barbell Row', 3, '10–12', 75, "Don't round the back. Squeeze the rhomboids."),
+      ex('Single-Arm Dumbbell Row', 3, '10–12', 60, 'Full extension at bottom. Drive elbow to hip.'),
+      ex('Face Pulls', 3, '15–20', 45, 'Rope to forehead. External rotation at the top.'),
+      ex('Barbell / Dumbbell Curl', 3, '10–12', 45, 'No swinging. Slow on the way down.'),
+      ex('Hammer Curl', 3, '12–15', 45, 'Neutral grip. Builds brachialis thickness.'),
+    ]},
+    { id: 'gym-legs', name: 'Legs + Shoulders', subtitle: 'Quads / Hamstrings / Delts', exercises: [
+      ex('Barbell Squat / Leg Press', 4, '8–10', 90, 'Break parallel if mobility allows.'),
+      ex('Romanian Deadlift', 3, '10–12', 75, 'Hip hinge — feel the hamstring load.'),
+      ex('Walking Lunges', 3, '12/side', 60, 'Upright torso. Full step length.'),
+      ex('Leg Curl', 3, '12–15', 60, 'Full contraction at the top.'),
+      ex('Seated DB Shoulder Press', 3, '10–12', 60, 'Full range, controlled.'),
+      ex('Standing Calf Raise', 3, '15–20', 45, "Full range. Don't bounce."),
+    ]},
+  ],
+  garage: [
+    { id: 'garage-chest-back', name: 'Chest & Back', subtitle: 'Bench + Dumbbells', exercises: [
+      ex('Dumbbell Bench Press', 4, '10–12', 75, 'Full range. Control the descent.'),
+      ex('Single-Arm Dumbbell Row', 3, '10–12/side', 60, 'Full stretch at bottom, squeeze at top.'),
+      ex('Incline Dumbbell Press', 3, '10–12', 60, 'Upper chest emphasis.'),
+      ex('Dumbbell Pullover', 3, '12–15', 60, 'Feel the stretch through the lats and chest.'),
+      ex('Dumbbell Curl', 3, '12', 45, 'Strict form, no swinging.'),
+      ex('Overhead Tricep Extension', 3, '12–15', 45, 'Full stretch at the bottom.'),
+    ]},
+    { id: 'garage-legs-shoulders', name: 'Legs & Shoulders', subtitle: 'Dumbbells + Kettlebells', exercises: [
+      ex('Goblet Squat', 4, '12–15', 75, 'Elbows inside knees, chest up, full depth.'),
+      ex('Kettlebell Romanian Deadlift', 3, '12', 60, 'Hip hinge, feel the hamstrings.'),
+      ex('Walking Lunges (DB)', 3, '12/side', 60, 'Long stride, controlled tempo.'),
+      ex('Dumbbell Shoulder Press', 3, '10–12', 60, 'Full range, no lockout hold.'),
+      ex('Lateral Raises', 3, '12–15', 45, 'Light weight, strict form.'),
+      ex('Standing Calf Raise', 3, '15–20', 45, 'Full range each rep.'),
+    ]},
+    { id: 'garage-full', name: 'Full Body Kettlebell', subtitle: 'Kettlebells + Dumbbells', exercises: [
+      ex('Kettlebell Swing', 4, '20', 45, 'Hip hinge drive, glutes fire at the top.'),
+      ex('Kettlebell Goblet Squat', 3, '15', 60, 'Full depth, upright torso.'),
+      ex('Renegade Row', 3, '10/side', 60, 'Hips square to the floor.'),
+      ex('Kettlebell Clean & Press', 3, '10/side', 60, 'Fluid transition, controlled.'),
+      ex('Dumbbell Curl', 3, '12', 45, 'Strict form.'),
+      ex('Plank Hold', 3, '45 sec', 30, 'Brace hard, quality over duration.'),
+    ]},
+  ],
+  hotel: [
+    { id: 'hotel-push-pull', name: 'Push / Pull', subtitle: 'Bodyweight + Bands', exercises: [
+      ex('Push-Ups', 3, '15–20', 45, 'Full range, core tight.'),
+      ex('Band or Bodyweight Row', 3, '15', 45, 'Squeeze the back at the top.'),
+      ex('Incline Push-Up', 3, '15', 40, 'Targets upper chest specifically.'),
+      ex('Band Pull-Apart', 3, '15–20', 30, 'Squeeze shoulder blades together.'),
+      ex('Diamond Push-Up', 3, '10–12', 40, 'Hands close together, hits triceps.'),
+    ]},
+    { id: 'hotel-legs-core', name: 'Legs & Core', subtitle: 'Bodyweight-Flexible', exercises: [
+      ex('Bodyweight Squat', 3, '20', 45, 'Full depth, controlled tempo.'),
+      ex('Walking Lunges', 3, '15/side', 45, 'Long stride, upright torso.'),
+      ex('Single-Leg RDL', 3, '12/side', 45, 'Balance-focused, slow and controlled.'),
+      ex('Calf Raises', 3, '20–25', 30, 'Full range, pause at the top.'),
+      ex('Side Plank', 3, '30–40 sec/side', 30, 'Obliques — the muscle that shows.'),
+    ]},
+    { id: 'hotel-full', name: 'Full Body Circuit', subtitle: 'Bodyweight, minimal space', exercises: [
+      ex('Squat to Press (bodyweight)', 3, '15', 40, 'Fluid combined movement.'),
+      ex('Push-Ups', 3, '15', 40, 'Full range, core tight.'),
+      ex('Reverse Lunge to Knee Drive', 3, '12/side', 40, 'Balance-focused, controlled.'),
+      ex('Mountain Climbers', 3, '20/side', 30, 'Core and conditioning together.'),
+      ex('Plank Hold', 3, '45 sec', 30, 'Finish here. Brace and hold.'),
+    ]},
+  ],
+};
+
+const AB_FINISHERS = [
+  { id: 'ab-classic', name: 'Classic Burn', exercises: [
+    ex('Cable Crunch or Sit-Up', 1, '20', 20, 'Round the spine — not a sit-up motion. Pull from the abs.'),
+    ex('Leg Raise', 1, '15', 20, 'Slow and controlled. Lower back stays flat.'),
+    ex('Plank Hold', 1, '45 sec', 20, 'Brace hard, quality over duration.'),
+    ex('Russian Twist', 1, '20/side', 0, 'Controlled rotation, not speed.'),
   ]},
-  { id: 'vac2', name: 'Legs & Core', icon: '◇', date: 'Sat 7/25', subtitle: 'Pump · 30–35 min', exercises: [
-    pumpEx('Bodyweight or DB Squat', '20', 'Full depth, controlled tempo. This is your main mover today.'),
-    pumpEx('Walking Lunges', '15/side', 'Long stride, upright torso. Great one for outdoor space.'),
-    pumpEx('Romanian Deadlift (DB or band)', '15', 'Hip hinge. Feel the hamstring stretch at the bottom.'),
-    pumpEx('Calf Raises', '20–25', 'Full range, pause at the top. High reps here — chase the burn.'),
-    pumpEx('Plank Hold', '45–60 sec', 'Brace hard. Quality over duration.'),
-    pumpEx('Bicycle Crunches', '20/side', 'Slow and controlled — this is not a speed exercise.'),
+  { id: 'ab-oblique', name: 'Oblique Focus', exercises: [
+    ex('Bicycle Crunch', 1, '20/side', 20, 'Slow and controlled — not a speed exercise.'),
+    ex('Side Plank', 1, '30 sec/side', 20, 'Stack hips, straight line head to feet.'),
+    ex('Russian Twist', 1, '20/side', 20, 'Rotate through the torso.'),
+    ex('Mountain Climbers', 1, '20/side', 0, 'Keep hips low, core engaged.'),
   ]},
-  { id: 'vac3', name: 'Shoulders & Arms', icon: '×', date: 'Sun 7/26', subtitle: 'Pump · 30 min', exercises: [
-    pumpEx('Dumbbell or Band Shoulder Press', '15', 'Moderate weight. Full range. Feel the delts fill out.'),
-    pumpEx('Lateral Raises', '15–20', "Light weight, strict form. Lead with elbows — this is the definition-maker."),
-    pumpEx('Bicep Curl (DB or band)', '15', 'Slow eccentric. No swinging — strict form only.'),
-    pumpEx('Overhead Tricep Extension', '15', 'Full stretch at the bottom. Elbows stay tight to the head.'),
-    pumpEx('Push-Up to Downward Dog', '12–15', 'A nice crossover with yoga — hits shoulders and triceps together.'),
+  { id: 'ab-lower', name: 'Lower Ab Emphasis', exercises: [
+    ex('Hanging or Lying Leg Raise', 1, '15', 20, 'Posterior pelvic tilt at the top.'),
+    ex('Reverse Crunch', 1, '15', 20, 'Curl hips up and in, not just legs.'),
+    ex('Plank Hold', 1, '45 sec', 20, 'Brace hard.'),
+    ex('Flutter Kicks', 1, '30 sec', 0, 'Small, controlled range. Lower back flat.'),
   ]},
-  { id: 'vac4', name: 'Chest, Arms & Lower (Shoulder-Light)', icon: '↑', date: 'Mon 7/27', subtitle: 'Pump · 25–30 min · easy on shoulders', exercises: [
-    pumpEx('Dumbbell Chest Press (light, controlled)', '15', "Light weight, full control. Minimal shoulder loading compared to push-ups — you set the range."),
-    pumpEx('Chest Fly (DB or band)', '15–20', 'Pure pec isolation. Almost no shoulder joint stress — slow eccentric.'),
-    pumpEx('Bicep Curl', '15', 'Arms only. No shoulder involvement at all.'),
-    pumpEx('Hammer Curl', '15', 'Neutral grip, arms only. Builds thickness without taxing the shoulder.'),
-    pumpEx('Glute Bridge', '15–20', 'Hip extension only — gentle on tired hips from yoga. Squeeze at the top.'),
-    pumpEx('Calf Raises', '20', 'Lower leg isolation. Easy recovery day movement.'),
-    pumpEx('Lying Leg Raise (slow)', '12–15', 'Core finisher with zero shoulder loading — no weight-bearing through the arms.'),
-  ]},
-  { id: 'vac5', name: 'Chest & Back II', icon: '↑', date: 'Tue 7/28', subtitle: 'Pump · 30–35 min', exercises: [
-    pumpEx('Incline Push-Up or Incline DB Press', '15', 'Targets the upper chest specifically — great pump angle.'),
-    pumpEx('Dumbbell or Band Row', '15/side', 'Full stretch, hard squeeze. Repeat the emphasis from Day 1.'),
-    pumpEx('Wide Push-Ups', '15–20', 'Hands wider than shoulder width. More chest, less tricep.'),
-    pumpEx('Single-Arm Lat Pulldown or Band Pull', '12/side', 'Slow and controlled — feel the lat stretch fully.'),
-    pumpEx('Chest Fly (DB or band)', '15–20', 'Same finisher as Day 1 — the pump should feel familiar by now.'),
-  ]},
-  { id: 'vac6', name: 'Legs & Core II', icon: '◇', date: 'Wed 7/29', subtitle: 'Pump · 30–35 min', exercises: [
-    pumpEx('Sumo Squat (wide stance)', '20', 'Wider stance shifts emphasis to inner thigh and glutes.'),
-    pumpEx('Bulgarian Split Squat (rear foot elevated)', '12/side', 'Chair or bench for rear foot. Balance and burn together.'),
-    pumpEx('Single-Leg RDL', '12/side', 'Slow and controlled — this is as much balance as strength.'),
-    pumpEx('Calf Raises (single leg)', '15/side', 'Harder version of Day 2 — more targeted burn.'),
-    pumpEx('Side Plank', '30–40 sec/side', 'Obliques — the muscle that actually shows in beach photos.'),
-    pumpEx('Leg Raises (lying)', '15–20', 'Slow and controlled. Lower back stays flat on the floor.'),
-  ]},
-  { id: 'vac7', name: 'Shoulders & Arms II', icon: '×', date: 'Thu 7/30', subtitle: 'Pump · 30 min', exercises: [
-    pumpEx('Arnold Press (DB or band)', '15', 'Rotate through the movement — hits all three delt heads.'),
-    pumpEx('Front Raise', '15', "Different angle than Day 3's lateral raise — full delt coverage."),
-    pumpEx('Hammer Curl', '15', 'Neutral grip. Builds the thickness that makes the arm pop.'),
-    pumpEx('Close-Grip Push-Up', '12–15', 'Hands close together. Hits triceps hard.'),
-    pumpEx('Lateral Raise + Front Raise Combo', '10 each', 'Finisher — burn out the delts completely.'),
-  ]},
-  { id: 'vac8', name: 'Full Body Finisher', icon: '∞', date: 'Fri 7/31 or Sat 8/1', subtitle: 'Pump · 30–35 min', exercises: [
-    pumpEx('Squat Jump or Squat', '15', 'Explosive if joints feel good, controlled bodyweight squat if not.'),
-    pumpEx('Push-Up', '15–20', 'Last full-body push movement of the trip. Make it count.'),
-    pumpEx('Renegade Row', '10/side', 'Full body tension. Core and back working together.'),
-    pumpEx('Walking Lunges', '12/side', 'Long stride, controlled tempo.'),
-    pumpEx('Plank Hold', '60 sec', 'Longest hold of the trip. Finish strong.'),
-    pumpEx('Full Body Stretch', '5 min', "You're done. This is a victory lap — enjoy it."),
+  { id: 'ab-burnout', name: 'Quick Burnout', exercises: [
+    ex('Mountain Climbers', 1, '20/side', 20, 'Fast but controlled, hips low.'),
+    ex('Bicycle Crunch', 1, '20', 20, 'Full rotation each rep.'),
+    ex('Plank Hold', 1, '45 sec', 0, 'Finish strong.'),
   ]},
 ];
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 
 const state = {
-  screen: 'phase',
-  phase: null,
-  dayId: null,
+  screen: 'home',
+  location: null,
+  workout: null,
   exIdx: 0,
   setsMap: {},
   weights: {},
@@ -332,49 +287,58 @@ const state = {
   timerMax: null,
   timerInterval: null,
   history: [],
+  rotIndex: {},
+  yogaDuration: null,
 };
 
 try {
   const saved = localStorage.getItem('wg_history');
   if (saved) state.history = JSON.parse(saved);
+  const rot = localStorage.getItem('wg_rotation');
+  if (rot) state.rotIndex = JSON.parse(rot);
 } catch(e) {}
-
-// ─── HELPERS ─────────────────────────────────────────────────────────────────
 
 function saveHistory() {
   try { localStorage.setItem('wg_history', JSON.stringify(state.history)); } catch(e) {}
 }
-
-function isVacation() { return state.phase === 5; }
-function getPhase() { return PHASES.find(p => p.id === state.phase); }
-function getDayList() { return isVacation() ? VACATION_DAYS : DAYS; }
-function getDay()   { return getDayList().find(d => d.id === state.dayId); }
-function getExercises() { return getDay()?.exercises || []; }
-function getExercise()  { return getExercises()[state.exIdx]; }
-
-function getParams() {
-  const ex = getExercise();
-  if (!ex) return null;
-  if (isVacation()) {
-    return {
-      sets: ex.customSets || 3,
-      reps: ex.customReps || '—',
-      restSec: ex.customRestSec || 40,
-      rest: ex.customRestSec ? `${ex.customRestSec}s` : '40s',
-    };
-  }
-  if (!state.phase) return null;
-  return PARAMS[state.phase]?.[ex.type] || null;
+function saveRotation() {
+  try { localStorage.setItem('wg_rotation', JSON.stringify(state.rotIndex)); } catch(e) {}
 }
+
+function getLocation() { return LOCATIONS.find(l => l.id === state.location); }
+
+function nextRotIndex(key, length) {
+  const cur = state.rotIndex[key] || 0;
+  const next = (cur + 1) % length;
+  state.rotIndex[key] = next;
+  saveRotation();
+  return cur; // use current before incrementing, so first pick is index 0
+}
+
+function pickWorkout(locationId) {
+  const variations = WORKOUTS[locationId];
+  const idx = nextRotIndex('loc_' + locationId, variations.length);
+  return variations[idx];
+}
+
+function pickAbFinisher() {
+  const idx = nextRotIndex('ab', AB_FINISHERS.length);
+  return AB_FINISHERS[idx];
+}
+
+function getFullExerciseList() {
+  if (!state.workout) return [];
+  const mainEx = state.workout.exercises.map(e => ({ ...e, isFinisher: false }));
+  const finisherEx = (state.abFinisher ? state.abFinisher.exercises : []).map(e => ({ ...e, isFinisher: true }));
+  return [...mainEx, ...finisherEx];
+}
+
+function getExercise() { return getFullExerciseList()[state.exIdx]; }
 
 function getCurrentSets() {
-  const p = getParams();
-  const sets = p?.sets || 3;
+  const exr = getExercise();
+  const sets = exr?.sets || 1;
   return state.setsMap[state.exIdx] || Array(sets).fill(false);
-}
-
-function isAllDone() {
-  return getCurrentSets().every(Boolean);
 }
 
 function getLastWeight(exName) {
@@ -401,124 +365,176 @@ const CIRC = 2 * Math.PI * 52;
 function render() {
   const app = document.getElementById('app');
   stopTimer();
-
   switch (state.screen) {
-    case 'phase':   app.innerHTML = renderPhase();   break;
-    case 'day':     app.innerHTML = renderDay();     break;
-    case 'workout': app.innerHTML = renderWorkout(); startWorkoutListeners(); break;
-    case 'done':    app.innerHTML = renderDone();    break;
-    case 'history': app.innerHTML = renderHistory(); break;
+    case 'home':      app.innerHTML = renderHome();      break;
+    case 'workout':   app.innerHTML = renderWorkout();    startWorkoutListeners(); break;
+    case 'done':      app.innerHTML = renderDone();       break;
+    case 'history':   app.innerHTML = renderHistory();    break;
+    case 'yoga':      app.innerHTML = renderYoga();       break;
+    case 'nutrition': app.innerHTML = renderNutrition();  break;
   }
 }
 
-function renderPhase() {
+function renderHome() {
   const count = state.history.length;
-  const mainPhases = PHASES.filter(p => p.id !== 5);
-  const tripPhase = PHASES.find(p => p.id === 5);
   return `
   <div class="screen">
-    <div class="phase-header">
-      <div class="eyebrow">Dominican Republic · 77 Days</div>
-      <div class="phase-header-row">
-        <div class="phase-title h">SELECT<br>PHASE</div>
-        <button class="log-btn" onclick="goHistory()">📋 Log${count > 0 ? ` (${count})` : ''}</button>
+    <div class="home-header">
+      <div class="eyebrow">Dominican Republic Journey</div>
+      <div class="home-header-row">
+        <div class="home-title h">WHERE ARE<br>YOU TODAY?</div>
+        <button class="log-chip" onclick="goHistory()">📋 Log${count > 0 ? ` (${count})` : ''}</button>
       </div>
     </div>
-    <div class="phase-grid">
-      ${mainPhases.map(ph => `
-        <div class="phase-card" onclick="selectPhase(${ph.id})" style="border-color: ${ph.accent}22">
-          <div class="phase-card-bar" style="background:${ph.accent}"></div>
-          <div class="phase-card-label">${ph.label}</div>
+    <div class="loc-grid">
+      ${LOCATIONS.map(l => `
+        <div class="loc-card" onclick="selectLocation('${l.id}')" style="border-color:${l.accent}22">
+          <div class="loc-card-bar" style="background:${l.accent}"></div>
+          <div class="loc-icon">${l.icon}</div>
           <div>
-            <div class="phase-card-name">${ph.name}</div>
-            <div class="phase-card-weeks">${ph.weeks}</div>
+            <div class="loc-name">${l.name}</div>
+            <div class="loc-sub">${l.sub}</div>
           </div>
+          <div class="loc-arrow">›</div>
         </div>
       `).join('')}
-      <div class="phase-card full-width" onclick="selectPhase(${tripPhase.id})" style="border-color: ${tripPhase.accent}33">
-        <div class="phase-card-bar" style="background:${tripPhase.accent}"></div>
-        <div class="phase-card-label">${tripPhase.label} · 8 SESSIONS</div>
-        <div>
-          <div class="phase-card-name">✈️ ${tripPhase.name}</div>
-          <div class="phase-card-weeks">${tripPhase.weeks} · 30–40 min pump sessions</div>
-        </div>
+    </div>
+    <div class="section-label">Add-Ons</div>
+    <div class="addon-row">
+      <div class="addon-card" onclick="goYoga()">
+        <div class="addon-icon">🧘</div>
+        <div class="addon-name">Log Yoga</div>
+        <div class="addon-sub">Tracking only</div>
+      </div>
+      <div class="addon-card" onclick="goNutrition()">
+        <div class="addon-icon">🥗</div>
+        <div class="addon-name">Nutrition</div>
+        <div class="addon-sub">Macros & food prep</div>
       </div>
     </div>
-    <div class="phase-footer">Tap a phase to begin</div>
+    <div class="home-footer">Every workout ends with an ab finisher</div>
   </div>`;
 }
 
-function renderDay() {
-  const ph = getPhase();
-  const list = getDayList();
+function renderYoga() {
+  const durations = [30, 45, 60, 90];
+  return `
+  <div class="yoga-screen">
+    <button class="back-btn" style="color:#a855f7;position:absolute;top:44px;left:24px" onclick="goHome()">← Back</button>
+    <div class="yoga-icon">🧘</div>
+    <div class="yoga-title h">LOG YOGA<br>SESSION</div>
+    <div class="dur-grid">
+      ${durations.map(d => `
+        <button class="dur-btn${state.yogaDuration===d?' selected':''}" onclick="selectYogaDuration(${d})">${d} min</button>
+      `).join('')}
+    </div>
+    <button class="done-btn done-btn-primary" style="width:100%" onclick="logYoga()" ${state.yogaDuration?'':'disabled'}>
+      Save Yoga Session
+    </button>
+  </div>`;
+}
+
+function renderNutrition() {
   return `
   <div class="screen">
-    <div class="day-header">
-      <button class="back-btn" style="color:${ph.accent}" onclick="goPhase()">← Back</button>
-      <div class="eyebrow" style="color:${ph.accent}">${ph.name} · ${ph.weeks}</div>
-      <div class="phase-title h">${isVacation() ? 'PICK A' : "TODAY'S"}<br>${isVacation() ? 'SESSION' : 'SESSION'}</div>
+    <div class="nutr-header">
+      <button class="back-btn" style="color:#22c55e" onclick="goHome()">← Back</button>
+      <div class="nutr-title h">NUTRITION</div>
     </div>
-    <div class="day-list">
-      ${list.map((d,i) => `
-        <div class="day-card" onclick="selectDay('${d.id}')">
-          <div class="day-icon" style="color:${ph.accent}">${d.icon}</div>
-          <div>
-            ${isVacation() ? `<div class="day-date">Day ${i+1} · ${d.date}</div>` : ''}
-            <div class="day-name">${d.name}</div>
-            <div class="day-sub">${d.subtitle}</div>
-          </div>
-          <div class="day-arrow">›</div>
-        </div>
-      `).join('')}
+    <div class="nutr-body">
+      <div class="nutr-section">
+        <div class="nutr-section-title">Daily Macro Targets</div>
+        <table class="nutr-table">
+          <tr><td>Calories (workout day)</td><td>2,200–2,400</td></tr>
+          <tr><td>Calories (rest day)</td><td>1,900–2,100</td></tr>
+          <tr><td>Protein (every day)</td><td>180–200g</td></tr>
+          <tr><td>Carbs (workout day)</td><td>180–220g</td></tr>
+          <tr><td>Carbs (rest day)</td><td>120–150g</td></tr>
+          <tr><td>Fat</td><td>60–80g</td></tr>
+        </table>
+        <div class="nutr-note">Protein is the rule above all rules — constant every day, workout or rest.</div>
+      </div>
+
+      <div class="nutr-section">
+        <div class="nutr-section-title">Meal Templates</div>
+        <ul class="nutr-list">
+          <li><b>Morning:</b> Eggs/egg whites + oats + berries (rest day: skip oats, add avocado)</li>
+          <li><b>Pre-workout:</b> Chicken or turkey + rice + vegetables</li>
+          <li><b>Post-workout:</b> Whey isolate or Cocojune + hemp seeds + protein powder</li>
+          <li><b>Afternoon:</b> Salmon or tuna + salad + quinoa or sweet potato</li>
+          <li><b>Evening:</b> Lean protein + vegetables, light on carbs</li>
+        </ul>
+      </div>
+
+      <div class="nutr-section">
+        <div class="nutr-section-title">Food List</div>
+        <ul class="nutr-list">
+          <li><b>Eat freely:</b> Chicken, turkey, eggs, salmon, tuna, white fish, shrimp, whey isolate, Cocojune, all vegetables, berries, olive oil, avocado, almonds, hemp seeds</li>
+          <li><b>Moderate:</b> Rice, oats, sweet potato, quinoa, bananas (pre-workout only)</li>
+          <li><b>Cut / avoid:</b> Processed snacks, added sugars, sugary drinks, excessive sodium, fried food</li>
+        </ul>
+        <div class="nutr-note">Cocojune is low protein (2–4g) — always stack with hemp seeds + ½ scoop protein powder.</div>
+      </div>
+
+      <div class="nutr-section">
+        <div class="nutr-section-title">Supplement Stack</div>
+        <ul class="nutr-list">
+          <li><b>Creatine monohydrate:</b> 5g daily with a meal</li>
+          <li><b>Omega-3 fish oil:</b> 2–3g EPA/DHA daily with food</li>
+          <li><b>Vitamin D3:</b> 2,000–5,000 IU daily with fat</li>
+          <li><b>Magnesium glycinate:</b> 300–400mg before bed</li>
+        </ul>
+        <div class="nutr-note">Expect a 2–4 lb scale bump in week one of creatine — that's muscle fullness from water, not fat.</div>
+      </div>
     </div>
   </div>`;
 }
 
 function renderWorkout() {
-  const ph = getPhase();
-  const exercises = getExercises();
-  const ex = getExercise();
-  const p = getParams();
-  const sets = p?.sets || 3;
-  const reps = p?.reps || '—';
-  const rest = p?.rest || '—';
+  const loc = getLocation();
+  const exercises = getFullExerciseList();
+  const exr = getExercise();
+  const isFinisher = exr.isFinisher;
+  const accent = isFinisher ? '#ef4444' : loc.accent;
+  const sets = exr.sets || 1;
+  const reps = exr.reps || '—';
+  const rest = exr.restSec > 0 ? `${exr.restSec}s` : '—';
   const progress = state.exIdx / exercises.length;
   const currentSets = getCurrentSets();
   const allDone = currentSets.every(Boolean);
-  const lastW = getLastWeight(ex.name);
+  const lastW = getLastWeight(exr.name);
   const curW = state.weights[state.exIdx] || '';
 
   return `
   <div class="screen" id="workout-screen">
-    <div class="progress-bar"><div class="progress-fill" style="width:${progress*100}%;background:${ph.accent}"></div></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${progress*100}%;background:${accent}"></div></div>
     <div class="workout-header">
-      <button class="back-btn" style="color:rgba(255,255,255,0.35);margin-bottom:0" onclick="goDay()">← Back</button>
+      <button class="back-btn" style="color:rgba(255,255,255,0.35);margin-bottom:0" onclick="goHome()">← Back</button>
       <div class="workout-counter"><span>${state.exIdx+1}</span> / ${exercises.length}</div>
     </div>
     <div class="card-wrap">
-      <div class="ex-card" id="ex-card" style="border:1px solid ${allDone ? ph.accent+'55' : 'rgba(255,255,255,0.08)'}">
+      <div class="ex-card" id="ex-card" style="border:1px solid ${allDone ? accent+'55' : 'rgba(255,255,255,0.08)'}">
         <div class="badge-row">
-          <span class="badge" style="background:${ph.accent}22;color:${ph.accent}">${ph.name}</span>
-          <span class="badge badge-neutral">${TYPE_LABEL[ex.type] || ex.type}</span>
+          <span class="badge" style="background:${accent}22;color:${accent}">${isFinisher ? '🔥 Ab Finisher — ' + state.abFinisher.name : loc.name + ' · ' + state.workout.name}</span>
         </div>
-        <div class="ex-name h">${ex.name}</div>
-        <div class="ex-tip">${ex.tip}</div>
+        <div class="ex-name h">${exr.name}</div>
+        <div class="ex-tip">${exr.tip}</div>
         <div class="stats-row">
           ${[['SETS',sets],['REPS',reps],['REST',rest]].map(([l,v]) => `
             <div class="stat-box">
-              <div class="stat-val h" style="color:${ph.accent}">${v}</div>
+              <div class="stat-val h" style="color:${accent}">${v}</div>
               <div class="stat-label">${l}</div>
             </div>`).join('')}
         </div>
         <div class="weight-section">
           <div class="weight-header">
-            <span class="weight-label">Weight Used ${isVacation() ? '(optional)' : ''}</span>
-            ${lastW ? `<span class="last-weight">Last: <span style="color:${ph.accent}">${lastW} lbs</span></span>` : ''}
+            <span class="weight-label">Weight Used</span>
+            ${lastW ? `<span class="last-weight">Last: <span style="color:${accent}">${lastW} lbs</span></span>` : ''}
           </div>
           <div class="weight-input-row">
             <input class="weight-input" id="weight-input" type="number" inputmode="decimal"
               value="${curW}" placeholder="${lastW || '0'}"
-              style="border-color:${curW ? ph.accent+'60' : 'rgba(255,255,255,0.1)'}"
+              style="border-color:${curW ? accent+'60' : 'rgba(255,255,255,0.1)'}"
               oninput="onWeightInput(this.value)">
             <span class="weight-unit">LBS</span>
           </div>
@@ -528,12 +544,12 @@ function renderWorkout() {
           <div class="sets-row">
             ${currentSets.map((done, i) => `
               <button class="set-circle${done?' done':''}" id="set-${i}"
-                style="${done?`background:${ph.accent};border-color:${ph.accent}`:''}"
+                style="${done?`background:${accent};border-color:${accent}`:''}"
                 onclick="tapSet(${i})">${done ? '✓' : i+1}</button>
             `).join('')}
           </div>
-          <div class="all-done-msg" id="all-done-msg" style="color:${ph.accent};${allDone?'display:block':''}">
-            ✓ All sets done — swipe forward or tap Next
+          <div class="all-done-msg" id="all-done-msg" style="color:${accent};${allDone?'display:block':''}">
+            ✓ Done — swipe forward or tap Next
           </div>
         </div>
         <div class="timer-overlay" id="timer-overlay">
@@ -541,11 +557,11 @@ function renderWorkout() {
           <div class="timer-ring">
             <svg width="140" height="140">
               <circle cx="70" cy="70" r="52" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="6"/>
-              <circle id="timer-arc" cx="70" cy="70" r="52" fill="none" stroke="${ph.accent}" stroke-width="6"
+              <circle id="timer-arc" cx="70" cy="70" r="52" fill="none" stroke="${accent}" stroke-width="6"
                 stroke-dasharray="${CIRC}" stroke-dashoffset="${CIRC}"
                 stroke-linecap="round" transform="rotate(-90 70 70)" style="transition:stroke-dashoffset 0.95s linear"/>
             </svg>
-            <div class="timer-number h" id="timer-num" style="color:${ph.accent}">—</div>
+            <div class="timer-number h" id="timer-num" style="color:${accent}">—</div>
           </div>
           <div class="timer-sub">seconds remaining</div>
           <button class="skip-btn" onclick="skipRest()">Skip Rest</button>
@@ -554,8 +570,8 @@ function renderWorkout() {
     </div>
     <div class="nav-row">
       <button class="nav-btn nav-btn-prev" id="btn-prev" onclick="goPrevEx()" ${state.exIdx===0?'disabled':''}>‹ Prev</button>
-      <button class="nav-btn nav-btn-next${allDone?' ready':''}" id="btn-next"
-        style="${allDone?`background:${ph.accent};color:#000`:''}" onclick="goNextEx()">
+      <button class="nav-btn nav-btn-next" id="btn-next"
+        style="${allDone?`background:${accent};color:#000`:''}" onclick="goNextEx()">
         ${state.exIdx===exercises.length-1 ? 'Finish' : 'Next ›'}
       </button>
     </div>
@@ -563,29 +579,27 @@ function renderWorkout() {
 }
 
 function renderDone() {
-  const ph = getPhase();
-  const day = getDay();
+  const loc = getLocation();
   const last = state.history[0];
   return `
   <div class="done-screen">
-    <div class="done-check h" style="color:${ph.accent}">✓</div>
+    <div class="done-check h" style="color:${loc.accent}">✓</div>
     <div class="done-title h">SESSION<br>COMPLETE</div>
-    <div class="done-sub">${day?.name} · ${ph.name}</div>
+    <div class="done-sub">${state.workout.name} · ${loc.name}</div>
     <div class="done-date">${todayStr()}</div>
     ${last ? `
     <div class="session-summary">
       <div class="summary-title">Session Summary</div>
       ${last.exercises.map(ex => `
         <div class="summary-row">
-          <span class="summary-ex">${ex.name}</span>
+          <span class="summary-ex">${ex.isFinisher ? '🔥 ' : ''}${ex.name}</span>
           <div class="summary-vals">
-            ${ex.weight ? `<span class="summary-weight h" style="color:${ph.accent}">${ex.weight} lbs</span>` : '<span class="summary-reps">—</span>'}
+            ${ex.weight ? `<span class="summary-weight h" style="color:${loc.accent}">${ex.weight} lbs</span>` : '<span class="summary-reps">—</span>'}
             <span class="summary-reps">${ex.sets}×${ex.reps}</span>
           </div>
         </div>`).join('')}
     </div>` : ''}
-    <button class="done-btn done-btn-primary" onclick="anotherSession()">Another Session</button>
-    <button class="done-btn done-btn-secondary" onclick="goPhase()">Change Phase</button>
+    <button class="done-btn done-btn-primary" onclick="goHome()">Back to Home</button>
     <button class="done-btn done-btn-ghost" onclick="goHistory()">View Full Log</button>
   </div>`;
 }
@@ -595,7 +609,7 @@ function renderHistory() {
   <div class="screen">
     <div class="history-header">
       <div>
-        <button class="back-btn" style="color:rgba(255,255,255,0.4);margin-bottom:10px" onclick="goPhase()">← Back</button>
+        <button class="back-btn" style="color:rgba(255,255,255,0.4);margin-bottom:10px" onclick="goHome()">← Back</button>
         <div class="history-title h">SESSION LOG</div>
         <div class="history-count">${state.history.length} session${state.history.length !== 1 ? 's' : ''} saved</div>
       </div>
@@ -603,21 +617,31 @@ function renderHistory() {
     </div>
     <div class="history-list">
       ${state.history.length === 0
-        ? '<div class="history-empty">No sessions yet. Complete a workout to see your log here.</div>'
+        ? '<div class="history-empty">No sessions yet.</div>'
         : state.history.map(s => {
-            const a = PHASES.find(p => p.id === s.phase)?.accent || '#f97316';
+            if (s.type === 'yoga') {
+              return `
+              <div class="history-item">
+                <div class="history-item-header">
+                  <div><span class="history-item-name">🧘 Yoga</span></div>
+                  <span class="history-item-date">${s.date}</span>
+                </div>
+                <div class="history-yoga-note">${s.duration} min session</div>
+              </div>`;
+            }
+            const a = LOCATIONS.find(l => l.id === s.location)?.accent || '#f97316';
             return `
             <div class="history-item">
               <div class="history-item-header">
                 <div>
-                  <span class="history-item-name">${s.dayName || '—'}</span>
-                  <span class="history-item-phase">${s.phaseName || ''}</span>
+                  <span class="history-item-name">${s.workoutName || '—'}</span>
+                  <span class="history-item-tag">${s.locationName || ''}</span>
                 </div>
                 <span class="history-item-date">${s.date}</span>
               </div>
               ${(s.exercises||[]).map(ex => `
                 <div class="history-ex-row">
-                  <span class="history-ex-name">${ex.name}</span>
+                  <span class="history-ex-name">${ex.isFinisher ? '🔥 ' : ''}${ex.name}</span>
                   <div class="history-ex-vals">
                     ${ex.weight ? `<span class="history-ex-weight h" style="color:${a}">${ex.weight} lbs</span>` : '<span class="history-ex-reps">—</span>'}
                     <span class="history-ex-reps">${ex.sets}×${ex.reps}</span>
@@ -629,7 +653,7 @@ function renderHistory() {
   </div>`;
 }
 
-// ─── WORKOUT INTERACTIONS ─────────────────────────────────────────────────────
+// ─── INTERACTIONS ──────────────────────────────────────────────────────────────
 
 function startWorkoutListeners() {
   const ws = document.getElementById('workout-screen');
@@ -647,23 +671,26 @@ function startWorkoutListeners() {
 function onWeightInput(val) {
   state.weights[state.exIdx] = val;
   const input = document.getElementById('weight-input');
-  const ph = getPhase();
-  if (input) input.style.borderColor = val ? ph.accent + '60' : 'rgba(255,255,255,0.1)';
+  const loc = getLocation();
+  const exr = getExercise();
+  const accent = exr.isFinisher ? '#ef4444' : loc.accent;
+  if (input) input.style.borderColor = val ? accent + '60' : 'rgba(255,255,255,0.1)';
 }
 
 function tapSet(i) {
-  const p = getParams();
-  const sets = p?.sets || 3;
+  const exr = getExercise();
+  const sets = exr.sets || 1;
   const cur = state.setsMap[state.exIdx] || Array(sets).fill(false);
   const next = [...cur]; next[i] = !next[i];
   state.setsMap[state.exIdx] = next;
 
-  const ph = getPhase();
+  const loc = getLocation();
+  const accent = exr.isFinisher ? '#ef4444' : loc.accent;
   const btn = document.getElementById(`set-${i}`);
   if (btn) {
     btn.classList.toggle('done', next[i]);
-    btn.style.background = next[i] ? ph.accent : 'transparent';
-    btn.style.borderColor = next[i] ? ph.accent : 'rgba(255,255,255,0.14)';
+    btn.style.background = next[i] ? accent : 'transparent';
+    btn.style.borderColor = next[i] ? accent : 'rgba(255,255,255,0.14)';
     btn.style.color = next[i] ? '#000' : 'rgba(255,255,255,0.28)';
     btn.style.transform = next[i] ? 'scale(1.1)' : 'scale(1)';
     btn.textContent = next[i] ? '✓' : i + 1;
@@ -672,18 +699,15 @@ function tapSet(i) {
   const allDone = next.every(Boolean);
   const msg = document.getElementById('all-done-msg');
   if (msg) msg.style.display = allDone ? 'block' : 'none';
-
   const card = document.getElementById('ex-card');
-  if (card) card.style.borderColor = allDone ? ph.accent + '55' : 'rgba(255,255,255,0.08)';
-
+  if (card) card.style.borderColor = allDone ? accent + '55' : 'rgba(255,255,255,0.08)';
   const nextBtn = document.getElementById('btn-next');
   if (nextBtn) {
-    nextBtn.classList.toggle('ready', allDone);
-    nextBtn.style.background = allDone ? ph.accent : '#1a1a1a';
+    nextBtn.style.background = allDone ? accent : '#1a1a1a';
     nextBtn.style.color = allDone ? '#000' : '#fff';
   }
 
-  if (next[i] && p?.restSec > 0) startTimer(p.restSec);
+  if (next[i] && exr.restSec > 0) startTimer(exr.restSec);
   else stopTimerUI();
 }
 
@@ -715,20 +739,32 @@ function stopTimerUI() {
   if (overlay) overlay.classList.remove('visible');
   stopTimer();
 }
-
 function skipRest() { stopTimerUI(); }
 
 // ─── NAVIGATION ───────────────────────────────────────────────────────────────
 
-function selectPhase(id) { state.phase = id; state.screen = 'day'; render(); }
-function selectDay(id) {
-  state.dayId = id; state.exIdx = 0; state.setsMap = {}; state.weights = {};
-  state.screen = 'workout'; render();
-}
-function goPhase()   { state.screen = 'phase';   render(); }
-function goDay()     { state.screen = 'day';     render(); }
+function goHome() { state.screen = 'home'; render(); }
 function goHistory() { state.screen = 'history'; render(); }
-function anotherSession() { state.exIdx = 0; state.setsMap = {}; state.weights = {}; state.screen = 'day'; render(); }
+function goYoga() { state.yogaDuration = null; state.screen = 'yoga'; render(); }
+function goNutrition() { state.screen = 'nutrition'; render(); }
+
+function selectLocation(id) {
+  state.location = id;
+  state.workout = pickWorkout(id);
+  state.abFinisher = pickAbFinisher();
+  state.exIdx = 0; state.setsMap = {}; state.weights = {};
+  state.screen = 'workout';
+  render();
+}
+
+function selectYogaDuration(d) { state.yogaDuration = d; render(); }
+
+function logYoga() {
+  if (!state.yogaDuration) return;
+  state.history = [{ type: 'yoga', date: todayStr(), duration: state.yogaDuration }, ...state.history].slice(0, 80);
+  saveHistory();
+  goHome();
+}
 
 function goPrevEx() {
   if (state.exIdx > 0) { stopTimerUI(); state.exIdx--; state.screen = 'workout'; render(); }
@@ -736,7 +772,7 @@ function goPrevEx() {
 
 function goNextEx() {
   stopTimerUI();
-  const exercises = getExercises();
+  const exercises = getFullExerciseList();
   if (state.exIdx < exercises.length - 1) {
     state.exIdx++;
     state.screen = 'workout';
@@ -747,28 +783,23 @@ function goNextEx() {
 }
 
 function finishSession() {
-  const ph = getPhase();
-  const day = getDay();
-  const exercises = getExercises();
+  const loc = getLocation();
+  const exercises = getFullExerciseList();
   const session = {
+    type: 'workout',
     date: todayStr(),
-    phase: state.phase,
-    phaseName: ph?.name,
-    day: state.dayId,
-    dayName: day?.name,
-    exercises: exercises.map((ex, i) => {
-      const p = isVacation()
-        ? { sets: ex.customSets, reps: ex.customReps }
-        : { sets: PARAMS[state.phase]?.[ex.type]?.sets, reps: ex.customReps || PARAMS[state.phase]?.[ex.type]?.reps };
-      return {
-        name: ex.name,
-        weight: state.weights[i] || null,
-        sets: (state.setsMap[i] || []).filter(Boolean).length,
-        reps: p.reps || '—',
-      };
-    })
+    location: state.location,
+    locationName: loc.name,
+    workoutName: state.workout.name,
+    exercises: exercises.map((ex, i) => ({
+      name: ex.name,
+      isFinisher: ex.isFinisher,
+      weight: state.weights[i] || null,
+      sets: (state.setsMap[i] || []).filter(Boolean).length,
+      reps: ex.reps || '—',
+    }))
   };
-  state.history = [session, ...state.history].slice(0, 60);
+  state.history = [session, ...state.history].slice(0, 80);
   saveHistory();
   state.screen = 'done';
   render();
