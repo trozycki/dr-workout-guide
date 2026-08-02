@@ -1,8 +1,8 @@
 self.addEventListener('push', (event) => {
-  let data = { title: 'The Metamorphosis', body: 'Reminder' };
+  let data = { title: 'Metamorphosis', body: 'Reminder' };
   try { if (event.data) data = event.data.json(); } catch (e) {}
   event.waitUntil(
-    self.registration.showNotification(data.title || 'The Metamorphosis', {
+    self.registration.showNotification(data.title || 'Metamorphosis', {
       body: data.body || '',
       icon: '/icon.png',
       badge: '/icon.png',
