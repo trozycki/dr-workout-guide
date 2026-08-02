@@ -7,13 +7,14 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY
 );
 
-// Keyed by UTC hour (approximate — assumes Eastern Time, UTC-4/UTC-5 depending on DST)
+// Keyed by UTC hour, tuned for a 4:45-5:30am gym/yoga start (Eastern Time, UTC-4/UTC-5 depending on DST)
 const MESSAGES = {
-  '12': { title: 'Morning Meal', body: 'Eggs/egg whites + oats + berries. Fuel up for the day.' },
-  '15': { title: 'Pre-Workout Window', body: 'Protein + rice + vegetables, 60–90 min before training.' },
-  '18': { title: 'Post-Workout Window', body: 'Whey isolate or Cocojune + hemp seeds + protein powder.' },
-  '22': { title: 'Evening Meal', body: 'Lean protein + vegetables. Keep carbs light tonight.' },
-  '01': { title: 'Wind-Down', body: 'Magnesium glycinate before bed. Skip heavy carbs this late.' },
+  '09': { title: 'Pre-Training Fuel', body: "Gym day: small carb hit — banana or dates. Yoga day: fasted is fine, skip this." },
+  '11': { title: 'Biggest Meal of the Day', body: 'Right after training. Eggs + oats + berries, or a shake + eggs.' },
+  '14': { title: 'Second Meal', body: 'Protein + rice or quinoa + vegetables.' },
+  '17': { title: 'Third Meal', body: 'Lighter — salmon or tuna + salad.' },
+  '21': { title: 'Fourth Meal', body: 'Lean protein + vegetables. Keep it light.' },
+  '00': { title: 'Wind-Down', body: 'Magnesium glycinate before bed. Done eating for the day.' },
 };
 
 export default async () => {
@@ -39,5 +40,5 @@ export default async () => {
 };
 
 export const config = {
-  schedule: '0 12,15,18,22,1 * * *',
+  schedule: '0 9,11,14,17,21,0 * * *',
 };
