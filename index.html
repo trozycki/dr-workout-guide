@@ -373,7 +373,7 @@ function todayStr() {
 
 function stopTimer() {
   if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
-  state.timerSec = null; state.timerMax = null;
+  state.timerSec = null; state.timerMax = null; state.timerEndAt = null; state.timerBellFired = false;
 }
 
 const CIRC = 2 * Math.PI * 52;
@@ -987,10 +987,14 @@ function unlockAudio() {
   } catch(e) {}
 }
 
-function playBell() {
+async function playBell() {
   try {
-    unlockAudio();
-    if (!audioCtx || audioCtx.state !== 'running') return;
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+      await audioCtx.resume();
+    }
     const now = audioCtx.currentTime;
     // Two-tone chime, smooth attack/decay so it never clicks or cuts out
     [ [880, 0], [1318.5, 0.16] ].forEach(([freq, delay]) => {
@@ -1014,7 +1018,9 @@ function playBell() {
 function startTimer(seconds, showNext) {
   stopTimer();
   unlockAudio();
-  state.timerSec = seconds; state.timerMax = seconds;
+  state.timerMax = seconds;
+  state.timerEndAt = Date.now() + seconds * 1000;
+  state.timerBellFired = false;
   const overlay = document.getElementById('timer-overlay');
   if (overlay) overlay.classList.add('visible');
   const nextEl = document.getElementById('timer-next-label');
@@ -1026,12 +1032,22 @@ function startTimer(seconds, showNext) {
       nextEl.style.display = 'none';
     }
   }
+  tickTimer();
+  state.timerInterval = setInterval(tickTimer, 250);
+}
+
+function tickTimer() {
+  if (!state.timerEndAt) return;
+  const remainingMs = state.timerEndAt - Date.now();
+  const remainingSec = Math.max(0, Math.ceil(remainingMs / 1000));
+  state.timerSec = remainingSec;
   updateTimerUI();
-  state.timerInterval = setInterval(() => {
-    state.timerSec--;
-    if (state.timerSec <= 0) { playBell(); stopTimerUI(); stopTimer(); }
-    else updateTimerUI();
-  }, 1000);
+  if (remainingMs <= 0 && !state.timerBellFired) {
+    state.timerBellFired = true;
+    playBell();
+    stopTimerUI();
+    stopTimer();
+  }
 }
 
 function updateTimerUI() {
@@ -1040,7 +1056,7 @@ function updateTimerUI() {
   if (num) num.textContent = state.timerSec;
   if (arc && state.timerMax) {
     const progress = state.timerSec / state.timerMax;
-    arc.style.strokeDashoffset = CIRC - CIRC * progress;
+    arc.style.strokeDashoffset = CIRC - CIRC * Math.max(0, progress);
   }
 }
 
@@ -1050,6 +1066,24 @@ function stopTimerUI() {
   stopTimer();
 }
 function skipRest() { stopTimerUI(); }
+
+// Catch up instantly when the tab/app regains focus — re-sync the countdown
+// and fire the bell immediately if it was missed while backgrounded.
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    unlockAudio();
+    if (state.timerEndAt) tickTimer();
+  }
+});
+window.addEventListener('pageshow', () => {
+  unlockAudio();
+  if (state.timerEndAt) tickTimer();
+});
+window.addEventListener('focus', () => {
+  unlockAudio();
+  if (state.timerEndAt) tickTimer();
+});
+
 
 // ─── NAVIGATION ───────────────────────────────────────────────────────────────
 
