@@ -166,13 +166,14 @@ const LOCATIONS = [
   { id: 'hotel',  name: 'Hotel / Travel', icon: '🧳', sub: 'Minimal equipment, bodyweight-flexible', accent: '#22c55e' },
 ];
 
-function ex(name, sets, reps, restSec, tip) {
-  return { name, sets, reps, restSec, tip };
+function ex(name, sets, reps, restSec, tip, noWeight) {
+  return { name, sets, reps, restSec, tip, noWeight: !!noWeight };
 }
 
 const WORKOUTS = {
   gym: [
     { id: 'gym-push', name: 'Push', subtitle: 'Chest / Shoulders / Triceps', exercises: [
+      ex('Warm-Up: Bike or Treadmill', 1, '5 min', 0, 'Easy pace. Get blood moving before you touch a weight.', true),
       ex('Barbell Bench Press', 4, '8–10', 90, 'Drive feet into floor. 3-second descent. Own the eccentric.'),
       ex('Incline Dumbbell Press', 4, '10–12', 75, 'Elbows at 45°. Full range. Feel the upper chest.'),
       ex('Cable Fly / Pec Deck', 3, '12–15', 60, 'Squeeze hard at center. Slow eccentric every rep.'),
@@ -183,6 +184,7 @@ const WORKOUTS = {
       ex('Tricep Pushdown', 3, '12–15', 45, 'Pin elbows to sides. Squeeze fully at the bottom.'),
     ]},
     { id: 'gym-pull', name: 'Pull', subtitle: 'Back / Biceps', exercises: [
+      ex('Warm-Up: Rower or Bike', 1, '5 min', 0, 'Easy pace. Prime the back before loading it.', true),
       ex('Lat Pulldown / Pull-Up', 4, '8–10', 90, 'Pull to upper chest. Shoulder blades down and back.'),
       ex('Cable Row / Barbell Row', 4, '10–12', 75, "Don't round the back. Squeeze the rhomboids."),
       ex('Single-Arm Dumbbell Row', 3, '10–12', 60, 'Full extension at bottom. Drive elbow to hip.'),
@@ -193,6 +195,7 @@ const WORKOUTS = {
       ex('Hammer Curl', 3, '12–15', 45, 'Neutral grip. Builds brachialis thickness.'),
     ]},
     { id: 'gym-legs', name: 'Legs', subtitle: 'Quads / Hamstrings / Calves', exercises: [
+      ex('Warm-Up: Bike + Bodyweight Squats', 1, '5 min', 0, 'Easy bike pace, then a few bodyweight squats to open the hips.', true),
       ex('Barbell Squat / Leg Press', 4, '8–10', 90, 'Break parallel if mobility allows.'),
       ex('Romanian Deadlift', 4, '10–12', 90, 'Hip hinge — feel the hamstring load.'),
       ex('Walking Lunges', 3, '12/side', 60, 'Upright torso. Full step length.'),
@@ -205,6 +208,7 @@ const WORKOUTS = {
   ],
   garage: [
     { id: 'garage-push', name: 'Push', subtitle: 'Bench + Dumbbells', exercises: [
+      ex('Warm-Up: Jump Rope or Jumping Jacks', 1, '3–5 min', 0, 'Get the heart rate up before loading the shoulders.', true),
       ex('Dumbbell Bench Press', 4, '10–12', 75, 'Full range. Control the descent.'),
       ex('Incline Dumbbell Press', 4, '10–12', 60, 'Upper chest emphasis.'),
       ex('Dumbbell Fly (on bench)', 3, '12–15', 60, 'Slight elbow bend. Slow eccentric.'),
@@ -215,6 +219,7 @@ const WORKOUTS = {
       ex('Close-Grip Push-Up', 3, '12–15', 45, 'Hands close together, hits triceps.'),
     ]},
     { id: 'garage-pull', name: 'Pull', subtitle: 'Dumbbells + Kettlebells', exercises: [
+      ex('Warm-Up: Jump Rope + Band Pull-Aparts', 1, '3–5 min', 0, 'Get moving, then prime the upper back.', true),
       ex('Single-Arm Dumbbell Row', 4, '10–12/side', 75, 'Full stretch at bottom, squeeze at top.'),
       ex('Dumbbell Pullover (on bench)', 3, '12–15', 60, 'Feel the stretch through the lats.'),
       ex('Bent-Over Double Dumbbell Row', 4, '10–12', 60, "Don't round the back."),
@@ -225,6 +230,7 @@ const WORKOUTS = {
       ex('Hammer Curl', 3, '12–15', 45, 'Neutral grip, controlled tempo.'),
     ]},
     { id: 'garage-legs', name: 'Legs', subtitle: 'Dumbbells + Kettlebells', exercises: [
+      ex('Warm-Up: Jump Rope + Bodyweight Squats', 1, '3–5 min', 0, 'Get the legs moving before loading them.', true),
       ex('Goblet Squat', 4, '12–15', 75, 'Elbows inside knees, chest up, full depth.'),
       ex('Kettlebell Romanian Deadlift', 4, '12', 75, 'Hip hinge, feel the hamstrings.'),
       ex('Walking Lunges (DB)', 3, '12/side', 60, 'Long stride, controlled tempo.'),
@@ -237,6 +243,7 @@ const WORKOUTS = {
   ],
   hotel: [
     { id: 'hotel-push', name: 'Push', subtitle: 'Bodyweight + Bands', exercises: [
+      ex('Warm-Up: Jumping Jacks + Arm Circles', 1, '3–5 min', 0, 'No equipment needed. Get the shoulders moving.', true),
       ex('Push-Ups', 4, '15–20', 45, 'Full range, core tight.'),
       ex('Incline Push-Up', 3, '15', 40, 'Hands elevated — targets upper chest.'),
       ex('Decline Push-Up (feet elevated)', 3, '12–15', 45, 'Feet on a chair or bed — shifts emphasis upward.'),
@@ -246,6 +253,7 @@ const WORKOUTS = {
       ex('Tricep Dips (chair or bed edge)', 3, '12–15', 40, 'Elbows tucked, controlled descent.'),
     ]},
     { id: 'hotel-pull', name: 'Pull', subtitle: 'Bodyweight + Bands', exercises: [
+      ex('Warm-Up: Arm Circles + Cat-Cow', 1, '3–5 min', 0, 'Loosen the upper back and shoulders.', true),
       ex('Band or Towel Door Row', 4, '15', 45, 'Squeeze the back hard at the top.'),
       ex('Superman Row', 3, '15', 40, 'Lying face down, pull elbows back and up.'),
       ex('Reverse Snow Angel (floor)', 3, '15', 30, 'Upper back activation, controlled.'),
@@ -255,6 +263,7 @@ const WORKOUTS = {
       ex('Prone Y-Raise (floor)', 3, '15', 30, 'Arms in a Y, squeeze shoulder blades.'),
     ]},
     { id: 'hotel-legs', name: 'Legs', subtitle: 'Bodyweight-Flexible', exercises: [
+      ex('Warm-Up: Bodyweight Squats + Leg Swings', 1, '3–5 min', 0, 'Open the hips before loading them.', true),
       ex('Bodyweight Squat', 4, '20', 45, 'Full depth, controlled tempo.'),
       ex('Walking Lunges', 3, '15/side', 45, 'Long stride, upright torso.'),
       ex('Bulgarian Split Squat (chair)', 3, '10/side', 45, 'Rear foot on a chair.'),
@@ -270,11 +279,11 @@ const AB_FINISHERS = [
   { id: 'ab-classic', name: 'Classic Burn', exercises: [
     ex('Cable Crunch or Sit-Up', 3, '20', 20, 'Round the spine — not a sit-up motion. Pull from the abs.'),
     ex('Leg Raise', 3, '15', 20, 'Slow and controlled. Lower back stays flat.'),
-    ex('Plank Hold', 3, '45 sec', 20, 'Brace hard, quality over duration.'),
+    ex('Toe Touches', 3, '20', 20, 'Reach for your toes on each rep — active, not a hold.'),
   ]},
   { id: 'ab-oblique', name: 'Oblique Focus', exercises: [
     ex('Bicycle Crunch', 3, '20/side', 20, 'Slow and controlled — not a speed exercise.'),
-    ex('Side Plank', 3, '30 sec/side', 20, 'Stack hips, straight line head to feet.'),
+    ex('Heel Touches', 3, '20/side', 20, 'Lying down, reach alternately to each heel — active oblique work.'),
     ex('Russian Twist', 3, '20/side', 20, 'Rotate through the torso.'),
   ]},
   { id: 'ab-lower', name: 'Lower Ab Emphasis', exercises: [
@@ -285,7 +294,7 @@ const AB_FINISHERS = [
   { id: 'ab-burnout', name: 'Quick Burnout', exercises: [
     ex('Mountain Climbers', 3, '20/side', 20, 'Fast but controlled, hips low.'),
     ex('Bicycle Crunch', 3, '20', 20, 'Full rotation each rep.'),
-    ex('Plank Hold', 3, '45 sec', 20, 'Finish strong.'),
+    ex('V-Ups', 3, '15', 20, 'Full-body crunch — reach hands to feet. Finish strong.'),
   ]},
 ];
 
@@ -786,6 +795,7 @@ function renderWorkout() {
               <div class="stat-label">${l}</div>
             </div>`).join('')}
         </div>
+        ${exr.noWeight ? '' : `
         <div class="weight-section">
           <div class="weight-header">
             <span class="weight-label">Weight Used</span>
@@ -798,7 +808,7 @@ function renderWorkout() {
               oninput="onWeightInput(this.value)">
             <span class="weight-unit">LBS</span>
           </div>
-        </div>
+        </div>`}
         <div class="sets-section">
           <div class="sets-label">Tap each set when complete</div>
           <div class="sets-row">
