@@ -173,7 +173,9 @@ function ex(name, sets, reps, restSec, tip, noWeight) {
 const WORKOUTS = {
   gym: [
     { id: 'gym-push', name: 'Push', subtitle: 'Chest / Shoulders / Triceps', exercises: [
-      ex('Warm-Up: Bike or Treadmill', 1, '5 min', 0, 'Easy pace. Get blood moving before you touch a weight.', true),
+      ex('Warm-Up: Bike or Treadmill', 1, '3–5 min', 0, 'Easy pace. Get blood moving before you touch a weight.', true),
+      ex('Arm Circles', 1, '10 forward / 10 back', 0, 'Large controlled circles — opens up the shoulders.', true),
+      ex('Scapular Push-Ups', 1, '10', 0, 'Small range, shoulder blades protract and retract — primes the shoulders for pressing.', true),
       ex('Barbell Bench Press', 4, '8–10', 90, 'Drive feet into floor. 3-second descent. Own the eccentric.'),
       ex('Incline Dumbbell Press', 4, '10–12', 75, 'Elbows at 45°. Full range. Feel the upper chest.'),
       ex('Cable Fly / Pec Deck', 3, '12–15', 60, 'Squeeze hard at center. Slow eccentric every rep.'),
@@ -184,7 +186,9 @@ const WORKOUTS = {
       ex('Tricep Pushdown', 3, '12–15', 45, 'Pin elbows to sides. Squeeze fully at the bottom.'),
     ]},
     { id: 'gym-pull', name: 'Pull', subtitle: 'Back / Biceps', exercises: [
-      ex('Warm-Up: Rower or Bike', 1, '5 min', 0, 'Easy pace. Prime the back before loading it.', true),
+      ex('Warm-Up: Rower or Bike', 1, '3–5 min', 0, 'Easy pace. Prime the back before loading it.', true),
+      ex('Band Pull-Aparts', 1, '15', 0, 'Opens the chest, activates the upper back before rowing.', true),
+      ex('Cat-Cow', 1, '10', 0, 'Mobilizes the spine — primes it for loaded rows and pulls.', true),
       ex('Lat Pulldown / Pull-Up', 4, '8–10', 90, 'Pull to upper chest. Shoulder blades down and back.'),
       ex('Cable Row / Barbell Row', 4, '10–12', 75, "Don't round the back. Squeeze the rhomboids."),
       ex('Single-Arm Dumbbell Row', 3, '10–12', 60, 'Full extension at bottom. Drive elbow to hip.'),
@@ -195,7 +199,9 @@ const WORKOUTS = {
       ex('Hammer Curl', 3, '12–15', 45, 'Neutral grip. Builds brachialis thickness.'),
     ]},
     { id: 'gym-legs', name: 'Legs', subtitle: 'Quads / Hamstrings / Calves', exercises: [
-      ex('Warm-Up: Bike + Bodyweight Squats', 1, '5 min', 0, 'Easy bike pace, then a few bodyweight squats to open the hips.', true),
+      ex('Warm-Up: Bike or Treadmill', 1, '3–5 min', 0, 'Easy pace to get blood into the legs.', true),
+      ex('Bodyweight Squats (slow, full depth)', 1, '10', 0, 'Groove the pattern before loading it.', true),
+      ex('Walking Leg Swings', 1, '10/side', 0, 'Opens the hips — front-to-back and side-to-side.', true),
       ex('Barbell Squat / Leg Press', 4, '8–10', 90, 'Break parallel if mobility allows.'),
       ex('Romanian Deadlift', 4, '10–12', 90, 'Hip hinge — feel the hamstring load.'),
       ex('Walking Lunges', 3, '12/side', 60, 'Upright torso. Full step length.'),
@@ -209,6 +215,8 @@ const WORKOUTS = {
   garage: [
     { id: 'garage-push', name: 'Push', subtitle: 'Bench + Dumbbells', exercises: [
       ex('Warm-Up: Jump Rope or Jumping Jacks', 1, '3–5 min', 0, 'Get the heart rate up before loading the shoulders.', true),
+      ex('Arm Circles', 1, '10 forward / 10 back', 0, 'Large controlled circles — opens up the shoulders.', true),
+      ex('Scapular Push-Ups', 1, '10', 0, 'Primes the shoulders for pressing.', true),
       ex('Dumbbell Bench Press', 4, '10–12', 75, 'Full range. Control the descent.'),
       ex('Incline Dumbbell Press', 4, '10–12', 60, 'Upper chest emphasis.'),
       ex('Dumbbell Fly (on bench)', 3, '12–15', 60, 'Slight elbow bend. Slow eccentric.'),
@@ -219,7 +227,9 @@ const WORKOUTS = {
       ex('Close-Grip Push-Up', 3, '12–15', 45, 'Hands close together, hits triceps.'),
     ]},
     { id: 'garage-pull', name: 'Pull', subtitle: 'Dumbbells + Kettlebells', exercises: [
-      ex('Warm-Up: Jump Rope + Band Pull-Aparts', 1, '3–5 min', 0, 'Get moving, then prime the upper back.', true),
+      ex('Warm-Up: Jump Rope', 1, '3–5 min', 0, 'Get moving before loading the back.', true),
+      ex('Band Pull-Aparts', 1, '15', 0, 'Opens the chest, activates the upper back before rowing.', true),
+      ex('Cat-Cow', 1, '10', 0, 'Mobilizes the spine — primes it for loaded rows.', true),
       ex('Single-Arm Dumbbell Row', 4, '10–12/side', 75, 'Full stretch at bottom, squeeze at top.'),
       ex('Dumbbell Pullover (on bench)', 3, '12–15', 60, 'Feel the stretch through the lats.'),
       ex('Bent-Over Double Dumbbell Row', 4, '10–12', 60, "Don't round the back."),
@@ -230,7 +240,9 @@ const WORKOUTS = {
       ex('Hammer Curl', 3, '12–15', 45, 'Neutral grip, controlled tempo.'),
     ]},
     { id: 'garage-legs', name: 'Legs', subtitle: 'Dumbbells + Kettlebells', exercises: [
-      ex('Warm-Up: Jump Rope + Bodyweight Squats', 1, '3–5 min', 0, 'Get the legs moving before loading them.', true),
+      ex('Warm-Up: Jump Rope', 1, '3–5 min', 0, 'Get the legs moving before loading them.', true),
+      ex('Bodyweight Squats (slow, full depth)', 1, '10', 0, 'Groove the pattern before loading it.', true),
+      ex('Walking Leg Swings', 1, '10/side', 0, 'Opens the hips before you load them.', true),
       ex('Goblet Squat', 4, '12–15', 75, 'Elbows inside knees, chest up, full depth.'),
       ex('Kettlebell Romanian Deadlift', 4, '12', 75, 'Hip hinge, feel the hamstrings.'),
       ex('Walking Lunges (DB)', 3, '12/side', 60, 'Long stride, controlled tempo.'),
@@ -243,7 +255,9 @@ const WORKOUTS = {
   ],
   hotel: [
     { id: 'hotel-push', name: 'Push', subtitle: 'Bodyweight + Bands', exercises: [
-      ex('Warm-Up: Jumping Jacks + Arm Circles', 1, '3–5 min', 0, 'No equipment needed. Get the shoulders moving.', true),
+      ex('Warm-Up: Jumping Jacks', 1, '3–5 min', 0, 'No equipment needed. Get moving.', true),
+      ex('Arm Circles', 1, '10 forward / 10 back', 0, 'Large controlled circles — opens up the shoulders.', true),
+      ex('Scapular Push-Ups', 1, '10', 0, 'Primes the shoulders for pressing.', true),
       ex('Push-Ups', 4, '15–20', 45, 'Full range, core tight.'),
       ex('Incline Push-Up', 3, '15', 40, 'Hands elevated — targets upper chest.'),
       ex('Decline Push-Up (feet elevated)', 3, '12–15', 45, 'Feet on a chair or bed — shifts emphasis upward.'),
@@ -253,7 +267,9 @@ const WORKOUTS = {
       ex('Tricep Dips (chair or bed edge)', 3, '12–15', 40, 'Elbows tucked, controlled descent.'),
     ]},
     { id: 'hotel-pull', name: 'Pull', subtitle: 'Bodyweight + Bands', exercises: [
-      ex('Warm-Up: Arm Circles + Cat-Cow', 1, '3–5 min', 0, 'Loosen the upper back and shoulders.', true),
+      ex('Warm-Up: Jumping Jacks', 1, '3–5 min', 0, 'No equipment needed. Get moving.', true),
+      ex('Arm Swings Across Chest', 1, '15', 0, 'Opens the chest and upper back before rowing.', true),
+      ex('Cat-Cow', 1, '10', 0, 'Mobilizes the spine — primes it for loaded pulls.', true),
       ex('Band or Towel Door Row', 4, '15', 45, 'Squeeze the back hard at the top.'),
       ex('Superman Row', 3, '15', 40, 'Lying face down, pull elbows back and up.'),
       ex('Reverse Snow Angel (floor)', 3, '15', 30, 'Upper back activation, controlled.'),
@@ -263,7 +279,9 @@ const WORKOUTS = {
       ex('Prone Y-Raise (floor)', 3, '15', 30, 'Arms in a Y, squeeze shoulder blades.'),
     ]},
     { id: 'hotel-legs', name: 'Legs', subtitle: 'Bodyweight-Flexible', exercises: [
-      ex('Warm-Up: Bodyweight Squats + Leg Swings', 1, '3–5 min', 0, 'Open the hips before loading them.', true),
+      ex('Warm-Up: Jumping Jacks', 1, '3–5 min', 0, 'No equipment needed. Get the legs moving.', true),
+      ex('Bodyweight Squats (slow, full depth)', 1, '10', 0, 'Groove the pattern before loading it.', true),
+      ex('Walking Leg Swings', 1, '10/side', 0, 'Opens the hips before you load them.', true),
       ex('Bodyweight Squat', 4, '20', 45, 'Full depth, controlled tempo.'),
       ex('Walking Lunges', 3, '15/side', 45, 'Long stride, upright torso.'),
       ex('Bulgarian Split Squat (chair)', 3, '10/side', 45, 'Rear foot on a chair.'),
@@ -380,9 +398,78 @@ function todayStr() {
 function stopTimer() {
   if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
   state.timerSec = null; state.timerMax = null; state.timerEndAt = null; state.timerBellFired = false;
+  saveActiveSession();
 }
 
 const CIRC = 2 * Math.PI * 52;
+
+// ─── SESSION PERSISTENCE ──────────────────────────────────────────────────────
+// iOS reclaims/reloads backgrounded tabs after longer breaks (e.g. a meal out),
+// which wipes all in-memory JS — including a running rest timer. Persisting the
+// active session lets us rehydrate on reload and catch up instantly, including
+// firing the bell immediately if it expired while the page was gone.
+
+function saveActiveSession() {
+  if (state.screen !== 'workout' || !state.location || !state.workout) {
+    try { localStorage.removeItem('wg_active_session'); } catch(e) {}
+    return;
+  }
+  try {
+    localStorage.setItem('wg_active_session', JSON.stringify({
+      location: state.location,
+      workoutId: state.workout.id,
+      abFinisherId: state.abFinisher ? state.abFinisher.id : null,
+      exIdx: state.exIdx,
+      setsMap: state.setsMap,
+      weights: state.weights,
+      timerEndAt: state.timerEndAt || null,
+      timerMax: state.timerMax || null,
+      timerBellFired: state.timerBellFired || false,
+      savedAt: Date.now(),
+    }));
+  } catch(e) {}
+}
+
+function restoreActiveSession() {
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem('wg_active_session') || 'null'); } catch(e) {}
+  if (!saved || !saved.location || !saved.workoutId) return false;
+  // Don't resurrect a session from more than 6 hours ago — that's not a background reload, that's a new day
+  if (saved.savedAt && (Date.now() - saved.savedAt) > 6 * 60 * 60 * 1000) {
+    try { localStorage.removeItem('wg_active_session'); } catch(e) {}
+    return false;
+  }
+  const workout = (WORKOUTS[saved.location] || []).find(w => w.id === saved.workoutId);
+  if (!workout) return false;
+
+  state.location = saved.location;
+  state.workout = workout;
+  state.abFinisher = AB_FINISHERS.find(a => a.id === saved.abFinisherId) || AB_FINISHERS[0];
+  state.exIdx = saved.exIdx || 0;
+  state.setsMap = saved.setsMap || {};
+  state.weights = saved.weights || {};
+  state.screen = 'workout';
+
+  if (saved.timerEndAt) {
+    state.timerEndAt = saved.timerEndAt;
+    state.timerMax = saved.timerMax;
+    state.timerBellFired = saved.timerBellFired || false;
+    state._resumeTimerAfterRender = true;
+  }
+  return true;
+}
+
+function resumeTimerAfterRender() {
+  if (!state.timerEndAt) return;
+  const overlay = document.getElementById('timer-overlay');
+  if (overlay) overlay.classList.add('visible');
+  const nextEl = document.getElementById('timer-next-label');
+  if (nextEl) nextEl.style.display = 'none'; // can't reliably know if this was a last-set timer after reload
+  tickTimer(); // fires the bell immediately if it already expired while the page was gone
+  if (state.timerEndAt && !state.timerInterval) {
+    state.timerInterval = setInterval(tickTimer, 250);
+  }
+}
 
 // ─── RENDER ──────────────────────────────────────────────────────────────────
 
@@ -390,9 +477,9 @@ function render() {
   const app = document.getElementById('app');
   stopTimer();
   switch (state.screen) {
-    case 'home':      app.innerHTML = renderHome();      break;
-    case 'day':       app.innerHTML = renderDay();        break;
-    case 'workout':   app.innerHTML = renderWorkout();    startWorkoutListeners(); break;
+    case 'home':      app.innerHTML = renderHome();      saveActiveSession(); break;
+    case 'day':       app.innerHTML = renderDay();        saveActiveSession(); break;
+    case 'workout':   app.innerHTML = renderWorkout();    startWorkoutListeners(); saveActiveSession(); break;
     case 'done':      app.innerHTML = renderDone();       break;
     case 'history':   app.innerHTML = renderHistory();    break;
     case 'yoga':      app.innerHTML = renderYoga();       break;
@@ -946,6 +1033,7 @@ function onWeightInput(val) {
   const exr = getExercise();
   const accent = exr.isFinisher ? '#ef4444' : loc.accent;
   if (input) input.style.borderColor = val ? accent + '60' : 'rgba(255,255,255,0.1)';
+  saveActiveSession();
 }
 
 function tapSet(i) {
@@ -980,7 +1068,7 @@ function tapSet(i) {
 
   const isLastSet = i === sets - 1;
   if (next[i] && exr.restSec > 0) startTimer(exr.restSec, next[i] && isLastSet);
-  else stopTimerUI();
+  else { stopTimerUI(); saveActiveSession(); }
 }
 
 // ─── AUDIO BELL ────────────────────────────────────────────────────────────
@@ -996,7 +1084,7 @@ function unlockAudio() {
 
 async function playBell() {
   try {
-    if (!audioCtx) {
+    if (!audioCtx || audioCtx.state === 'closed') {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
     if (audioCtx.state === 'suspended') {
@@ -1041,6 +1129,7 @@ function startTimer(seconds, showNext) {
   }
   tickTimer();
   state.timerInterval = setInterval(tickTimer, 250);
+  saveActiveSession();
 }
 
 function tickTimer() {
@@ -1160,6 +1249,7 @@ function finishSession() {
   };
   state.history = [session, ...state.history].slice(0, 80);
   saveHistory();
+  try { localStorage.removeItem('wg_active_session'); } catch(e) {}
   state.screen = 'done';
   render();
 }
@@ -1269,7 +1359,12 @@ if (isStandalone() && 'serviceWorker' in navigator) {
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
 
+const _restored = restoreActiveSession();
 render();
+if (_restored && state._resumeTimerAfterRender) {
+  state._resumeTimerAfterRender = false;
+  resumeTimerAfterRender();
+}
 </script>
 </body>
 </html>
