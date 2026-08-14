@@ -397,7 +397,7 @@ function todayStr() {
 
 function stopTimer() {
   if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
-  state.timerSec = null; state.timerMax = null; state.timerEndAt = null; state.timerBellFired = false;
+  state.timerSec = null; state.timerMax = null; state.timerEndAt = null; state.timerBellFired = false; state.timerExpired = false;
   saveActiveSession();
 }
 
@@ -465,8 +465,9 @@ function resumeTimerAfterRender() {
   if (overlay) overlay.classList.add('visible');
   const nextEl = document.getElementById('timer-next-label');
   if (nextEl) nextEl.style.display = 'none'; // can't reliably know if this was a last-set timer after reload
-  tickTimer(); // fires the bell immediately if it already expired while the page was gone
-  if (state.timerEndAt && !state.timerInterval) {
+  resetTimerActionUI();
+  tickTimer(); // fires the bell immediately (best-effort) and shows the expired state if it already passed while the page was gone
+  if (state.timerEndAt && !state.timerExpired && !state.timerInterval) {
     state.timerInterval = setInterval(tickTimer, 250);
   }
 }
@@ -910,7 +911,7 @@ function renderWorkout() {
           </div>
         </div>
         <div class="timer-overlay" id="timer-overlay">
-          <div class="timer-label">Rest</div>
+          <div class="timer-label" id="timer-label">Rest</div>
           <div class="timer-ring">
             <svg width="140" height="140">
               <circle cx="70" cy="70" r="52" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="6"/>
@@ -920,9 +921,9 @@ function renderWorkout() {
             </svg>
             <div class="timer-number h" id="timer-num" style="color:${accent}">—</div>
           </div>
-          <div class="timer-sub">seconds remaining</div>
+          <div class="timer-sub" id="timer-sub-label">seconds remaining</div>
           <div class="timer-next" id="timer-next-label" style="font-size:13px;color:rgba(255,255,255,0.65);margin-bottom:24px;text-align:center;padding:0 20px;font-weight:600;display:none;"></div>
-          <button class="skip-btn" onclick="skipRest()">Skip Rest</button>
+          <button class="skip-btn" id="timer-action-btn" onclick="skipRest()">Skip Rest</button>
         </div>
       </div>
     </div>
@@ -1116,8 +1117,10 @@ function startTimer(seconds, showNext) {
   state.timerMax = seconds;
   state.timerEndAt = Date.now() + seconds * 1000;
   state.timerBellFired = false;
+  state.timerExpired = false;
   const overlay = document.getElementById('timer-overlay');
   if (overlay) overlay.classList.add('visible');
+  resetTimerActionUI();
   const nextEl = document.getElementById('timer-next-label');
   if (nextEl) {
     if (showNext) {
@@ -1140,9 +1143,48 @@ function tickTimer() {
   updateTimerUI();
   if (remainingMs <= 0 && !state.timerBellFired) {
     state.timerBellFired = true;
-    playBell();
-    stopTimerUI();
-    stopTimer();
+    state.timerExpired = true;
+    playBell(); // best-effort — may be silently blocked after a background reload, which is why the overlay itself now stays up
+    if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
+    saveActiveSession();
+    showTimerExpiredUI();
+  }
+}
+
+function resetTimerActionUI() {
+  const label = document.getElementById('timer-label');
+  const sub = document.getElementById('timer-sub-label');
+  const btn = document.getElementById('timer-action-btn');
+  const loc = getLocation();
+  const exr = getExercise();
+  const accent = exr && exr.isFinisher ? '#ef4444' : (loc ? loc.accent : '#f97316');
+  if (label) label.textContent = 'Rest';
+  if (sub) sub.textContent = 'seconds remaining';
+  if (btn) {
+    btn.textContent = 'Skip Rest';
+    btn.style.background = '#1e1e1e';
+    btn.style.color = 'rgba(255,255,255,0.55)';
+    btn.style.border = '1px solid rgba(255,255,255,0.1)';
+  }
+}
+
+function showTimerExpiredUI() {
+  const label = document.getElementById('timer-label');
+  const sub = document.getElementById('timer-sub-label');
+  const num = document.getElementById('timer-num');
+  const btn = document.getElementById('timer-action-btn');
+  const loc = getLocation();
+  const exr = getExercise();
+  const accent = exr && exr.isFinisher ? '#ef4444' : (loc ? loc.accent : '#f97316');
+  if (label) { label.textContent = '✓ Rest Complete'; label.style.color = accent; }
+  if (sub) sub.textContent = "Tap below when you're ready";
+  if (num) num.textContent = '0';
+  if (btn) {
+    btn.textContent = 'Continue →';
+    btn.style.background = accent;
+    btn.style.color = '#000';
+    btn.style.border = 'none';
+    btn.style.fontWeight = '700';
   }
 }
 
