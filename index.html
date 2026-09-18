@@ -166,8 +166,16 @@ const LOCATIONS = [
   { id: 'hotel',  name: 'Hotel / Travel', icon: '🧳', sub: 'Minimal equipment, bodyweight-flexible', accent: '#22c55e' },
 ];
 
-function ex(name, sets, reps, restSec, tip, noWeight) {
-  return { name, sets, reps, restSec, tip, noWeight: !!noWeight };
+function ex(name, sets, reps, restSec, tip, noWeight, customLabels) {
+  return { type: 'single', name, sets, reps, restSec, tip, noWeight: !!noWeight, customLabels: customLabels || null };
+}
+
+function superset(nameA, repsA, tipA, nameB, repsB, tipB, sets, restSec) {
+  return {
+    type: 'superset', sets, restSec, noWeight: true,
+    a: { name: nameA, reps: repsA, tip: tipA },
+    b: { name: nameB, reps: repsB, tip: tipB },
+  };
 }
 
 const WORKOUTS = {
@@ -211,6 +219,18 @@ const WORKOUTS = {
       ex('Standing Calf Raise', 3, '15–20', 45, "Full range. Don't bounce."),
       ex('Seated Calf Raise', 3, '15–20', 45, 'Targets the soleus — full range.'),
     ]},
+    { id: 'gym-pump', name: 'Pump', subtitle: 'On-demand · fitted-shirt day', timingNotes: true, exercises: [
+      ex('Sumo Squat (bodyweight or one light DB)', 3, '20', 20, 'Slow down, 1 sec pause at bottom.'),
+      superset('Incline DB Press', '15', 'Full stretch at the bottom, squeeze chest at the top.', 'Chest-Supported DB Row', '15/side', 'Pull elbow to hip, pause 1 sec.', 3, 40),
+      superset('Cable Fly', '15–20', 'Hold the squeeze for 1 sec.', 'Straight-Arm Pulldown', '15–20', 'Feel the lats flare.', 3, 40),
+      ex('Incline DB Curl', 3, '12–15', 30, 'Deep stretch, no swinging.'),
+      ex('Cable Curl', 3, '15', 30, 'Constant tension.'),
+      ex('21s — Barbell Curl', 1, '', 30, 'Light weight, continuous through all three parts.', false, ['7 Bottom', '7 Top', '7 Full']),
+      ex('Push-Ups (chest finisher)', 1, 'Near failure', 0, 'Full range. Leave it all here.'),
+      ex('Hanging Knee Raise', 3, '12', 20, 'No swing.'),
+      ex('Cable Crunch', 3, '15', 20, 'Round the spine, exhale hard.'),
+      ex('Plank', 3, '30–45 sec', 20, 'Ribs down, squeeze glutes.'),
+    ]},
   ],
   garage: [
     { id: 'garage-push', name: 'Push', subtitle: 'Bench + Dumbbells', exercises: [
@@ -252,6 +272,18 @@ const WORKOUTS = {
       ex('Standing Calf Raise', 3, '15–20', 45, 'Full range each rep.'),
       ex('Glute Bridge', 3, '15–20', 45, 'Squeeze hard at the top.'),
     ]},
+    { id: 'garage-pump', name: 'Pump', subtitle: 'On-demand · fitted-shirt day', timingNotes: true, exercises: [
+      ex('KB Goblet Sumo Squat', 3, '20', 20, 'Slow down, 1 sec pause at bottom.'),
+      superset('Incline DB Press', '15', 'Full stretch at the bottom, squeeze chest at the top.', 'One-Arm DB Row (bench supported)', '15/side', 'Pull elbow to hip, pause 1 sec.', 3, 40),
+      superset('TRX Fly', '15–20', 'Hold the squeeze for 1 sec.', 'DB Pullover', '15–20', 'Ribs down, feel the lats stretch and flare.', 3, 40),
+      ex('EZ Bar Curl', 3, '12–15', 30, 'Elbows pinned, no swinging.'),
+      ex('DB Hammer Curl', 3, '15', 30, 'Constant tension.'),
+      ex('21s — EZ Bar Curl', 1, '', 30, 'Light weight, continuous through all three parts.', false, ['7 Bottom', '7 Top', '7 Full']),
+      ex('Push-Ups (chest finisher)', 1, 'Near failure', 0, 'Full range.'),
+      ex('TRX Knee Tuck', 3, '12', 20, 'No swing.'),
+      ex('Plate Crunch', 3, '15', 20, 'Round the spine, exhale hard.'),
+      ex('Plank', 3, '30–45 sec', 20, 'Ribs down, squeeze glutes.'),
+    ]},
   ],
   hotel: [
     { id: 'hotel-push', name: 'Push', subtitle: 'Bodyweight + Bands', exercises: [
@@ -289,6 +321,18 @@ const WORKOUTS = {
       ex('Glute Bridge', 3, '15–20', 30, 'Hip extension only, squeeze at the top.'),
       ex('Wall Sit', 3, '40 sec', 30, 'Thighs parallel to floor, hold steady.'),
       ex('Calf Raises', 3, '20–25', 30, 'Full range, pause at the top.'),
+    ]},
+    { id: 'hotel-pump', name: 'Pump', subtitle: 'On-demand · fitted-shirt day', timingNotes: true, exercises: [
+      ex('Bodyweight Sumo Squat', 3, '20', 20, 'Slow down, 1 sec pause at bottom.'),
+      superset('Feet-Elevated Push-Up (or DB Press if bench available)', '15–20', 'Chest to floor, squeeze at the top.', 'One-Arm DB Row (brace on bench or chair)', '15/side', 'Pull elbow to hip, pause 1 sec.', 3, 40),
+      superset('DB Floor Fly', '15–20', 'Hold the squeeze for 1 sec.', 'DB Pullover', '15–20', 'Ribs down, feel the lats stretch and flare.', 3, 40),
+      ex('DB Curl', 3, '12–15', 30, 'Elbows pinned, slow lowering.'),
+      ex('DB Hammer Curl', 3, '15', 30, 'Constant tension.'),
+      ex('21s — DB Curl', 1, '', 30, 'Light weight, continuous through all three parts.', false, ['7 Bottom', '7 Top', '7 Full']),
+      ex('Push-Ups (chest finisher)', 1, 'Near failure', 0, 'Full range.'),
+      ex('Reverse Crunch', 3, '15', 20, 'Curl hips off the floor, no momentum.'),
+      ex('Bicycle Crunch', 3, '20', 20, 'Slow, elbow to opposite knee.'),
+      ex('Plank', 3, '30–45 sec', 20, 'Ribs down, squeeze glutes.'),
     ]},
   ],
 };
@@ -377,9 +421,15 @@ function getFullExerciseList() {
 
 function getExercise() { return getFullExerciseList()[state.exIdx]; }
 
+function getSetCount(exr) {
+  if (!exr) return 1;
+  if (exr.customLabels) return exr.customLabels.length;
+  return exr.sets || 1;
+}
+
 function getCurrentSets() {
   const exr = getExercise();
-  const sets = exr?.sets || 1;
+  const sets = getSetCount(exr);
   return state.setsMap[state.exIdx] || Array(sets).fill(false);
 }
 
@@ -444,7 +494,7 @@ function restoreActiveSession() {
 
   state.location = saved.location;
   state.workout = workout;
-  state.abFinisher = AB_FINISHERS.find(a => a.id === saved.abFinisherId) || AB_FINISHERS[0];
+  state.abFinisher = saved.abFinisherId ? (AB_FINISHERS.find(a => a.id === saved.abFinisherId) || null) : null;
   state.exIdx = saved.exIdx || 0;
   state.setsMap = saved.setsMap || {};
   state.weights = saved.weights || {};
@@ -555,7 +605,7 @@ function renderHome() {
 function renderDay() {
   const loc = getLocation();
   const variations = WORKOUTS[state.location];
-  const icons = { Push: '↑', Pull: '↓', Legs: '◇' };
+  const icons = { Push: '↑', Pull: '↓', Legs: '◇', Pump: '⚡' };
   return `
   <div class="screen">
     <div class="home-header">
@@ -564,17 +614,20 @@ function renderDay() {
       <div class="home-title h">WHAT ARE<br>WE HITTING?</div>
     </div>
     <div class="loc-grid">
-      ${variations.map(w => `
-        <div class="loc-card" onclick="selectWorkout('${w.id}')" style="border-color:${loc.accent}22">
-          <div class="loc-card-bar" style="background:${loc.accent}"></div>
+      ${variations.map(w => {
+        const isPump = w.name === 'Pump';
+        const barColor = isPump ? '#f59e0b' : loc.accent;
+        return `
+        <div class="loc-card" onclick="selectWorkout('${w.id}')" style="border-color:${barColor}22">
+          <div class="loc-card-bar" style="background:${barColor}"></div>
           <div class="loc-icon" style="font-size:26px;">${icons[w.name] || '●'}</div>
           <div>
             <div class="loc-name">${w.name}</div>
             <div class="loc-sub">${w.subtitle}</div>
           </div>
           <div class="loc-arrow">›</div>
-        </div>
-      `).join('')}
+        </div>`;
+      }).join('')}
     </div>
     <div class="home-footer">Ends with a rotating ab finisher</div>
   </div>`;
@@ -842,14 +895,21 @@ function renderNutritionTiming() {
   </div>`;
 }
 
+function getDisplayName(exr) {
+  if (!exr) return '';
+  if (exr.type === 'superset') return `${exr.a.name} + ${exr.b.name}`;
+  return exr.name;
+}
+
 function renderWorkout() {
   const loc = getLocation();
   const exercises = getFullExerciseList();
   const exr = getExercise();
   const isFinisher = exr.isFinisher;
   const accent = isFinisher ? '#ef4444' : loc.accent;
-  const sets = exr.sets || 1;
-  const reps = exr.reps || '—';
+  const isSuperset = exr.type === 'superset';
+  const sets = getSetCount(exr);
+  const reps = isSuperset ? '—' : (exr.reps || '—');
   const rest = exr.restSec > 0 ? `${exr.restSec}s` : '—';
   const progress = state.exIdx / exercises.length;
   const currentSets = getCurrentSets();
@@ -858,9 +918,19 @@ function renderWorkout() {
   const curW = state.weights[state.exIdx] || '';
   const nextExr = exercises[state.exIdx + 1];
   const nextLabel = nextExr
-    ? `Next: ${nextExr.isFinisher && !isFinisher ? '🔥 ' : ''}${nextExr.name}`
+    ? `Next: ${nextExr.isFinisher && !isFinisher ? '🔥 ' : ''}${getDisplayName(nextExr)}`
     : "Last exercise — finish strong";
   state.nextLabel = nextLabel;
+
+  const titleBlock = isSuperset
+    ? `
+        <div class="ex-name h" style="font-size:24px;line-height:1.15;">${exr.a.name}<br><span style="color:${accent}">+</span> ${exr.b.name}</div>
+        <div class="ex-tip"><b style="color:rgba(255,255,255,0.85)">${exr.a.name}</b> (${exr.a.reps}): ${exr.a.tip}</div>
+        <div class="ex-tip" style="margin-top:-8px;"><b style="color:rgba(255,255,255,0.85)">${exr.b.name}</b> (${exr.b.reps}): ${exr.b.tip}</div>
+        <div class="ex-tip" style="margin-top:-8px;font-style:normal;color:${accent};font-weight:600;">Straight through both, no rest between — then rest after the pair.</div>`
+    : `
+        <div class="ex-name h">${exr.name}</div>
+        <div class="ex-tip">${exr.tip}</div>`;
 
   return `
   <div class="screen" id="workout-screen">
@@ -872,12 +942,11 @@ function renderWorkout() {
     <div class="card-wrap">
       <div class="ex-card" id="ex-card" style="border:1px solid ${allDone ? accent+'55' : 'rgba(255,255,255,0.08)'}">
         <div class="badge-row">
-          <span class="badge" style="background:${accent}22;color:${accent}">${isFinisher ? '🔥 Ab Finisher — ' + state.abFinisher.name : loc.name + ' · ' + state.workout.name}</span>
+          <span class="badge" style="background:${accent}22;color:${accent}">${isFinisher ? '🔥 Ab Finisher' + (state.abFinisher ? ' — ' + state.abFinisher.name : '') : (isSuperset ? 'Superset · ' : '') + loc.name + ' · ' + state.workout.name}</span>
         </div>
-        <div class="ex-name h">${exr.name}</div>
-        <div class="ex-tip">${exr.tip}</div>
+        ${titleBlock}
         <div class="stats-row">
-          ${[['SETS',sets],['REPS',reps],['REST',rest]].map(([l,v]) => `
+          ${[['ROUNDS',sets],['REPS',reps],['REST',rest]].map(([l,v]) => `
             <div class="stat-box">
               <div class="stat-val h" style="color:${accent}">${v}</div>
               <div class="stat-label">${l}</div>
@@ -898,12 +967,12 @@ function renderWorkout() {
           </div>
         </div>`}
         <div class="sets-section">
-          <div class="sets-label">Tap each set when complete</div>
+          <div class="sets-label">${isSuperset ? 'Tap each round when both exercises are done' : (exr.customLabels ? 'Tap each part in order' : 'Tap each set when complete')}</div>
           <div class="sets-row">
             ${currentSets.map((done, i) => `
               <button class="set-circle${done?' done':''}" id="set-${i}"
-                style="${done?`background:${accent};border-color:${accent}`:''}"
-                onclick="tapSet(${i})">${done ? '✓' : i+1}</button>
+                style="${done?`background:${accent};border-color:${accent}`:''}${exr.customLabels ? ';width:64px;font-size:13px;' : ''}"
+                onclick="tapSet(${i})">${done ? '✓' : (exr.customLabels ? exr.customLabels[i] : i+1)}</button>
             `).join('')}
           </div>
           <div class="all-done-msg" id="all-done-msg" style="color:${accent};${allDone?'display:block':''}">
@@ -940,12 +1009,22 @@ function renderWorkout() {
 function renderDone() {
   const loc = getLocation();
   const last = state.history[0];
+  const showTiming = state.workout && state.workout.timingNotes;
   return `
   <div class="done-screen">
     <div class="done-check h" style="color:${loc.accent}">✓</div>
     <div class="done-title h">SESSION<br>COMPLETE</div>
     <div class="done-sub">${state.workout.name} · ${loc.name}</div>
     <div class="done-date">${todayStr()}</div>
+    ${showTiming ? `
+    <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:14px;padding:16px;width:100%;margin-bottom:20px;text-align:left;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#f59e0b;margin-bottom:8px;">Pump Timing</div>
+      <ul style="list-style:none;padding:0;margin:0;font-size:13px;color:rgba(255,255,255,0.8);line-height:1.7;">
+        <li>→ Finish 2–3 hours before heading out — pump peaks shortly after, then fades</li>
+        <li>→ Carb-heavy meal with some salt within an hour, sip water steadily</li>
+        <li>→ Right before leaving: 20 push-ups + 15 light curls for a quick top-off</li>
+      </ul>
+    </div>` : ''}
     ${last ? `
     <div class="session-summary">
       <div class="summary-title">Session Summary</div>
@@ -1039,13 +1118,14 @@ function onWeightInput(val) {
 
 function tapSet(i) {
   const exr = getExercise();
-  const sets = exr.sets || 1;
+  const sets = getSetCount(exr);
   const cur = state.setsMap[state.exIdx] || Array(sets).fill(false);
   const next = [...cur]; next[i] = !next[i];
   state.setsMap[state.exIdx] = next;
 
   const loc = getLocation();
   const accent = exr.isFinisher ? '#ef4444' : loc.accent;
+  const label = exr.customLabels ? exr.customLabels[i] : (i + 1);
   const btn = document.getElementById(`set-${i}`);
   if (btn) {
     btn.classList.toggle('done', next[i]);
@@ -1053,7 +1133,7 @@ function tapSet(i) {
     btn.style.borderColor = next[i] ? accent : 'rgba(255,255,255,0.14)';
     btn.style.color = next[i] ? '#000' : 'rgba(255,255,255,0.28)';
     btn.style.transform = next[i] ? 'scale(1.1)' : 'scale(1)';
-    btn.textContent = next[i] ? '✓' : i + 1;
+    btn.textContent = next[i] ? '✓' : label;
   }
 
   const allDone = next.every(Boolean);
@@ -1241,7 +1321,7 @@ function selectLocation(id) {
 function selectWorkout(workoutId) {
   const loc = getLocation();
   state.workout = WORKOUTS[state.location].find(w => w.id === workoutId);
-  state.abFinisher = pickAbFinisher();
+  state.abFinisher = state.workout.id.endsWith('-pump') ? null : pickAbFinisher();
   state.exIdx = 0; state.setsMap = {}; state.weights = {};
   state.screen = 'workout';
   render();
@@ -1282,11 +1362,11 @@ function finishSession() {
     locationName: loc.name,
     workoutName: state.workout.name,
     exercises: exercises.map((ex, i) => ({
-      name: ex.name,
+      name: getDisplayName(ex),
       isFinisher: ex.isFinisher,
       weight: state.weights[i] || null,
       sets: (state.setsMap[i] || []).filter(Boolean).length,
-      reps: ex.reps || '—',
+      reps: ex.type === 'superset' ? `${ex.a.reps} / ${ex.b.reps}` : (ex.reps || '—'),
     }))
   };
   state.history = [session, ...state.history].slice(0, 80);
