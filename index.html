@@ -183,7 +183,7 @@ const WORKOUTS = {
     { id: 'gym-push', name: 'Push', subtitle: 'Chest / Shoulders / Triceps', exercises: [
       ex('Warm-Up: Bike or Treadmill', 1, '3–5 min', 0, 'Easy pace. Get blood moving before you touch a weight.', true),
       ex('Arm Circles', 1, '10 forward / 10 back', 0, 'Large controlled circles — opens up the shoulders.', true),
-      ex('Scapular Push-Ups', 1, '10', 0, 'Small range, shoulder blades protract and retract — primes the shoulders for pressing.', true),
+      ex('Scapular Wall Slides', 1, '10', 0, 'Back against a wall, slide arms up and down — primes the shoulders for pressing, zero wrist load.', true),
       ex('Barbell Bench Press', 4, '8–10', 90, 'Drive feet into floor. 3-second descent. Own the eccentric.'),
       ex('Hammer Strength Iso-Lateral Incline Press', 4, '10–12', 75, "Guided converging path — less shoulder strain than a free dumbbell incline. Start light (8 lbs/side per the machine)."),
       ex('Cable Fly / Pec Deck', 3, '12–15', 60, 'Squeeze hard at center. Slow eccentric every rep.'),
@@ -226,7 +226,7 @@ const WORKOUTS = {
       ex('Incline DB Curl', 3, '12–15', 30, 'Deep stretch, no swinging.'),
       ex('Cable Curl', 3, '15', 30, 'Constant tension.'),
       ex('21s — Barbell Curl', 1, '', 30, 'Light weight, continuous through all three parts.', false, ['7 Bottom', '7 Top', '7 Full']),
-      ex('Push-Ups (chest finisher)', 1, 'Near failure', 0, 'Full range. Leave it all here.'),
+      ex('Dumbbell Squeeze Press (chest finisher)', 1, 'Near failure', 0, 'Hold one DB vertically between both palms, press together hard. Neutral wrists — zero extension.'),
       ex('Hanging Knee Raise', 3, '12', 20, 'No swing.'),
       ex('Cable Crunch', 3, '15', 20, 'Round the spine, exhale hard.'),
       ex('Heel Taps Over Dumbbell', 3, '20', 20, 'Sit back slightly, legs extended, tap heels down on either side of a dumbbell.'),
@@ -236,7 +236,7 @@ const WORKOUTS = {
     { id: 'garage-push', name: 'Push', subtitle: 'Bench + Dumbbells', exercises: [
       ex('Warm-Up: Jump Rope or Jumping Jacks', 1, '3–5 min', 0, 'Get the heart rate up before loading the shoulders.', true),
       ex('Arm Circles', 1, '10 forward / 10 back', 0, 'Large controlled circles — opens up the shoulders.', true),
-      ex('Scapular Push-Ups', 1, '10', 0, 'Primes the shoulders for pressing.', true),
+      ex('Scapular Wall Slides', 1, '10', 0, 'Back against a wall, slide arms up and down — zero wrist load.', true),
       ex('Dumbbell Bench Press', 4, '10–12', 75, 'Full range. Control the descent.'),
       ex('Incline Dumbbell Press', 4, '10–12', 60, 'Upper chest emphasis.'),
       ex('Dumbbell Fly (on bench)', 3, '12–15', 60, 'Slight elbow bend. Slow eccentric.'),
@@ -289,12 +289,11 @@ const WORKOUTS = {
     { id: 'hotel-push', name: 'Push', subtitle: 'Bodyweight + Bands', exercises: [
       ex('Warm-Up: Jumping Jacks', 1, '3–5 min', 0, 'No equipment needed. Get moving.', true),
       ex('Arm Circles', 1, '10 forward / 10 back', 0, 'Large controlled circles — opens up the shoulders.', true),
-      ex('Scapular Push-Ups', 1, '10', 0, 'Primes the shoulders for pressing.', true),
-      ex('Push-Ups', 4, '15–20', 45, 'Full range, core tight.'),
-      ex('Incline Push-Up', 3, '15', 40, 'Hands elevated — targets upper chest.'),
-      ex('Decline Push-Up (feet elevated)', 3, '12–15', 45, 'Feet on a chair or bed — shifts emphasis upward.'),
-      ex('Pike Push-Up', 3, '10–12', 45, 'Hips up, shoulder-focused pressing movement.'),
-      ex('Diamond Push-Up', 3, '10–12', 40, 'Hands close together, hits triceps.'),
+      ex('Scapular Wall Slides', 1, '10', 0, 'Back against a wall, slide arms up and down — zero wrist load.', true),
+      ex('Chair Dip (lean forward, chest emphasis)', 4, '12–15', 45, 'Hands on chair edge, lean forward into the dip. Chest and shoulders, not wrists.'),
+      ex('Isometric Chest Squeeze', 3, '15 sec holds', 40, 'Press palms together hard in front of your chest. Zero wrist load, pure chest tension.'),
+      ex('Wall Press (feet back)', 3, '12–15', 45, 'Hands on a wall, walk feet back for more angle. Upper chest, no wrist extension.'),
+      ex('Wall Shoulder Press (isometric)', 3, '15 sec holds', 45, 'Palms flat on wall at shoulder height, press hard and hold.'),
       ex('Band Lateral Raise (or slow arm circles)', 3, '15', 30, 'Light and controlled — feel the delts.'),
       ex('Tricep Dips (chair or bed edge)', 3, '12–15', 40, 'Elbows tucked, controlled descent.'),
     ]},
@@ -324,12 +323,12 @@ const WORKOUTS = {
     ]},
     { id: 'hotel-pump', name: 'Pump', subtitle: 'On-demand · fitted-shirt day', timingNotes: true, exercises: [
       ex('Bodyweight Sumo Squat', 3, '20', 20, 'Slow down, 1 sec pause at bottom.'),
-      superset('Feet-Elevated Push-Up (or DB Press if bench available)', '15–20', 'Chest to floor, squeeze at the top.', 'One-Arm DB Row (brace on bench or chair)', '15/side', 'Pull elbow to hip, pause 1 sec.', 3, 40),
+      superset('Chair Dip (lean forward, chest emphasis)', '15', 'Hands on chair edge, lean forward. Chest and shoulders, not wrists.', 'One-Arm DB Row (brace on bench or chair)', '15/side', 'Pull elbow to hip, pause 1 sec.', 3, 40),
       superset('DB Floor Fly', '15–20', 'Hold the squeeze for 1 sec.', 'DB Pullover', '15–20', 'Ribs down, feel the lats stretch and flare.', 3, 40),
       ex('DB Curl', 3, '12–15', 30, 'Elbows pinned, slow lowering.'),
       ex('DB Hammer Curl', 3, '15', 30, 'Constant tension.'),
       ex('21s — DB Curl', 1, '', 30, 'Light weight, continuous through all three parts.', false, ['7 Bottom', '7 Top', '7 Full']),
-      ex('Push-Ups (chest finisher)', 1, 'Near failure', 0, 'Full range.'),
+      ex('Chair Dip (chest finisher)', 1, 'Near failure', 0, 'Lean forward into every rep. Leave it all here.'),
       ex('Reverse Crunch', 3, '15', 20, 'Curl hips off the floor, no momentum.'),
       ex('Bicycle Crunch', 3, '20', 20, 'Slow, elbow to opposite knee.'),
       ex('Heel Taps (bodyweight)', 3, '20', 20, 'Sit back slightly, legs extended, tap heels down side to side — use a shoe or book as a target if no dumbbell.'),
@@ -1022,7 +1021,7 @@ function renderDone() {
       <ul style="list-style:none;padding:0;margin:0;font-size:13px;color:rgba(255,255,255,0.8);line-height:1.7;">
         <li>→ Finish 2–3 hours before heading out — pump peaks shortly after, then fades</li>
         <li>→ Carb-heavy meal with some salt within an hour, sip water steadily</li>
-        <li>→ Right before leaving: 20 push-ups + 15 light curls for a quick top-off</li>
+        <li>→ Right before leaving: 20 chair dips + 15 light curls for a quick top-off</li>
       </ul>
     </div>` : ''}
     ${last ? `
