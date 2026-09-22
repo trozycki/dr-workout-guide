@@ -66,6 +66,15 @@
   .stat-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 3px; }
 
   .weight-section { margin-bottom: 18px; }
+  .rec-banner { border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .rec-text { font-size: 12px; font-weight: 600; line-height: 1.4; }
+  .rec-use-btn { border: none; border-radius: 20px; padding: 7px 14px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: 'Barlow', sans-serif; }
+  .failure-overlay { position: absolute; inset: 0; background: rgba(10,10,10,0.97); border-radius: 20px; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 11; padding: 24px; text-align: center; }
+  .failure-overlay.visible { display: flex; }
+  .failure-q { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 24px; margin-bottom: 6px; }
+  .failure-sub { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 24px; }
+  .failure-btn-row { display: flex; gap: 10px; width: 100%; }
+  .failure-btn { flex: 1; padding: 18px 10px; border-radius: 14px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; border: 1.5px solid rgba(255,255,255,0.12); background: #1a1a1a; color: #fff; }
   .weight-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .weight-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
   .last-weight { font-size: 11px; color: rgba(255,255,255,0.28); }
@@ -288,52 +297,53 @@ const WORKOUTS = {
     ]},
   ],
   hotel: [
-    { id: 'hotel-push', name: 'Push', subtitle: 'Bodyweight + Bands', exercises: [
-      ex('Warm-Up: Jumping Jacks', 1, '3–5 min', 0, 'No equipment needed. Get moving.', true),
+    { id: 'hotel-push', name: 'Push', subtitle: 'Cable + Dumbbells', exercises: [
+      ex('Warm-Up: Bike or Treadmill', 1, '3–5 min', 0, 'Easy pace. Get blood moving before you touch a weight.', true),
       ex('Arm Circles', 1, '10 forward / 10 back', 0, 'Large controlled circles — opens up the shoulders.', true),
       ex('Scapular Wall Slides', 1, '10', 0, 'Back against a wall, slide arms up and down — zero wrist load.', true),
-      ex('Chair Dip (lean forward, chest emphasis)', 4, '12–15', 45, 'Hands on chair edge, lean forward into the dip. Chest and shoulders, not wrists.'),
-      ex('Isometric Chest Squeeze', 3, '15 sec holds', 40, 'Press palms together hard in front of your chest. Zero wrist load, pure chest tension.'),
-      ex('Wall Press (feet back)', 3, '12–15', 45, 'Hands on a wall, walk feet back for more angle. Upper chest, no wrist extension.'),
-      ex('Wall Shoulder Press (isometric)', 3, '15 sec holds', 45, 'Palms flat on wall at shoulder height, press hard and hold.'),
-      ex('Band Lateral Raise (or slow arm circles)', 3, '15', 30, 'Light and controlled — feel the delts.'),
-      ex('Tricep Dips (chair or bed edge)', 3, '12–15', 40, 'Elbows tucked, controlled descent.'),
+      ex('Dumbbell Bench Press (or flat bench cable press)', 4, '10–12', 75, 'Full range. Control the descent.'),
+      ex('Incline Dumbbell Press', 4, '10–12', 60, 'Upper chest emphasis.'),
+      ex('Cable Fly', 3, '12–15', 60, 'Squeeze hard at center. Slow eccentric every rep.'),
+      ex('Cable Shoulder Press (or DB Shoulder Press)', 4, '10–12', 60, 'Full range, no lockout hold.'),
+      ex('Lateral Raises (cable or DB)', 3, '12–15', 45, 'Lead with elbows, light weight.'),
+      ex('Dumbbell Tricep Kickback', 3, '12–15', 45, 'Bent over, upper arm stays fixed at your side.'),
+      ex('Tricep Pushdown (cable)', 3, '12–15', 45, 'Pin elbows to sides. Squeeze fully at the bottom.'),
     ]},
-    { id: 'hotel-pull', name: 'Pull', subtitle: 'Bodyweight + Bands', exercises: [
-      ex('Warm-Up: Jumping Jacks', 1, '3–5 min', 0, 'No equipment needed. Get moving.', true),
-      ex('Arm Swings Across Chest', 1, '15', 0, 'Opens the chest and upper back before rowing.', true),
+    { id: 'hotel-pull', name: 'Pull', subtitle: 'Cable + Dumbbells', exercises: [
+      ex('Warm-Up: Bike or Treadmill', 1, '3–5 min', 0, 'Easy pace. Prime the back before loading it.', true),
+      ex('Band Pull-Aparts (or light cable pull-apart)', 1, '15', 0, 'Opens the chest, activates the upper back before rowing.', true),
       ex('Cat-Cow', 1, '10', 0, 'Mobilizes the spine — primes it for loaded pulls.', true),
-      ex('Band or Towel Door Row', 4, '15', 45, 'Squeeze the back hard at the top.'),
-      ex('Superman Row', 3, '15', 40, 'Lying face down, pull elbows back and up.'),
-      ex('Reverse Snow Angel (floor)', 3, '15', 30, 'Upper back activation, controlled.'),
-      ex('Band Face Pull', 3, '15–20', 30, 'External rotation at the top.'),
-      ex('Band or Towel Bicep Curl', 3, '12–15', 30, 'Strict form, slow eccentric.'),
-      ex('Isometric Curl Hold', 3, '20 sec', 30, 'Hold at 90 degrees — burns out the bicep.'),
-      ex('Prone Y-Raise (floor)', 3, '15', 30, 'Arms in a Y, squeeze shoulder blades.'),
+      ex('Lat Pulldown (cable)', 4, '8–10', 90, 'Pull to upper chest. Shoulder blades down and back.'),
+      ex('Cable Row (seated)', 4, '10–12', 75, "Don't round the back. Squeeze the rhomboids."),
+      ex('Single-Arm Dumbbell Row', 3, '10–12/side', 60, 'Full extension at bottom. Drive elbow to hip.'),
+      ex('Straight-Arm Pulldown (cable)', 3, '12–15', 60, 'Slight knee bend. Feel the lat.'),
+      ex('Face Pulls (cable)', 3, '15–20', 45, 'Rope to forehead. External rotation at the top.'),
+      ex('Dumbbell Curl', 3, '10–12', 45, 'No swinging. Slow on the way down.'),
+      ex('Hammer Curl', 3, '12–15', 45, 'Neutral grip. Builds brachialis thickness.'),
     ]},
-    { id: 'hotel-legs', name: 'Legs', subtitle: 'Bodyweight-Flexible', exercises: [
-      ex('Warm-Up: Jumping Jacks', 1, '3–5 min', 0, 'No equipment needed. Get the legs moving.', true),
+    { id: 'hotel-legs', name: 'Legs', subtitle: 'Cable + Dumbbells', exercises: [
+      ex('Warm-Up: Bike or Treadmill', 1, '3–5 min', 0, 'Easy pace to get blood into the legs.', true),
       ex('Bodyweight Squats (slow, full depth)', 1, '10', 0, 'Groove the pattern before loading it.', true),
       ex('Walking Leg Swings', 1, '10/side', 0, 'Opens the hips before you load them.', true),
-      ex('Bodyweight Squat', 4, '20', 45, 'Full depth, controlled tempo.'),
-      ex('Walking Lunges', 3, '15/side', 45, 'Long stride, upright torso.'),
-      ex('Bulgarian Split Squat (chair)', 3, '10/side', 45, 'Rear foot on a chair.'),
-      ex('Single-Leg RDL', 3, '12/side', 45, 'Balance-focused, slow and controlled.'),
-      ex('Glute Bridge', 3, '15–20', 30, 'Hip extension only, squeeze at the top.'),
-      ex('Wall Sit', 3, '40 sec', 30, 'Thighs parallel to floor, hold steady.'),
-      ex('Calf Raises', 3, '20–25', 30, 'Full range, pause at the top.'),
+      ex('Goblet Squat', 4, '12–15', 75, 'Elbows inside knees, chest up, full depth.'),
+      ex('Dumbbell Romanian Deadlift', 4, '10–12', 90, 'Hip hinge, feel the hamstrings.'),
+      ex('Walking Lunges (DB)', 3, '12/side', 60, 'Long stride, controlled tempo.'),
+      ex('Bulgarian Split Squat (rear foot elevated)', 3, '10/side', 60, 'Bench or chair behind you for rear foot.'),
+      ex('Cable Leg Extension (or single-leg DB step-up)', 3, '12–15', 60, 'Pause at the top. Slow descent.'),
+      ex('Cable or Lying Leg Curl', 3, '12–15', 60, 'Full contraction at the top.'),
+      ex('Standing Calf Raise', 3, '15–20', 45, "Full range. Don't bounce."),
     ]},
     { id: 'hotel-pump', name: 'Pump', subtitle: 'On-demand · fitted-shirt day', timingNotes: true, exercises: [
-      ex('Bodyweight Sumo Squat', 3, '20', 20, 'Slow down, 1 sec pause at bottom.'),
-      superset('Chair Dip (lean forward, chest emphasis)', '15', 'Hands on chair edge, lean forward. Chest and shoulders, not wrists.', 'One-Arm DB Row (brace on bench or chair)', '15/side', 'Pull elbow to hip, pause 1 sec.', 3, 40),
-      superset('DB Floor Fly', '15–20', 'Hold the squeeze for 1 sec.', 'DB Pullover', '15–20', 'Ribs down, feel the lats stretch and flare.', 3, 40),
+      ex('Goblet Squat (bodyweight or one light DB)', 3, '20', 20, 'Slow down, 1 sec pause at bottom.'),
+      superset('Incline DB Press', '15', 'Full stretch at the bottom, squeeze chest at the top.', 'One-Arm DB Row (bench supported)', '15/side', 'Pull elbow to hip, pause 1 sec.', 3, 40),
+      superset('Cable Fly', '15–20', 'Hold the squeeze for 1 sec.', 'Straight-Arm Pulldown (cable)', '15–20', 'Feel the lats flare.', 3, 40),
       ex('DB Curl', 3, '12–15', 30, 'Elbows pinned, slow lowering.'),
-      ex('DB Hammer Curl', 3, '15', 30, 'Constant tension.'),
+      ex('Cable Curl', 3, '15', 30, 'Constant tension.'),
       ex('21s — DB Curl', 1, '7 each', 30, '7 bottom half + 7 top half + 7 full reps = 21 total, one continuous set.', false, ['7 Bottom', '7 Top', '7 Full']),
-      ex('Chair Dip (chest finisher)', 1, 'Near failure', 0, 'Lean forward into every rep. Leave it all here.'),
+      ex('Dumbbell Squeeze Press (chest finisher)', 1, 'Near failure', 0, 'DB vertical between both palms at chest height. Squeeze hard, press up, lower back down — repeat for reps.'),
       ex('Reverse Crunch', 3, '15', 20, 'Curl hips off the floor, no momentum.'),
       ex('Bicycle Crunch', 3, '20', 20, 'Slow, elbow to opposite knee.'),
-      ex('Heel Taps (bodyweight)', 3, '20', 20, 'Sit back slightly, legs extended, tap heels down side to side — use a shoe or book as a target if no dumbbell.'),
+      ex('Heel Taps Over Dumbbell', 3, '20', 20, 'Sit back slightly, legs extended, tap heels down on either side of a dumbbell.'),
     ]},
   ],
 };
@@ -370,6 +380,7 @@ const state = {
   exIdx: 0,
   setsMap: {},
   weights: {},
+  failureMap: {},
   timerSec: null,
   timerMax: null,
   timerInterval: null,
@@ -442,6 +453,61 @@ function getLastWeight(exName) {
   return null;
 }
 
+// ─── PROGRESSIVE OVERLOAD ────────────────────────────────────────────────────
+
+const COMPOUND_KEYWORDS = ['squat', 'deadlift', 'press', 'row', 'pulldown', 'pull-up', 'pull up', 'bench', 'dip', 'thrust'];
+function isCompoundLift(name) {
+  const n = (name || '').toLowerCase();
+  return COMPOUND_KEYWORDS.some(k => n.includes(k));
+}
+function getStepSize(name) {
+  return isCompoundLift(name) ? 5 : 2.5;
+}
+
+// Last 3 logged instances of this exact exercise name, most recent first.
+// Each entry: { weight: number|null, failure: bool|null }
+function getRecentInstances(exName, limit) {
+  const out = [];
+  for (const s of state.history) {
+    if (s.type === 'yoga') continue;
+    const m = s.exercises?.find(e => e.name === exName);
+    if (m && m.weight) {
+      out.push({ weight: parseFloat(m.weight), failure: !!m.failure });
+      if (out.length >= limit) break;
+    }
+  }
+  return out;
+}
+
+// Returns null (no recommendation to show) or:
+// { direction: 'up'|'down'|'hold', suggested: number, reason: string }
+function getWeightRecommendation(exName) {
+  const recent = getRecentInstances(exName, 3);
+  if (recent.length === 0) return null;
+  const step = getStepSize(exName);
+  const last = recent[0];
+
+  // Two failures in a row at the same weight -> offer a step down
+  if (recent.length >= 2 && recent[0].failure && recent[1].failure && recent[0].weight === recent[1].weight) {
+    return { direction: 'down', suggested: Math.max(0, last.weight - step), reason: 'Hit failure 2 sessions in a row at this weight' };
+  }
+
+  // Any failure last time -> hold, no increase
+  if (last.failure) {
+    return { direction: 'hold', suggested: last.weight, reason: 'Hit failure last time — hold here' };
+  }
+
+  // Same weight, no failure, 3 sessions running -> step up
+  if (recent.length >= 3 &&
+      recent[0].weight === recent[1].weight &&
+      recent[1].weight === recent[2].weight &&
+      !recent[0].failure && !recent[1].failure && !recent[2].failure) {
+    return { direction: 'up', suggested: last.weight + step, reason: 'Same weight, clean reps, 3 sessions running' };
+  }
+
+  return null;
+}
+
 function todayStr() {
   return new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
@@ -473,6 +539,7 @@ function saveActiveSession() {
       exIdx: state.exIdx,
       setsMap: state.setsMap,
       weights: state.weights,
+      failureMap: state.failureMap,
       timerEndAt: state.timerEndAt || null,
       timerMax: state.timerMax || null,
       timerBellFired: state.timerBellFired || false,
@@ -499,6 +566,7 @@ function restoreActiveSession() {
   state.exIdx = saved.exIdx || 0;
   state.setsMap = saved.setsMap || {};
   state.weights = saved.weights || {};
+  state.failureMap = saved.failureMap || {};
   state.screen = 'workout';
 
   if (saved.timerEndAt) {
@@ -556,9 +624,28 @@ function getLastWorkoutInfo() {
   }
 }
 
+function getTrainingStreak() {
+  const dates = [...new Set(state.history.filter(s => s.type !== 'yoga').map(s => s.date))]
+    .map(d => new Date(d))
+    .filter(d => !isNaN(d))
+    .sort((a, b) => b - a);
+  if (!dates.length) return 0;
+  const daysSinceLast = Math.round((new Date(todayStr()) - dates[0]) / 86400000);
+  if (daysSinceLast > 1) return 0; // streak already broken, nothing to flag
+  let streak = 1;
+  for (let i = 0; i < dates.length - 1; i++) {
+    const diff = Math.round((dates[i] - dates[i + 1]) / 86400000);
+    if (diff === 1) streak++;
+    else break;
+  }
+  return streak;
+}
+
 function renderHome() {
   const count = state.history.length;
   const lastInfo = getLastWorkoutInfo();
+  const streak = getTrainingStreak();
+  const showRestNudge = streak >= 3;
   return `
   <div class="screen">
     <div class="home-header">
@@ -571,6 +658,10 @@ function renderHome() {
       <div style="margin-top:16px;background:#141414;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:12px 16px;">
         <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:3px;">Last Worked</div>
         <div style="font-size:14px;color:#fff;font-weight:600;">${lastInfo.workoutName} · ${lastInfo.locationName}${lastInfo.diffDays !== null ? ` <span style="color:rgba(255,255,255,0.4);font-weight:400;">(${lastInfo.diffDays === 0 ? 'today' : lastInfo.diffDays === 1 ? 'yesterday' : lastInfo.diffDays + ' days ago'})</span>` : ''}</div>
+      </div>` : ''}
+      ${showRestNudge ? `
+      <div style="margin-top:10px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:14px;padding:12px 16px;">
+        <div style="font-size:14px;color:#f59e0b;font-weight:600;">🛑 ${streak} days straight — consider a rest day</div>
       </div>` : ''}
     </div>
     <div class="loc-grid">
@@ -896,6 +987,10 @@ function renderNutritionTiming() {
   </div>`;
 }
 
+function isEligibleForOverload(exr) {
+  return exr && exr.type === 'single' && !exr.noWeight && !exr.customLabels && !exr.isFinisher;
+}
+
 function getDisplayName(exr) {
   if (!exr) return '';
   if (exr.type === 'superset') return `${exr.a.name} + ${exr.b.name}`;
@@ -916,6 +1011,8 @@ function renderWorkout() {
   const currentSets = getCurrentSets();
   const allDone = currentSets.every(Boolean);
   const lastW = getLastWeight(exr.name);
+  const eligible = isEligibleForOverload(exr);
+  const rec = eligible ? getWeightRecommendation(exr.name) : null;
   const curW = state.weights[state.exIdx] || '';
   const nextExr = exercises[state.exIdx + 1];
   const nextLabel = nextExr
@@ -959,6 +1056,13 @@ function renderWorkout() {
             <span class="weight-label">Weight Used</span>
             ${lastW ? `<span class="last-weight">Last: <span style="color:${accent}">${lastW} lbs</span></span>` : ''}
           </div>
+          ${rec ? `
+          <div class="rec-banner" style="background:${rec.direction==='up'?'rgba(34,197,94,0.12)':rec.direction==='down'?'rgba(239,68,68,0.12)':'rgba(255,255,255,0.06)'};border:1px solid ${rec.direction==='up'?'rgba(34,197,94,0.35)':rec.direction==='down'?'rgba(239,68,68,0.35)':'rgba(255,255,255,0.12)'};">
+            <span class="rec-text" style="color:${rec.direction==='up'?'#22c55e':rec.direction==='down'?'#ef4444':'rgba(255,255,255,0.6)'}">
+              ${rec.direction==='up' ? '↑' : rec.direction==='down' ? '↓' : '→'} ${rec.reason} — try <b>${rec.suggested} lbs</b>
+            </span>
+            <button class="rec-use-btn" style="background:${rec.direction==='up'?'#22c55e':rec.direction==='down'?'#ef4444':'rgba(255,255,255,0.15)'};color:${rec.direction==='hold'?'#fff':'#000'}" onclick="useRecommendedWeight(${rec.suggested})">Use</button>
+          </div>` : ''}
           <div class="weight-input-row">
             <input class="weight-input" id="weight-input" type="number" inputmode="decimal"
               value="${curW}" placeholder="${lastW || '0'}"
@@ -995,12 +1099,20 @@ function renderWorkout() {
           <div class="timer-next" id="timer-next-label" style="font-size:13px;color:rgba(255,255,255,0.65);margin-bottom:24px;text-align:center;padding:0 20px;font-weight:600;display:none;"></div>
           <button class="skip-btn" id="timer-action-btn" onclick="skipRest()">Skip Rest</button>
         </div>
+        <div class="failure-overlay" id="failure-overlay">
+          <div class="failure-q h">How'd it go?</div>
+          <div class="failure-sub">${exr.name}</div>
+          <div class="failure-btn-row">
+            <button class="failure-btn" style="border-color:${accent};color:${accent}" onclick="answerFailure(false)">✓ Full Reps</button>
+            <button class="failure-btn" style="border-color:#ef4444;color:#ef4444" onclick="answerFailure(true)">⚠ Hit Failure</button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="nav-row">
       <button class="nav-btn nav-btn-prev" id="btn-prev" onclick="goPrevEx()" ${state.exIdx===0?'disabled':''}>‹ Prev</button>
       <button class="nav-btn nav-btn-next" id="btn-next"
-        style="${allDone?`background:${accent};color:#000`:''}" onclick="goNextEx()">
+        style="${allDone?`background:${accent};color:#000`:''}" onclick="handleNextClick()">
         ${state.exIdx===exercises.length-1 ? 'Finish' : 'Next ›'}
       </button>
     </div>
@@ -1323,7 +1435,7 @@ function selectWorkout(workoutId) {
   const loc = getLocation();
   state.workout = WORKOUTS[state.location].find(w => w.id === workoutId);
   state.abFinisher = state.workout.id.endsWith('-pump') ? null : pickAbFinisher();
-  state.exIdx = 0; state.setsMap = {}; state.weights = {};
+  state.exIdx = 0; state.setsMap = {}; state.weights = {}; state.failureMap = {};
   state.screen = 'workout';
   render();
 }
@@ -1353,6 +1465,36 @@ function goNextEx() {
   }
 }
 
+function handleNextClick() {
+  const exr = getExercise();
+  const alreadyAnswered = state.failureMap.hasOwnProperty(state.exIdx);
+  if (isEligibleForOverload(exr) && !alreadyAnswered) {
+    const overlay = document.getElementById('failure-overlay');
+    if (overlay) overlay.classList.add('visible');
+    return;
+  }
+  goNextEx();
+}
+
+function answerFailure(hitFailure) {
+  state.failureMap[state.exIdx] = hitFailure;
+  const overlay = document.getElementById('failure-overlay');
+  if (overlay) overlay.classList.remove('visible');
+  saveActiveSession();
+  goNextEx();
+}
+
+function useRecommendedWeight(val) {
+  state.weights[state.exIdx] = val;
+  const input = document.getElementById('weight-input');
+  if (input) input.value = val;
+  const loc = getLocation();
+  const exr = getExercise();
+  const accent = exr.isFinisher ? '#ef4444' : loc.accent;
+  if (input) input.style.borderColor = accent + '60';
+  saveActiveSession();
+}
+
 function finishSession() {
   const loc = getLocation();
   const exercises = getFullExerciseList();
@@ -1366,6 +1508,7 @@ function finishSession() {
       name: getDisplayName(ex),
       isFinisher: ex.isFinisher,
       weight: state.weights[i] || null,
+      failure: state.failureMap[i] || false,
       sets: (state.setsMap[i] || []).filter(Boolean).length,
       reps: ex.type === 'superset' ? `${ex.a.reps} / ${ex.b.reps}` : (ex.reps || '—'),
     }))
