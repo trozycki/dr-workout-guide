@@ -67,6 +67,12 @@
 
   .weight-section { margin-bottom: 18px; }
   .rec-banner { border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .set-weight-list { display: flex; flex-direction: column; gap: 8px; }
+  .set-weight-row { display: flex; align-items: center; gap: 10px; }
+  .set-weight-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 14px; width: 44px; flex-shrink: 0; }
+  .set-weight-input { flex: 1; background: #1e1e1e; border-radius: 10px; padding: 10px 12px; color: #fff; font-size: 17px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; outline: none; border: 1.5px solid rgba(255,255,255,0.1); min-width: 0; }
+  .set-weight-unit { font-size: 11px; color: rgba(255,255,255,0.3); width: 22px; flex-shrink: 0; }
+  .set-circle-sm { width: 36px; height: 36px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.14); background: transparent; color: rgba(255,255,255,0.28); font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 15px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
   .rec-text { font-size: 12px; font-weight: 600; line-height: 1.4; }
   .rec-use-btn { border: none; border-radius: 20px; padding: 7px 14px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: 'Barlow', sans-serif; }
   .failure-overlay { position: absolute; inset: 0; background: rgba(10,10,10,0.97); border-radius: 20px; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 11; padding: 24px; text-align: center; }
@@ -445,10 +451,26 @@ function getCurrentSets() {
   return state.setsMap[state.exIdx] || Array(sets).fill(false);
 }
 
+// Weight is stored per-set now (an array, one entry per set — the ramp).
+// The "top weight" for history/recommendation purposes is the last non-empty
+// entry (the working set at the top of the ramp). Old entries logged before
+// per-set tracking may still be a plain number — handled here too.
+function getTopWeightValue(w) {
+  if (w == null || w === '') return null;
+  if (Array.isArray(w)) {
+    for (let i = w.length - 1; i >= 0; i--) {
+      if (w[i] !== null && w[i] !== undefined && w[i] !== '') return parseFloat(w[i]);
+    }
+    return null;
+  }
+  return parseFloat(w);
+}
+
 function getLastWeight(exName) {
   for (const s of state.history) {
     const m = s.exercises?.find(e => e.name === exName);
-    if (m?.weight) return m.weight;
+    const top = m ? getTopWeightValue(m.weight) : null;
+    if (top) return top;
   }
   return null;
 }
@@ -464,6 +486,28 @@ function getStepSize(name) {
   return isCompoundLift(name) ? 5 : 2.5;
 }
 
+function roundToIncrement(val, inc) {
+  return Math.round(val / inc) * inc;
+}
+
+// Suggested per-set weight ramp for a given exercise, based on its last logged
+// top weight. Compounds ramp up from ~60% to 100% across the sets (matching a
+// real warm-up ramp); isolation moves stay flat at the working weight since
+// there's usually no need to warm up into a light isolation exercise.
+function getSuggestedRamp(exName, numSets) {
+  const top = getLastWeight(exName);
+  if (!top) return Array(numSets).fill(null);
+  if (!isCompoundLift(exName)) return Array(numSets).fill(top);
+  const inc = top >= 50 ? 5 : 2.5;
+  const ramp = [];
+  for (let i = 0; i < numSets; i++) {
+    const frac = numSets === 1 ? 1 : 0.6 + (0.4 * i / (numSets - 1));
+    ramp.push(roundToIncrement(top * frac, inc));
+  }
+  ramp[ramp.length - 1] = top; // last set always lands exactly on the working weight
+  return ramp;
+}
+
 // Last 3 logged instances of this exact exercise name, most recent first.
 // Each entry: { weight: number|null, failure: bool|null }
 function getRecentInstances(exName, limit) {
@@ -471,8 +515,9 @@ function getRecentInstances(exName, limit) {
   for (const s of state.history) {
     if (s.type === 'yoga') continue;
     const m = s.exercises?.find(e => e.name === exName);
-    if (m && m.weight) {
-      out.push({ weight: parseFloat(m.weight), failure: !!m.failure });
+    const top = m ? getTopWeightValue(m.weight) : null;
+    if (m && top) {
+      out.push({ weight: top, failure: !!m.failure });
       if (out.length >= limit) break;
     }
   }
@@ -991,6 +1036,16 @@ function isEligibleForOverload(exr) {
   return exr && exr.type === 'single' && !exr.noWeight && !exr.customLabels && !exr.isFinisher;
 }
 
+function formatWeightDisplay(w) {
+  if (w == null || w === '') return null;
+  if (Array.isArray(w)) {
+    const vals = w.filter(v => v !== null && v !== undefined && v !== '');
+    if (!vals.length) return null;
+    return vals.join('→');
+  }
+  return String(w);
+}
+
 function getDisplayName(exr) {
   if (!exr) return '';
   if (exr.type === 'superset') return `${exr.a.name} + ${exr.b.name}`;
@@ -1014,6 +1069,8 @@ function renderWorkout() {
   const eligible = isEligibleForOverload(exr);
   const rec = eligible ? getWeightRecommendation(exr.name) : null;
   const curW = state.weights[state.exIdx] || '';
+  const curWArr = Array.isArray(state.weights[state.exIdx]) ? state.weights[state.exIdx] : [];
+  const suggestedRamp = eligible ? getSuggestedRamp(exr.name, sets) : [];
   const nextExr = exercises[state.exIdx + 1];
   const nextLabel = nextExr
     ? `Next: ${nextExr.isFinisher && !isFinisher ? '🔥 ' : ''}${getDisplayName(nextExr)}`
@@ -1050,19 +1107,48 @@ function renderWorkout() {
               <div class="stat-label">${l}</div>
             </div>`).join('')}
         </div>
+        ${eligible ? `
+        <div class="weight-section">
+          <div class="weight-header">
+            <span class="weight-label">Weight Per Set</span>
+            ${lastW ? `<span class="last-weight">Last top set: <span style="color:${accent}">${lastW} lbs</span></span>` : ''}
+          </div>
+          ${rec ? `
+          <div class="rec-banner" style="background:${rec.direction==='up'?'rgba(34,197,94,0.12)':rec.direction==='down'?'rgba(239,68,68,0.12)':'rgba(255,255,255,0.06)'};border:1px solid ${rec.direction==='up'?'rgba(34,197,94,0.35)':rec.direction==='down'?'rgba(239,68,68,0.35)':'rgba(255,255,255,0.12)'};">
+            <span class="rec-text" style="color:${rec.direction==='up'?'#22c55e':rec.direction==='down'?'#ef4444':'rgba(255,255,255,0.6)'}">
+              ${rec.direction==='up' ? '↑' : rec.direction==='down' ? '↓' : '→'} ${rec.reason} — top set try <b>${rec.suggested} lbs</b>
+            </span>
+            <button class="rec-use-btn" style="background:${rec.direction==='up'?'#22c55e':rec.direction==='down'?'#ef4444':'rgba(255,255,255,0.15)'};color:${rec.direction==='hold'?'#fff':'#000'}" onclick="useRecommendedRamp(${rec.suggested})">Use</button>
+          </div>` : ''}
+          <div class="set-weight-list">
+            ${Array.from({length: sets}).map((_, i) => {
+              const val = curWArr[i] || '';
+              const suggested = suggestedRamp[i];
+              const done = currentSets[i];
+              return `
+              <div class="set-weight-row">
+                <span class="set-weight-num h" style="color:${done?accent:'rgba(255,255,255,0.4)'}">SET ${i+1}</span>
+                <input class="set-weight-input" id="set-weight-${i}" type="number" inputmode="decimal"
+                  value="${val}" placeholder="${suggested || '0'}"
+                  style="border-color:${val ? accent+'60' : 'rgba(255,255,255,0.1)'}"
+                  oninput="onSetWeightInput(${i}, this.value)">
+                <span class="set-weight-unit">lbs</span>
+                <button class="set-circle-sm${done?' done':''}" id="set-${i}"
+                  style="${done?`background:${accent};border-color:${accent};color:#000`:''}"
+                  onclick="tapSet(${i})">${done?'✓':''}</button>
+              </div>`;
+            }).join('')}
+          </div>
+          <div class="all-done-msg" id="all-done-msg" style="color:${accent};${allDone?'display:block':''}">
+            ✓ Done — swipe forward or tap Next
+          </div>
+        </div>` : `
         ${exr.noWeight ? '' : `
         <div class="weight-section">
           <div class="weight-header">
             <span class="weight-label">Weight Used</span>
             ${lastW ? `<span class="last-weight">Last: <span style="color:${accent}">${lastW} lbs</span></span>` : ''}
           </div>
-          ${rec ? `
-          <div class="rec-banner" style="background:${rec.direction==='up'?'rgba(34,197,94,0.12)':rec.direction==='down'?'rgba(239,68,68,0.12)':'rgba(255,255,255,0.06)'};border:1px solid ${rec.direction==='up'?'rgba(34,197,94,0.35)':rec.direction==='down'?'rgba(239,68,68,0.35)':'rgba(255,255,255,0.12)'};">
-            <span class="rec-text" style="color:${rec.direction==='up'?'#22c55e':rec.direction==='down'?'#ef4444':'rgba(255,255,255,0.6)'}">
-              ${rec.direction==='up' ? '↑' : rec.direction==='down' ? '↓' : '→'} ${rec.reason} — try <b>${rec.suggested} lbs</b>
-            </span>
-            <button class="rec-use-btn" style="background:${rec.direction==='up'?'#22c55e':rec.direction==='down'?'#ef4444':'rgba(255,255,255,0.15)'};color:${rec.direction==='hold'?'#fff':'#000'}" onclick="useRecommendedWeight(${rec.suggested})">Use</button>
-          </div>` : ''}
           <div class="weight-input-row">
             <input class="weight-input" id="weight-input" type="number" inputmode="decimal"
               value="${curW}" placeholder="${lastW || '0'}"
@@ -1083,7 +1169,7 @@ function renderWorkout() {
           <div class="all-done-msg" id="all-done-msg" style="color:${accent};${allDone?'display:block':''}">
             ✓ Done — swipe forward or tap Next
           </div>
-        </div>
+        </div>`}
         <div class="timer-overlay" id="timer-overlay">
           <div class="timer-label" id="timer-label">Rest</div>
           <div class="timer-ring">
@@ -1145,7 +1231,7 @@ function renderDone() {
         <div class="summary-row">
           <span class="summary-ex">${ex.isFinisher ? '🔥 ' : ''}${ex.name}</span>
           <div class="summary-vals">
-            ${ex.weight ? `<span class="summary-weight h" style="color:${loc.accent}">${ex.weight} lbs</span>` : '<span class="summary-reps">—</span>'}
+            ${formatWeightDisplay(ex.weight) ? `<span class="summary-weight h" style="color:${loc.accent}">${formatWeightDisplay(ex.weight)} lbs</span>` : '<span class="summary-reps">—</span>'}
             <span class="summary-reps">${ex.sets}×${ex.reps}</span>
           </div>
         </div>`).join('')}
@@ -1194,7 +1280,7 @@ function renderHistory() {
                 <div class="history-ex-row">
                   <span class="history-ex-name">${ex.isFinisher ? '🔥 ' : ''}${ex.name}</span>
                   <div class="history-ex-vals">
-                    ${ex.weight ? `<span class="history-ex-weight h" style="color:${a}">${ex.weight} lbs</span>` : '<span class="history-ex-reps">—</span>'}
+                    ${formatWeightDisplay(ex.weight) ? `<span class="history-ex-weight h" style="color:${a}">${formatWeightDisplay(ex.weight)} lbs</span>` : '<span class="history-ex-reps">—</span>'}
                     <span class="history-ex-reps">${ex.sets}×${ex.reps}</span>
                   </div>
                 </div>`).join('')}
@@ -1229,6 +1315,18 @@ function onWeightInput(val) {
   saveActiveSession();
 }
 
+function onSetWeightInput(i, val) {
+  const cur = Array.isArray(state.weights[state.exIdx]) ? [...state.weights[state.exIdx]] : [];
+  cur[i] = val;
+  state.weights[state.exIdx] = cur;
+  const loc = getLocation();
+  const exr = getExercise();
+  const accent = exr.isFinisher ? '#ef4444' : loc.accent;
+  const input = document.getElementById(`set-weight-${i}`);
+  if (input) input.style.borderColor = val ? accent + '60' : 'rgba(255,255,255,0.1)';
+  saveActiveSession();
+}
+
 function tapSet(i) {
   const exr = getExercise();
   const sets = getSetCount(exr);
@@ -1238,7 +1336,8 @@ function tapSet(i) {
 
   const loc = getLocation();
   const accent = exr.isFinisher ? '#ef4444' : loc.accent;
-  const label = exr.customLabels ? exr.customLabels[i] : (i + 1);
+  const eligibleNow = isEligibleForOverload(exr);
+  const label = exr.customLabels ? exr.customLabels[i] : (eligibleNow ? '' : (i + 1));
   const btn = document.getElementById(`set-${i}`);
   if (btn) {
     btn.classList.toggle('done', next[i]);
@@ -1484,14 +1583,25 @@ function answerFailure(hitFailure) {
   goNextEx();
 }
 
-function useRecommendedWeight(val) {
-  state.weights[state.exIdx] = val;
-  const input = document.getElementById('weight-input');
-  if (input) input.value = val;
-  const loc = getLocation();
+function useRecommendedRamp(newTop) {
   const exr = getExercise();
+  const sets = getSetCount(exr);
+  const loc = getLocation();
   const accent = exr.isFinisher ? '#ef4444' : loc.accent;
-  if (input) input.style.borderColor = accent + '60';
+  const inc = newTop >= 50 ? 5 : 2.5;
+  const compound = isCompoundLift(exr.name);
+  const ramp = [];
+  for (let i = 0; i < sets; i++) {
+    if (!compound) { ramp.push(newTop); continue; }
+    const frac = sets === 1 ? 1 : 0.6 + (0.4 * i / (sets - 1));
+    ramp.push(roundToIncrement(newTop * frac, inc));
+  }
+  if (ramp.length) ramp[ramp.length - 1] = newTop;
+  state.weights[state.exIdx] = ramp;
+  for (let i = 0; i < sets; i++) {
+    const input = document.getElementById(`set-weight-${i}`);
+    if (input) { input.value = ramp[i]; input.style.borderColor = accent + '60'; }
+  }
   saveActiveSession();
 }
 
