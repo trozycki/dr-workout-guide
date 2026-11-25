@@ -80,6 +80,19 @@
   .failure-q { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 24px; margin-bottom: 6px; }
   .failure-sub { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 24px; }
   .failure-btn-row { display: flex; gap: 10px; width: 100%; }
+  .jump-btn { background: transparent; border: 1px solid rgba(255,255,255,0.14); border-radius: 20px; padding: 6px 14px; cursor: pointer; font-family: 'Barlow', sans-serif; }
+  .jump-overlay { position: fixed; inset: 0; background: rgba(10,10,10,0.98); z-index: 50; display: none; flex-direction: column; padding: 20px 16px 24px; overflow: hidden; }
+  .jump-overlay.visible { display: flex; }
+  .jump-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .jump-title { font-size: 26px; font-weight: 900; }
+  .jump-close { background: none; border: none; color: rgba(255,255,255,0.6); font-size: 22px; cursor: pointer; padding: 6px 10px; }
+  .jump-note { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 12px; }
+  .jump-list { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; margin-bottom: 14px; }
+  .jump-row { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: #141414; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 13px 14px; margin-bottom: 8px; color: #fff; font-family: 'Barlow', sans-serif; font-size: 14px; cursor: pointer; }
+  .jump-row.current { border-color: rgba(255,255,255,0.35); }
+  .jump-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+  .jump-name { flex: 1; }
+  .jump-meta { font-size: 12px; font-weight: 600; flex-shrink: 0; }
   .failure-btn { flex: 1; padding: 18px 10px; border-radius: 14px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; border: 1.5px solid rgba(255,255,255,0.12); background: #1a1a1a; color: #fff; }
   .weight-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .weight-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
@@ -1179,7 +1192,7 @@ function renderWorkout() {
     <div class="progress-bar"><div class="progress-fill" style="width:${progress*100}%;background:${accent}"></div></div>
     <div class="workout-header">
       <button class="back-btn" style="color:rgba(255,255,255,0.35);margin-bottom:0" onclick="goDay()">← Back</button>
-      <div class="workout-counter"><span>${state.exIdx+1}</span> / ${exercises.length}</div>
+      <button class="workout-counter jump-btn" onclick="openJump()"><span>${state.exIdx+1}</span> / ${exercises.length} &nbsp;☰</button>
     </div>
     <div class="card-wrap">
       <div class="ex-card" id="ex-card" style="border:1px solid ${allDone ? accent+'55' : 'rgba(255,255,255,0.08)'}">
@@ -1279,6 +1292,7 @@ function renderWorkout() {
             <button class="failure-btn" style="border-color:${accent};color:${accent}" onclick="answerFailure(false)">✓ Full Reps</button>
             <button class="failure-btn" style="border-color:#ef4444;color:#ef4444" onclick="answerFailure(true)">⚠ Hit Failure</button>
           </div>
+          <button class="skip-btn" style="margin-top:18px" onclick="answerLater()">Decide later</button>
         </div>
       </div>
     </div>
@@ -1286,8 +1300,32 @@ function renderWorkout() {
       <button class="nav-btn nav-btn-prev" id="btn-prev" onclick="goPrevEx()" ${state.exIdx===0?'disabled':''}>‹ Prev</button>
       <button class="nav-btn nav-btn-next" id="btn-next"
         style="${allDone?`background:${accent};color:#000`:''}" onclick="handleNextClick()">
-        ${state.exIdx===exercises.length-1 ? 'Finish' : 'Next ›'}
+        ${nextBtnLabel()}
       </button>
+    </div>
+    <div class="jump-overlay" id="jump-overlay" ontouchstart="event.stopPropagation()" ontouchend="event.stopPropagation()">
+      <div class="jump-head">
+        <div class="jump-title h">Exercises</div>
+        <button class="jump-close" onclick="closeJump()">✕</button>
+      </div>
+      <div class="jump-note" id="jump-note"></div>
+      <div class="jump-list">
+        ${exercises.map((e, i) => {
+          const total = getSetCount(e);
+          const done = (state.setsMap[i] || []).filter(Boolean).length;
+          const complete = total > 0 && done >= total;
+          const skipped = !complete && done === 0 && i < state.exIdx && !isWarmupEx(e);
+          const icon = complete ? '✓' : (done > 0 ? '◐' : '○');
+          const meta = complete ? 'Done' : (done > 0 ? done + '/' + total : (skipped ? 'Skipped' : ''));
+          const col = complete ? accent : ((done > 0 || skipped) ? '#f59e0b' : 'rgba(255,255,255,0.35)');
+          return `<button class="jump-row${i === state.exIdx ? ' current' : ''}" id="jump-row-${i}" onclick="jumpToEx(${i})">
+            <span class="jump-icon" style="color:${col}">${icon}</span>
+            <span class="jump-name">${e.isFinisher ? '🔥 ' : ''}${getDisplayName(e)}</span>
+            <span class="jump-meta" style="color:${col}">${meta}</span>
+          </button>`;
+        }).join('')}
+      </div>
+      <button class="done-btn" style="background:#1a1a1a;color:#fff;margin-bottom:0" onclick="finishFromList()">Finish workout</button>
     </div>
   </div>`;
 }
@@ -1444,6 +1482,7 @@ function tapSet(i) {
   if (nextBtn) {
     nextBtn.style.background = allDone ? accent : '#1a1a1a';
     nextBtn.style.color = allDone ? '#000' : '#fff';
+    nextBtn.textContent = nextBtnLabel();
   }
 
   const isLastSet = i === sets - 1;
@@ -1646,19 +1685,84 @@ function goNextEx() {
     state.exIdx++;
     state.screen = 'workout';
     render();
+  } else if (getUnfinishedIdx().length) {
+    openJump(true);
   } else {
     finishSession();
   }
 }
 
+// Warm-ups are single, unweighted, no-rest items. They never count as skipped.
+function isWarmupEx(exr) {
+  return !!exr && exr.type === 'single' && !!exr.noWeight && !(exr.restSec > 0) && getSetCount(exr) === 1;
+}
+
+// Indexes of exercises with no sets logged at all (warm-ups excluded).
+function getUnfinishedIdx() {
+  return getFullExerciseList().reduce((acc, e, i) => {
+    const done = (state.setsMap[i] || []).filter(Boolean).length;
+    if (done === 0 && !isWarmupEx(e)) acc.push(i);
+    return acc;
+  }, []);
+}
+
+function nextBtnLabel() {
+  const exercises = getFullExerciseList();
+  if (state.exIdx === exercises.length - 1) return 'Finish';
+  const started = (state.setsMap[state.exIdx] || []).some(Boolean);
+  return started ? 'Next ›' : 'Skip ›';
+}
+
+function openJump(finishMode) {
+  state.jumpFinishMode = !!finishMode;
+  const overlay = document.getElementById('jump-overlay');
+  if (!overlay) return;
+  const note = document.getElementById('jump-note');
+  const n = getUnfinishedIdx().length;
+  if (note) note.textContent = finishMode
+    ? `${n} exercise${n === 1 ? '' : 's'} not done yet. Tap one to go back, or finish anyway.`
+    : 'Tap any exercise to jump to it. Sets and weights stay saved.';
+  overlay.classList.add('visible');
+  const cur = document.getElementById('jump-row-' + state.exIdx);
+  if (cur && cur.scrollIntoView) cur.scrollIntoView({ block: 'center' });
+}
+
+function closeJump() {
+  const overlay = document.getElementById('jump-overlay');
+  if (overlay) overlay.classList.remove('visible');
+}
+
+function jumpToEx(i) {
+  stopTimerUI();
+  state.exIdx = i;
+  state.screen = 'workout';
+  render();
+}
+
+function finishFromList() {
+  const n = getUnfinishedIdx().length;
+  if (n && !state.jumpFinishMode && !confirm(`Finish with ${n} exercise${n === 1 ? '' : 's'} not done?`)) return;
+  finishSession();
+}
+
 function handleNextClick() {
   const exr = getExercise();
+  const cur = getCurrentSets();
+  const allSetsDone = cur.length > 0 && cur.every(Boolean);
   const alreadyAnswered = state.failureMap.hasOwnProperty(state.exIdx);
-  if (isEligibleForOverload(exr) && !alreadyAnswered) {
+  // Only ask "How'd it go?" once every set is logged. Skipping or leaving
+  // early never prompts, so you can come back to the exercise later.
+  if (isEligibleForOverload(exr) && !alreadyAnswered && allSetsDone) {
     const overlay = document.getElementById('failure-overlay');
     if (overlay) overlay.classList.add('visible');
     return;
   }
+  goNextEx();
+}
+
+function answerLater() {
+  const overlay = document.getElementById('failure-overlay');
+  if (overlay) overlay.classList.remove('visible');
   goNextEx();
 }
 
